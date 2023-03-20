@@ -11,7 +11,7 @@ setup(
     package_dir   = {'':'src'},
     packages      = find_packages(where='src'),          
     install_requires =['astroquery', 'astropy', 'matplotlib', 'astropy', 'dustmaps.sfd',
-                        'numpy', 'datetime', 'csv', 'json', 'requests', 'pyvo'],
+                        'numpy', 'datetime', 'python-csv', 'requests', 'pyvo'],
     include_package_data = True,  
     package_data       = {'': ['irgsctool/data/*']},
     classifiers=[
