@@ -31,9 +31,9 @@ print('####################################################')
 print('')
 __author__ = "Sarang Shah"
 __copyright__ = "Copyright 2023, TMT/DMS/IRGSC"
-__credits__ = ["Sarang Shah"]
+__credits__ = "Sarang Shah"
 __license__ = "MIT"
-__version__ = "1.0.1"
+__version__ = "0.0.1"
 __maintainer__ = "Sarang Shah"
 __email__ = "sarang.itcc@iiap.res.in"
 __status__ = "Development"
