@@ -23,7 +23,12 @@ from ._sgc import Star_Galaxy_Classification
 from ._sam import Models
 import numpy as np
 import os
+from dustmaps.config import config
+config['data_dir'] = Path(__file__).parent.joinpath()
 
+import dustmaps.sfd
+if "sfd" not in os.listdir(config['data_dir']):
+    dustmaps.sfd.fetch()
 home_dir = os.getcwd()
 print('')
 print('Your home directory is:', home_dir)
@@ -31,9 +36,9 @@ print('####################################################')
 print('')
 __author__ = "Sarang Shah"
 __copyright__ = "Copyright 2023, TMT/DMS/IRGSC"
-__credits__ = ["Sarang Shah"]
+__credits__ = "Sarang Shah"
 __license__ = "MIT"
-__version__ = "1.0.1"
+__version__ = "0.0.1"
 __maintainer__ = "Sarang Shah"
 __email__ = "sarang.itcc@iiap.res.in"
 __status__ = "Development"
@@ -128,5 +133,3 @@ class irgsc(Generate_IRGSC, Validate, Extinction_Correction, Read_Data, Get_Data
             else:
                 gaia_data = gaia_data
 
-if __name__ == '__main__':
-    pass    
