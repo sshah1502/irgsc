@@ -67,13 +67,14 @@ SOFTWARE.
 
 """
 
-class irgsc(Generate_IRGSC, Validate, Extinction_Correction, Read_Data, Get_Data, Star_Galaxy_Classification):
+class irgsc(Generate_IRGSC, Validate, Extinction_Correction,\
+            Read_Data, Get_Data, Star_Galaxy_Classification):
 
-    print ('##########################################################################')
+    print ('##########################################################')
     print("")
     print('Initializing')
     print("")
-    print ('##########################################################################')
+    print ('##########################################################')
     print("")
 
     def __init__(self, ra, dec):
@@ -87,14 +88,16 @@ class irgsc(Generate_IRGSC, Validate, Extinction_Correction, Read_Data, Get_Data
         try:
             validating_data = np.genfromtxt(str(home_dir)+ '/'+ str(file_name) + '.csv')
             if len(validating_data) == 0.0:
-                print('UKIDSS Observed NIR data not available. Validation of the generated IRGSC not possible for this field!!!')
+                print("""UKIDSS Observed NIR data not available. Validation of the 
+                generated IRGSC not possible for this field!!!""")
             else:
                 validating_data = validating_data
         except FileNotFoundError:
             Get_Data.get_ukidss_data(ra, dec)
             validating_data = np.genfromtxt(str(home_dir)+ '/'+ str(file_name) + '.csv')
             if len(validating_data) == 0.0:
-                print('UKIDSS Observed NIR data not available. Validation of the generated IRGSC not possible for this field!!!')
+                print("""UKIDSS Observed NIR data not available. Validation of the
+                generated IRGSC not possible for this field!!!""")
             else:
                 validating_data = validating_data
 
@@ -104,7 +107,8 @@ class irgsc(Generate_IRGSC, Validate, Extinction_Correction, Read_Data, Get_Data
             optical_data = np.genfromtxt(str(home_dir)+ '/'+ str(file_name) + '.csv')
             if len(optical_data) == 0.0:
                 print('')
-                print('PANSTARRS optical data not available. Please check the input coordinates!!!')
+                print("""PANSTARRS optical data not available. 
+                Please check the input coordinates!!!""")
                 print('')
                 Get_Data.get_panstarrs_data(ra, dec)
                 optical_data = np.genfromtxt(str(home_dir)+ '/'+ str(file_name) + '.csv')
@@ -114,7 +118,8 @@ class irgsc(Generate_IRGSC, Validate, Extinction_Correction, Read_Data, Get_Data
             Get_Data.get_panstarrs_data(ra, dec)
             optical_data = np.genfromtxt(str(file_name) + '.csv')
             if len(optical_data) == 0.0:
-                print('PANSTARRS optical data not retrieved. Please check the input coordinates or the ADSQL query!!!')
+                print("""PANSTARRS optical data not retrieved. Please check the 
+                input coordinates or the ADSQL query!!!""")
             else:
                 optical_data = optical_data
 
@@ -127,7 +132,7 @@ class irgsc(Generate_IRGSC, Validate, Extinction_Correction, Read_Data, Get_Data
                 gaia_data = gaia_data
         except FileNotFoundError:
             Get_Data.get_gaia_data(ra, dec)
-            gaia_data = np.genfromtxt(str(home_dir)+ '/'+ str(file_name) + '.csv')
+            gaia_data = np.genfromtxt(str(home_dir)+ '/'+str(file_name) + '.csv')
             if len(gaia_data) == 0.0:
                 print('GAIA data not available for this field!!!')
             else:
