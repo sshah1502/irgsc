@@ -24,3 +24,9 @@ setup(
     ],
    
 )
+import irgsctool
+from dustmaps.config import config
+config['data_dir'] = Path(__file__).parent.joinpath()
+
+import dustmaps.sfd
+dustmaps.sfd.fetch()
