@@ -6,6 +6,5 @@ dustmaps.sfd
 numpy
 datetime
 csv
-json
 requests
 pyvo
