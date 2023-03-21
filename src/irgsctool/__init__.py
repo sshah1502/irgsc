@@ -69,6 +69,11 @@ SOFTWARE.
 
 class irgsc(Generate_IRGSC, Validate, Extinction_Correction,\
             Read_Data, Get_Data, Star_Galaxy_Classification):
+    """
+    irgsc class which initialises the module,
+    checks the validity of the input ra and decl.
+    and fetches the data for the valid coordinates.
+    """
 
     print ('##########################################################')
     print("")
