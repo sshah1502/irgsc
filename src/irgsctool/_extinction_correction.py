@@ -7,6 +7,7 @@ import numpy as np
 from astropy.coordinates import SkyCoord
 from astropy import units as u
 from dustmaps.sfd import SFDQuery
+import dustmaps
 from ._sgc import Star_Galaxy_Classification as sgc
 
 class Extinction_Correction():
