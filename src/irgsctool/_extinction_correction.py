@@ -72,7 +72,7 @@ class Extinction_Correction():
                 print("########################################################")
                 print("")
 
-                ebv, err_ebv,_,_,_ = Extinction_Correction.get_reddening(self.ra,self.dec)
+                ebv, err_ebv,_,_,_ = self.get_reddening()
                 ps_phot = self.sgc.star_galaxy_classification()
                 print('')
                 print('Length of PS1 data before ec is:', len(ps_phot[0]))

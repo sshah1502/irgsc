@@ -87,6 +87,7 @@ def compute_dquad(j, oc, mc):
             in the observed and the model colors.
     
         """
+        j = np.int64(j)
         obs_gr, obs_gi, obs_gz, obs_gy, obs_ri, obs_ry, obs_rz, obs_iz, obs_iy, obs_zy = oc
         sam_gr, sam_gi, sam_gz, sam_gy, sam_ri, sam_rz, sam_ry, sam_iz, sam_iy, sam_zy = mc
         dev_gr = (obs_gr[j] - sam_gr)
@@ -101,8 +102,8 @@ def compute_dquad(j, oc, mc):
         dev_zy = (obs_zy[j] - sam_zy)
         dquad = (dev_gr**2 + dev_gi**2 + dev_gz**2 + dev_gy**2 + dev_ri**2\
                  + dev_rz**2 + dev_ry**2 + dev_iz**2 + dev_iy**2 + dev_zy**2)
-        return {dquad, np.min(dquad), dev_gr, dev_gi, dev_gz, dev_gy, dev_ri,\
-            dev_rz, dev_ry, dev_iz, dev_iy, dev_zy}
+        return dquad, np.min(dquad), dev_gr, dev_gi, dev_gz, dev_gy, dev_ri,\
+            dev_rz, dev_ry, dev_iz, dev_iy, dev_zy
 
 
 class Generate_IRGSC():
@@ -221,7 +222,7 @@ class Generate_IRGSC():
                       str(current_datetime)+'.csv', 'w', encoding='UTF8') as file1:
                 writer=csv.writer(file1)
                 writer.writerow(header)
-                for j in enumerate(ec_gmag):
+                for j in range(len(ec_gmag)):
                     dquad_arr, min_dquad, _, _, _, _, _, _, _, _, _, _ = \
                         compute_dquad(j, oc = observed_colours, mc = model_colours)
                     min_dquad_element = find_nearest(dquad_arr, min_dquad)

@@ -19,7 +19,6 @@ import numpy as np
 from dustmaps.config import config
 config['data_dir'] = os.getcwd()
 import dustmaps.sfd
-
 from ._fitting import Generate_IRGSC
 from ._validate import Validate
 from ._extinction_correction import Extinction_Correction

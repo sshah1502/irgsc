@@ -128,7 +128,7 @@ class Validate():
 
         if validate is True:
             ukidss_data = self.rd.read_nir_data()
-            irgsc_data = Validate.read_irgsc(self.ra,self.dec)
+            irgsc_data = self.read_irgsc()
             ukidss_j, ukidss_h, ukidss_k, e_ukidss_j, e_ukidss_h, e_ukidss_k, ukidss_ra, ukidss_dec = ukidss_data
             ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, e_ec_gmag, ec_rmag,\
                 e_ec_rmag, ec_imag, e_ec_imag, ec_zmag, e_ec_zmag, ec_ymag, e_ec_ymag, teff,\
@@ -248,7 +248,7 @@ class Validate():
         ny, by, px = ax_marg_y.hist(diff_jf, bins = bins2, orientation="horizontal",\
                                     edgecolor = 'g', density=True, alpha = 0.5,\
                                     facecolor = 'orange', label = 'Difference')
-        biny_max = Validate.find_nearest(ny, np.median(ny))
+        biny_max = find_nearest(ny, np.median(ny))
         ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
         ax_marg_y.set_ylim(-2,2)
         ax_marg_x.grid()
@@ -284,7 +284,7 @@ class Validate():
                                 label = 'Observed J')
         ny, by, px = ax_marg_y.hist(diff_hf, bins = bins2, orientation="horizontal",\
                                  edgecolor = 'g', alpha = 0.5, facecolor = 'orange', label = 'Difference')
-        biny_max = Validate.find_nearest(ny, np.median(ny))
+        biny_max = find_nearest(ny, np.median(ny))
         ax_marg_y.set_title('Median at: ' +str(by[np.where(ny==biny_max)[0]][0]))
         ax_marg_y.set_ylim(-2,2)
         ax_marg_x.grid()
@@ -320,7 +320,7 @@ class Validate():
                                         label = 'Observed J')
         ny, by, px = ax_marg_y.hist(diff_kf, bins = bins2, orientation="horizontal",\
                                     edgecolor = 'g', alpha = 0.5, facecolor = 'orange', label = 'Difference')
-        biny_max = Validate.find_nearest(ny, np.median(ny))
+        biny_max = find_nearest(ny, np.median(ny))
         ax_marg_y.set_title('Median at T= ' + str(by[np.where(ny==biny_max)[0]]))
         ax_marg_y.set_ylim(-2,2)
         ax_marg_x.grid()

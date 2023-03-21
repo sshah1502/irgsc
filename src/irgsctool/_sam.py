@@ -1,7 +1,7 @@
 import os
 import sys
 import numpy as np
-
+data_dir = os.getcwd()
 class Models():
         def read_sam_file(use_sam=None):
 
@@ -9,12 +9,14 @@ class Models():
                         print("")
                         print('Reading Interpolated Kurucz SAMs')
                         print("")
-                        p2 = np.genfromtxt('interpolated_kurucz.txt')
+                        print('data_dir=', os.getcwd())
+
+                        p2 = np.genfromtxt(str(os.getcwd())+'/'+'src/irgsctool/data/'+'interpolated_kurucz.txt')
                 elif use_sam == 'Phoenix':
                         print("")
                         print('Reading Interpolated Phoenix SAMs')
                         print("")
-                        p2 = np.genfromtxt('interpolated_phoenix.txt')
+                        p2 = np.genfromtxt(str(os.getcwd())+'/'+'src/irgsctool/data/'+'interpolated_phoenix.txt')
         
                 teff = p2[:,0]; logg = p2[:,2]; feh = p2[:,1]; sam_g = p2[:,3]; sam_r = p2[:,4];\
                         sam_i = p2[:,5]; sam_z = p2[:,6]; sam_y = p2[:,7]; sam_j = p2[:,8];\

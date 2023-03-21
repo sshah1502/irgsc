@@ -31,7 +31,7 @@ class Star_Galaxy_Classification():
         print('Seperating Stars and Galaxies from the input optical PANSTARRS dataset')
         print("")
         print("#######################################################################")
-        ps_phot = self.rd.read_optical_data(self.ra, self.dec)
+        ps_phot = self.rd.read_optical_data()
         print("")
         print('Using psf-kron criteria to seperate stars and galaxies')
         print("")
