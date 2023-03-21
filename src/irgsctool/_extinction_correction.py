@@ -1,11 +1,12 @@
-import os
-import sys
-from ._read_data import Read_Data
+"""
+Module to generate extinction corrected photometry.
+This model is dependant on dustmaps package and makes use of dustmaps.sfd
+"""
+#pylint: disable=wrong-import-position
 import numpy as np
-import dustmaps.sfd
-from dustmaps.sfd import SFDQuery
 from astropy.coordinates import SkyCoord
 from astropy import units as u
+from dustmaps.sfd import SFDQuery
 from ._sgc import Star_Galaxy_Classification as sgc
 
 class Extinction_Correction():
@@ -20,15 +21,23 @@ class Extinction_Correction():
                                 in PANSTARRS bands by using the relations given by Tonry et.al. 2012.
                                 It returns extinction and reddening corrected PANSTARRS photometry.
         """
-        def get_reddening(ra, dec):
+        def get_reddening(self, ra, dec):
+                """
+                Function to obtain Schelgel et.al. 1998 (sfd) reddening value.
+                This work uses Schlafly & Finkbeiner 2011 (snf) which is:
+                snf = 0.86*sfd
+                """
                 try:
                         coords = SkyCoord((ra)*u.degree, (dec)*u.degree, frame='icrs')
                         sfd = SFDQuery()
                         #sfd reddening
                         sfd_ebv = sfd(coords)
                         #s&f reddening
-                        snf_ebv = sfd_ebv*0.86; err_snf_ebv = 0.001*snf_ebv
-                        aj = 0.709*snf_ebv; ah = 0.449*snf_ebv; ak = 0.302*snf_ebv
+                        snf_ebv = sfd_ebv*0.86
+                        err_snf_ebv = 0.001*snf_ebv
+                        aj = 0.709*snf_ebv
+                        ah = 0.449*snf_ebv
+                        ak = 0.302*snf_ebv
                 except FileNotFoundError:
                         dustmaps.sfd.fetch()
                         coords = SkyCoord((ra)*u.degree, (dec)*u.degree, frame='icrs')
@@ -36,11 +45,14 @@ class Extinction_Correction():
                         #sfd reddening
                         sfd_ebv = sfd(coords)
                         #s&f reddening
-                        snf_ebv = sfd_ebv*0.86; err_snf_ebv = 0.001*snf_ebv
-                        aj = 0.709*snf_ebv; ah = 0.449*snf_ebv; ak = 0.302*snf_ebv
+                        snf_ebv = sfd_ebv*0.86
+                        err_snf_ebv = 0.001*snf_ebv
+                        aj = 0.709*snf_ebv
+                        ah = 0.449*snf_ebv
+                        ak = 0.302*snf_ebv
                 return snf_ebv, err_snf_ebv, aj, ah, ak
 
-        def extinction_corrected_photometry(ra, dec):
+        def extinction_corrected_photometry(self, ra, dec):
                 """
                 Function to correct the input optical photometry for reddening
                 and extinction along the line of site.
@@ -53,17 +65,18 @@ class Extinction_Correction():
                 print("")
                 print("########################################################")
                 print("")
-
-                ebv, err_ebv,_,_,_ = Extinction_Correction.get_reddening(ra,dec)
-                ps_phot = sgc.star_galaxy_classification(ra,dec)
+                self.ra = ra
+                self.dec = dec
+                ebv, err_ebv,_,_,_ = Extinction_Correction.get_reddening(self.ra,self.dec)
+                ps_phot = sgc.star_galaxy_classification(self.ra,self.dec)
+                print('')
                 print('Length of PS1 data before ec is:', len(ps_phot[0]))
                 ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, gpsf, e_gpsf, gkron, e_gkron,\
-                        rpsf, e_rpsf, rkron, e_rkron, ipsf, e_ipsf, ikron, e_ikron, zpsf, e_zpsf,\
-                        zkron, e_zkron, ypsf, e_ypsf, ykron, e_ykron, objinfoflag, qualityflag,\
-                        ndetections, nstackdetections, ginfoflag, ginfoflag2, ginfoflag3,\
-                        rinfoflag, rinfoflag2, rinfoflag3, iinfoflag,iinfoflag2, iinfoflag3,\
-                        zinfoflag, zinfoflag2, zinfoflag3, yinfoflag, yinfoflag2,\
-                        yinfoflag3 = ps_phot
+                rpsf, e_rpsf, rkron, e_rkron, ipsf, e_ipsf, ikron, e_ikron, zpsf, e_zpsf,\
+                zkron, e_zkron, ypsf, e_ypsf, ykron, e_ykron, objinfoflag, qualityflag,\
+                ndetections, nstackdetections, ginfoflag, ginfoflag2, ginfoflag3, rinfoflag,\
+                rinfoflag2, rinfoflag3, iinfoflag,iinfoflag2, iinfoflag3, zinfoflag, zinfoflag2,\
+                zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3 = ps_phot
     
                 #extinction in ps1 filters taken from Tonry et.al. 2012
 
@@ -99,33 +112,11 @@ class Extinction_Correction():
                 e_ec_zmag = np.sqrt((e_zpsf)**2 + (e_az)**2)
                 e_ec_ymag = np.sqrt((e_ypsf)**2 + (e_ay)**2)
 
-                e_ec_gr = np.sqrt(e_ec_gmag**2 + e_ec_rmag**2)
-                e_ec_gi = np.sqrt(e_ec_gmag**2 + e_ec_imag**2)
-                e_ec_gz = np.sqrt(e_ec_gmag**2 + e_ec_zmag**2)
-                e_ec_gy = np.sqrt(e_ec_gmag**2 + e_ec_ymag**2)
-                e_ec_ri = np.sqrt(e_ec_rmag**2 + e_ec_imag**2)
-                e_ec_rz = np.sqrt(e_ec_rmag**2 + e_ec_zmag**2)
-                e_ec_ry = np.sqrt(e_ec_rmag**2 + e_ec_ymag**2)
-                e_ec_iz = np.sqrt(e_ec_imag**2 + e_ec_zmag**2)
-                e_ec_iy = np.sqrt(e_ec_imag**2 + e_ec_ymag**2)
-                e_ec_zy = np.sqrt(e_ec_zmag**2 + e_ec_ymag**2)
-
-                de_reddened_gr = ec_gmag - ec_rmag
-                de_reddened_ri = ec_rmag - ec_imag
-                de_reddened_gi = ec_gmag - ec_imag
-                de_reddened_gy = ec_gmag - ec_ymag
-                de_reddened_gz = ec_gmag - ec_zmag
-                de_reddened_ry = ec_rmag - ec_ymag
-                de_reddened_rz = ec_rmag - ec_zmag
-                de_reddened_iy = ec_imag - ec_ymag
-                de_reddened_iz = ec_imag - ec_zmag
-                de_reddened_zy = ec_zmag - ec_ymag
-
                 psf_phot = ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, e_ec_gmag, gkron,\
-                        e_gkron, ec_rmag, e_ec_gmag, gkron, e_gkron, ec_imag, e_ec_gmag, gkron, e_gkron,\
-                        ec_zmag, e_ec_gmag, gkron, e_gkron, ec_ymag, e_ec_gmag, gkron, e_gkron,\
-                        objinfoflag, qualityflag, ndetections, nstackdetections, ginfoflag,\
-                        ginfoflag2, ginfoflag3, rinfoflag, rinfoflag2, rinfoflag3, iinfoflag, iinfoflag2,\
-                        iinfoflag3, zinfoflag, zinfoflag2, zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3
-                print('length of ps1 data after ec is:', len(psf_phot[0]), len(psf_phot))
+                e_gkron, ec_rmag, e_ec_rmag, rkron, e_rkron, ec_imag, e_ec_imag, ikron, e_ikron,\
+                ec_zmag, e_ec_zmag, zkron, e_zkron, ec_ymag, e_ec_ymag, ykron, e_ykron, objinfoflag,\
+                qualityflag, ndetections, nstackdetections, ginfoflag, ginfoflag2, ginfoflag3,\
+                rinfoflag, rinfoflag2, rinfoflag3, iinfoflag, iinfoflag2, iinfoflag3, zinfoflag,\
+                zinfoflag2, zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3
+                print('length of ps1 data after ec is:', len(psf_phot[0]))
                 return psf_phot
