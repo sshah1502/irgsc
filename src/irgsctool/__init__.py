@@ -14,6 +14,7 @@
 """
 
 from datetime import date
+import os
 from ._fitting import Generate_IRGSC
 from ._validate import Validate
 from ._extinction_correction import Extinction_Correction
@@ -22,13 +23,12 @@ from ._get_data import Get_Data
 from ._sgc import Star_Galaxy_Classification
 from ._sam import Models
 import numpy as np
-import os
 from dustmaps.config import config
 config['data_dir'] = Path(__file__).parent.joinpath()
-
 import dustmaps.sfd
 if "sfd" not in os.listdir(config['data_dir']):
     dustmaps.sfd.fetch()
+
 home_dir = os.getcwd()
 print('')
 print('Your home directory is:', home_dir)
