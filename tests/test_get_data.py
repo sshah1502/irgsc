@@ -7,5 +7,5 @@ def test_PS():
   
 def test_UKIDSS():
   Get_Data.get_ukidss_data(227.26,0)
-  os.path.exists('UKIDSS_RA227_26DEC0.csv')
+  assert os.path.exists('UKIDSS_RA227_26DEC0.csv')
   
