@@ -17,10 +17,9 @@ import os
 from datetime import date
 import numpy as np
 from dustmaps.config import config
-#config['data_dir'] = os.getcwd()
+config['data_dir'] = os.getcwd()
 import dustmaps.sfd
-if not config['data_dir'] in os.getcwd():
-    dustmaps.sfd.fetch()
+
 from ._fitting import Generate_IRGSC
 from ._validate import Validate
 from ._extinction_correction import Extinction_Correction
