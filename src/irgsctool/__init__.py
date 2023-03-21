@@ -67,7 +67,7 @@ SOFTWARE.
 
 """
 
-class irgsc(Generate_IRGSC, Validate, Extinction_Correction,\
+class Irgsc(Generate_IRGSC, Validate, Extinction_Correction,\
             Read_Data, Get_Data, Star_Galaxy_Classification):
     """
     irgsc class which initialises the module,
