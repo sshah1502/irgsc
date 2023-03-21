@@ -2,7 +2,7 @@ astroquery
 astropy
 matplotlib
 astropy
-dustmaps.sfd
+dustmaps
 numpy
 datetime
 csv
