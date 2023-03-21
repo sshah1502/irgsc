@@ -82,23 +82,24 @@ class Irgsc(Generate_IRGSC, Validate, Extinction_Correction,\
     print ('##########################################################')
     print("")
 
-    def __init__(self, ra, dec):
+    def __init__(self,ra,dec):
         print("")
         print('Checking whether UKIDSS data is available for this field')
         print('')
         print('##################################################')
         print('')
-        ra_name = str(ra).replace('.','_'); dec_name = str(dec).replace('.', '_')
-        file_name = 'UKIDSS' + '_' + 'RA'+str(ra_name) + 'DEC' + str(dec_name)
+        ra_name = str(ra).replace('.','_')
+        dec_name = str(dec).replace('.', '_')
+        file_name = 'UKIDSS'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)
         try:
-            validating_data = np.genfromtxt(str(home_dir)+ '/'+ str(file_name) + '.csv')
-            if len(validating_data) == 0.0:
+            validating_data = np.genfromtxt(str(home_dir)+'/'+ str(file_name)+'.csv')
+            if len(validating_data)==0.0:
                 print("""UKIDSS Observed NIR data not available. Validation of the 
                 generated IRGSC not possible for this field!!!""")
             else:
                 validating_data = validating_data
         except FileNotFoundError:
-            Get_Data.get_ukidss_data(ra, dec)
+            Get_Data.get_ukidss_data(ra,dec)
             validating_data = np.genfromtxt(str(home_dir)+ '/'+ str(file_name) + '.csv')
             if len(validating_data) == 0.0:
                 print("""UKIDSS Observed NIR data not available. Validation of the
@@ -106,38 +107,38 @@ class Irgsc(Generate_IRGSC, Validate, Extinction_Correction,\
             else:
                 validating_data = validating_data
 
-        file_name = 'PS1' + '_' + 'RA'+str(ra_name) + 'DEC' + str(dec_name)
+        file_name = 'PS1'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)
        
         try:
-            optical_data = np.genfromtxt(str(home_dir)+ '/'+ str(file_name) + '.csv')
-            if len(optical_data) == 0.0:
+            optical_data = np.genfromtxt(str(home_dir)+'/'+ str(file_name)+'.csv')
+            if len(optical_data)==0.0:
                 print('')
                 print("""PANSTARRS optical data not available. 
                 Please check the input coordinates!!!""")
                 print('')
                 Get_Data.get_panstarrs_data(ra, dec)
-                optical_data = np.genfromtxt(str(home_dir)+ '/'+ str(file_name) + '.csv')
+                optical_data = np.genfromtxt(str(home_dir)+'/'+str(file_name)+'.csv')
             else:
                 optical_data = optical_data
         except FileNotFoundError:
             Get_Data.get_panstarrs_data(ra, dec)
-            optical_data = np.genfromtxt(str(file_name) + '.csv')
+            optical_data = np.genfromtxt(str(file_name)+'.csv')
             if len(optical_data) == 0.0:
                 print("""PANSTARRS optical data not retrieved. Please check the 
                 input coordinates or the ADSQL query!!!""")
             else:
                 optical_data = optical_data
 
-        file_name = 'GAIA' + '_' + 'RA'+str(ra_name) + 'DEC' + str(dec_name)
+        file_name = 'GAIA'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)
         try:
-            gaia_data = np.genfromtxt(str(home_dir)+ '/'+ str(file_name) + '.csv')
+            gaia_data = np.genfromtxt(str(home_dir)+'/'+str(file_name)+'.csv')
             if len(gaia_data) == 0.0:
                 print('GAIA data not available for this field!!!')
             else:
                 gaia_data = gaia_data
         except FileNotFoundError:
             Get_Data.get_gaia_data(ra, dec)
-            gaia_data = np.genfromtxt(str(home_dir)+ '/'+str(file_name) + '.csv')
+            gaia_data = np.genfromtxt(str(home_dir)+'/'+str(file_name)+'.csv')
             if len(gaia_data) == 0.0:
                 print('GAIA data not available for this field!!!')
             else:
