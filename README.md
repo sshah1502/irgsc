@@ -1,4 +1,4 @@
-# irgsctool
+# irgsctool (mock for tmt-irgsc)
 
 ## Introduction
 This is a python repository dedicated to the development of the Near-Infrared Guide Star Catalog (IRGSC) for the Adaptive Optics (AO) observations of the Thirty Meter Telescope (TMT) project. This package generates the catalog by computing the NIR magnitudes of the optical stellar sources in the PANSTARSS DR2 data.
@@ -10,7 +10,7 @@ A python package aimed to compute the NIR magnitudes of the optical sources in t
 
 ### Installation
 ```
-pip install tmt-irgsc
+pip install irgsctool
 
 ```
 
@@ -18,18 +18,22 @@ pip install tmt-irgsc
 ```
  class IRGSC
 ```
-This class is defined by importing tmt-irgsc module and passing the R.A. and Decl. arguments. In version 1.0 of this package, the catalog is generated using the optimal method described in the work report (link). 
+This class is defined by importing irgsctool module and passing the R.A. and Decl. arguments. In this package, the catalog is generated using the optimal method described in the work report (link). After initializing, this module alerts if there is no observed NIR UKIDSS data for the given field.
 
 ```
-import Generate_IRGSC
+from irgsctool import Generate_IRGSC as GC
+gc = GC(ra,dec)
+gc.generate_irgsc()
 ```
 
-The module Generate_IRGSC(ra, dec) is the module that generates the catalog after importing the IRGSC library. This module alerts if there is no observed NIR UKIDSS data for the given field. Irrespective of whether UKIDSS data is available or not, this module generates the catalog using the optical PANSTARRS data from 3pi steradian survey.
+The module Generate_IRGSC is the module that generates the catalog. Irrespective of whether UKIDSS data is available or not, this module (the command gc.generate_irgsc()) generates the catalog using the optical PANSTARRS data from 3pi steradian survey for given ra and decl.
 
 ```
 import Validate
+vd = Validate(ra,dec)
+vd.validate()
 ```
-The module Validate(ra,dec) is the module that validates the computed NIR magnitudes after importing the IRGSC library. This module first checks whether the UKIDSS observed NIR data can be obtained for the given field.
+The module Validate(ra,dec) is the module that validates the computed NIR magnitudes after importing the IRGSC library. If initialized without generating the catalog, this module independantly checks whether the UKIDSS observed NIR data can be obtained for the given field.
 
 # Conclusion/Disclaimer
 
