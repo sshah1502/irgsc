@@ -1,18 +1,24 @@
 digraph "classes" {
 rankdir=BT
 charset="utf-8"
-"irgsctool._extinction_correction.Extinction_Correction" [color="black", fontcolor="black", label=<{Extinction_Correction|<br ALIGN="LEFT"/>|extinction_corrected_photometry(dec)<br ALIGN="LEFT"/>get_reddening(dec)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
-"irgsctool._fitting.Generate_IRGSC" [color="black", fontcolor="black", label=<{Generate_IRGSC|<br ALIGN="LEFT"/>|calc_sf(om, e_om, sm, index_min_ang_seperation, aj, ah, ak)<br ALIGN="LEFT"/>compute_dquad(oc, mc)<br ALIGN="LEFT"/>find_nearest(value)<br ALIGN="LEFT"/>generate_irgsc(dec, use_optimal_method)<br ALIGN="LEFT"/>stdv(v1, v2, v3, v4, v5)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
-"irgsctool._get_data.Get_Data" [color="black", fontcolor="black", label=<{Get_Data|<br ALIGN="LEFT"/>|get_gaia_data(dec)<br ALIGN="LEFT"/>get_panstarrs_data(dec)<br ALIGN="LEFT"/>get_ukidss_data(dec)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"irgsctool._extinction_correction.Extinction_Correction" [color="black", fontcolor="black", label=<{Extinction_Correction|dec<br ALIGN="LEFT"/>ra<br ALIGN="LEFT"/>sgc<br ALIGN="LEFT"/>|extinction_corrected_photometry()<br ALIGN="LEFT"/>get_reddening()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"irgsctool._fitting.Generate_IRGSC" [color="black", fontcolor="black", label=<{Generate_IRGSC|dec<br ALIGN="LEFT"/>ec<br ALIGN="LEFT"/>ra<br ALIGN="LEFT"/>rd<br ALIGN="LEFT"/>|generate_irgsc(use_optimal_method)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"irgsctool._get_data.Get_Data" [color="black", fontcolor="black", label=<{Get_Data|dec<br ALIGN="LEFT"/>ra<br ALIGN="LEFT"/>|get_gaia_data()<br ALIGN="LEFT"/>get_panstarrs_data()<br ALIGN="LEFT"/>get_ukidss_data()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"irgsctool.Irgsc" [color="black", fontcolor="black", label=<{Irgsc|dec<br ALIGN="LEFT"/>ra<br ALIGN="LEFT"/>validate : bool, NoneType<br ALIGN="LEFT"/>|}>, shape="record", style="solid"];
 "irgsctool._sam.Models" [color="black", fontcolor="black", label=<{Models|<br ALIGN="LEFT"/>|read_sam_file()<br ALIGN="LEFT"/>select_sam(logg_range, feh_range, use_sam, use_optimal_method)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
-"irgsctool._read_data.Read_Data" [color="black", fontcolor="black", label=<{Read_Data|<br ALIGN="LEFT"/>|read_gaia_data(dec)<br ALIGN="LEFT"/>read_nir_data(dec)<br ALIGN="LEFT"/>read_optical_data(dec)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
-"irgsctool._sgc.Star_Galaxy_Classification" [color="black", fontcolor="black", label=<{Star_Galaxy_Classification|<br ALIGN="LEFT"/>|star_galaxy_classification(dec)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
-"irgsctool._validate.Validate" [color="black", fontcolor="black", label=<{Validate|<br ALIGN="LEFT"/>|find_nearest(value)<br ALIGN="LEFT"/>read_irgsc(dec)<br ALIGN="LEFT"/>validate(dec, validate)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
-"irgsctool.irgsc" [color="black", fontcolor="black", label=<{irgsc|<br ALIGN="LEFT"/>|}>, shape="record", style="solid"];
-"irgsctool.irgsc" -> "irgsctool._extinction_correction.Extinction_Correction" [arrowhead="empty", arrowtail="none"];
-"irgsctool.irgsc" -> "irgsctool._fitting.Generate_IRGSC" [arrowhead="empty", arrowtail="none"];
-"irgsctool.irgsc" -> "irgsctool._get_data.Get_Data" [arrowhead="empty", arrowtail="none"];
-"irgsctool.irgsc" -> "irgsctool._read_data.Read_Data" [arrowhead="empty", arrowtail="none"];
-"irgsctool.irgsc" -> "irgsctool._sgc.Star_Galaxy_Classification" [arrowhead="empty", arrowtail="none"];
-"irgsctool.irgsc" -> "irgsctool._validate.Validate" [arrowhead="empty", arrowtail="none"];
+"irgsctool._read_data.Read_Data" [color="black", fontcolor="black", label=<{Read_Data|dec<br ALIGN="LEFT"/>gd<br ALIGN="LEFT"/>ra<br ALIGN="LEFT"/>|read_gaia_data()<br ALIGN="LEFT"/>read_nir_data()<br ALIGN="LEFT"/>read_optical_data()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"irgsctool._sgc.Star_Galaxy_Classification" [color="black", fontcolor="black", label=<{Star_Galaxy_Classification|dec<br ALIGN="LEFT"/>ra<br ALIGN="LEFT"/>rd<br ALIGN="LEFT"/>|star_galaxy_classification()<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"irgsctool._validate.Validate" [color="black", fontcolor="black", label=<{Validate|dec<br ALIGN="LEFT"/>ra<br ALIGN="LEFT"/>rd<br ALIGN="LEFT"/>|read_irgsc()<br ALIGN="LEFT"/>validate(validate)<br ALIGN="LEFT"/>}>, shape="record", style="solid"];
+"irgsctool.Irgsc" -> "irgsctool._extinction_correction.Extinction_Correction" [arrowhead="empty", arrowtail="none"];
+"irgsctool.Irgsc" -> "irgsctool._fitting.Generate_IRGSC" [arrowhead="empty", arrowtail="none"];
+"irgsctool.Irgsc" -> "irgsctool._get_data.Get_Data" [arrowhead="empty", arrowtail="none"];
+"irgsctool.Irgsc" -> "irgsctool._read_data.Read_Data" [arrowhead="empty", arrowtail="none"];
+"irgsctool.Irgsc" -> "irgsctool._sgc.Star_Galaxy_Classification" [arrowhead="empty", arrowtail="none"];
+"irgsctool.Irgsc" -> "irgsctool._validate.Validate" [arrowhead="empty", arrowtail="none"];
+"irgsctool._extinction_correction.Extinction_Correction" -> "irgsctool._fitting.Generate_IRGSC" [arrowhead="diamond", arrowtail="none", fontcolor="green", label="ec", style="solid"];
+"irgsctool._get_data.Get_Data" -> "irgsctool._read_data.Read_Data" [arrowhead="diamond", arrowtail="none", fontcolor="green", label="gd", style="solid"];
+"irgsctool._read_data.Read_Data" -> "irgsctool._fitting.Generate_IRGSC" [arrowhead="diamond", arrowtail="none", fontcolor="green", label="rd", style="solid"];
+"irgsctool._read_data.Read_Data" -> "irgsctool._sgc.Star_Galaxy_Classification" [arrowhead="diamond", arrowtail="none", fontcolor="green", label="rd", style="solid"];
+"irgsctool._read_data.Read_Data" -> "irgsctool._validate.Validate" [arrowhead="diamond", arrowtail="none", fontcolor="green", label="rd", style="solid"];
+"irgsctool._sgc.Star_Galaxy_Classification" -> "irgsctool._extinction_correction.Extinction_Correction" [arrowhead="diamond", arrowtail="none", fontcolor="green", label="sgc", style="solid"];
 }
