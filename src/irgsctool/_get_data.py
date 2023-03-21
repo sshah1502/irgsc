@@ -18,9 +18,11 @@ The default search radius is 0.25 degrees due to the limitation of pyvo.
 """
 
 class Get_Data():
+    def __init__(self, ra, dec):
+        self.ra, self.dec = ra, dec
 
-    def get_panstarrs_data(ra, dec):
-        ra_name = str(ra).replace('.','_'); dec_name = str(dec).replace('.', '_')
+    def get_panstarrs_data(self):
+        ra_name = str(self.ra).replace('.','_'); dec_name = str(self.dec).replace('.', '_')
         file_name = 'PS1' + '_' + 'RA'+str(ra_name) + 'DEC'+str(dec_name) + '.csv'
         TAP_service = vo.dal.TAPService("https://vao.stsci.edu/PS1DR2/tapservice.aspx")
         #TAP_service.describe()
@@ -35,7 +37,7 @@ class Get_Data():
             FROM dbo.StackObjectView
             WHERE 
             CONTAINS(POINT('ICRS', RAMean, DecMean),CIRCLE('ICRS',{},{},{}))=1
-                """.format(ra,dec,0.25)
+                """.format(self.ra,self.dec,0.25)
         try:
             job = TAP_service.search(query)
             TAP_results = job.to_table()
@@ -46,8 +48,8 @@ class Get_Data():
             sys.exit(0)
         return TAP_results
 
-    def get_gaia_data(ra, dec):
-        ra_name = str(ra).replace('.','_'); dec_name = str(dec).replace('.', '_')
+    def get_gaia_data(self):
+        ra_name = str(self.ra).replace('.','_'); dec_name = str(self.dec).replace('.', '_')
         file_name = 'GAIA' + '_' + 'RA'+str(ra_name)\
                     + 'DEC' + str(dec_name) + '.csv'
         tables = Gaia.load_tables(only_names=True)
@@ -70,9 +72,9 @@ class Get_Data():
         return job.get_results()
 
 
-    def get_ukidss_data(ra, dec):
+    def get_ukidss_data(self):
         catalogs = ['UDS', 'GCS', 'GPS', 'DXS', 'LAS']
-        ra_name = str(ra).replace('.','_'); dec_name = str(dec).replace('.', '_')
+        ra_name = str(self.ra).replace('.','_'); dec_name = str(self.dec).replace('.', '_')
         file_name = 'UKIDSS' + '_' + 'RA'+str(ra_name)\
                     + 'DEC' + str(dec_name) + '.csv'
         Ukidss.filters = {'H': 4,'J': 3, 'K': 5}
@@ -80,7 +82,7 @@ class Get_Data():
             print('')
             print('Name of the catalog:', str(catalogs[i]))
             try:
-                table = Ukidss.query_region(SkyCoord(ra, dec, unit=(u.deg, u.deg), frame='icrs'),\
+                table = Ukidss.query_region(SkyCoord(self.ra, self.dec, unit=(u.deg, u.deg), frame='icrs'),\
                             radius = 0.25*u.deg, programme_id = str(catalogs[i]),\
                                 database='UKIDSSDR11PLUS', attributes = ['ra', 'dec', 'jPetroMag', 'jPetroMagErr', 'hPetroMag', 'hPetroMagErr', 'kPetroMag', 'kPetroMagErr'], verbose=True)
 

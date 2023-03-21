@@ -3,14 +3,19 @@ Module to generate extinction corrected photometry.
 This model is dependant on dustmaps package and makes use of dustmaps.sfd
 """
 #pylint: disable=wrong-import-position
+#pylint: disable=import-error
 import numpy as np
 from astropy.coordinates import SkyCoord
 from astropy import units as u
 from dustmaps.sfd import SFDQuery
 import dustmaps
-from ._sgc import Star_Galaxy_Classification as sgc
+from ._sgc import Star_Galaxy_Classification
 
 class Extinction_Correction():
+        def __init__(self, ra, dec):
+                self.ra, self.dec = ra, dec
+                self.sgc = Star_Galaxy_Classification(ra,dec)
+
         """
                         This module has two functions:
                         1. 'get_reddening': which uses "dustmaps" python package to obtain
@@ -22,14 +27,14 @@ class Extinction_Correction():
                                 in PANSTARRS bands by using the relations given by Tonry et.al. 2012.
                                 It returns extinction and reddening corrected PANSTARRS photometry.
         """
-        def get_reddening(self, ra, dec):
+        def get_reddening(self):
                 """
                 Function to obtain Schelgel et.al. 1998 (sfd) reddening value.
                 This work uses Schlafly & Finkbeiner 2011 (snf) which is:
                 snf = 0.86*sfd
                 """
                 try:
-                        coords = SkyCoord((ra)*u.degree, (dec)*u.degree, frame='icrs')
+                        coords = SkyCoord((self.ra)*u.degree, (self.dec)*u.degree, frame='icrs')
                         sfd = SFDQuery()
                         #sfd reddening
                         sfd_ebv = sfd(coords)
@@ -41,7 +46,7 @@ class Extinction_Correction():
                         ak = 0.302*snf_ebv
                 except FileNotFoundError:
                         dustmaps.sfd.fetch()
-                        coords = SkyCoord((ra)*u.degree, (dec)*u.degree, frame='icrs')
+                        coords = SkyCoord((self.ra)*u.degree, (self.dec)*u.degree, frame='icrs')
                         sfd = SFDQuery()
                         #sfd reddening
                         sfd_ebv = sfd(coords)
@@ -53,7 +58,7 @@ class Extinction_Correction():
                         ak = 0.302*snf_ebv
                 return snf_ebv, err_snf_ebv, aj, ah, ak
 
-        def extinction_corrected_photometry(self, ra, dec):
+        def extinction_corrected_photometry(self):
                 """
                 Function to correct the input optical photometry for reddening
                 and extinction along the line of site.
@@ -66,10 +71,9 @@ class Extinction_Correction():
                 print("")
                 print("########################################################")
                 print("")
-                self.ra = ra
-                self.dec = dec
+
                 ebv, err_ebv,_,_,_ = Extinction_Correction.get_reddening(self.ra,self.dec)
-                ps_phot = sgc.star_galaxy_classification(self.ra,self.dec)
+                ps_phot = self.sgc.star_galaxy_classification()
                 print('')
                 print('Length of PS1 data before ec is:', len(ps_phot[0]))
                 ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, gpsf, e_gpsf, gkron, e_gkron,\

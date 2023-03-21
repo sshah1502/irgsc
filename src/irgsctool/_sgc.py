@@ -15,7 +15,11 @@ params = {'legend.fontsize': 'x-large',
 pylab.rcParams.update(params)
 
 class Star_Galaxy_Classification():
-    def star_galaxy_classification(ra,dec):
+    def __init__(self, ra, dec):
+        self.ra, self.dec = ra, dec
+        self.rd = Read_Data(ra, dec)
+
+    def star_galaxy_classification(self):
 
         """
             Function to seperate the probable stellar sources from the optical 
@@ -27,7 +31,7 @@ class Star_Galaxy_Classification():
         print('Seperating Stars and Galaxies from the input optical PANSTARRS dataset')
         print("")
         print("#######################################################################")
-        ps_phot = Read_Data.read_optical_data(ra, dec)
+        ps_phot = self.rd.read_optical_data(self.ra, self.dec)
         print("")
         print('Using psf-kron criteria to seperate stars and galaxies')
         print("")

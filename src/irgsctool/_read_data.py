@@ -8,7 +8,6 @@ import matplotlib.pylab as pylab
 from ._get_data import Get_Data
 import csv
 from datetime import date
-
 current_datetime = date.today()
 
 home_dir = os.getcwd()
@@ -30,7 +29,11 @@ print ("##########################")
 print("")
 
 class Read_Data():
-    def read_optical_data(ra,dec):
+    def __init__(self, ra, dec):
+         self.ra, self.dec = ra, dec
+         self.gd = Get_Data(ra,dec)
+
+    def read_optical_data(self):
 
         """
         Reads the input optical PANSTARRS data. The number of columns are 32.
@@ -41,7 +44,7 @@ class Read_Data():
         This data is then fed to the Star-Galaxy classification routine to
         seperate stars and galaxies in the data.
         """
-        ra_name = str(ra).replace('.','_'); dec_name = str(dec).replace('.', '_')
+        ra_name = str(self.ra).replace('.','_'); dec_name = str(self.dec).replace('.', '_')
         file_name = 'PS1' + '_' + 'RA'+str(ra_name) + 'DEC' + str(dec_name)
         try:
             ps1_data = np.genfromtxt(str(file_name) +'.csv', delimiter=',', skip_header=1)
@@ -66,7 +69,7 @@ class Read_Data():
             zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3
         
         except FileNotFoundError:
-            Get_Data.get_panstarrs_data(ra,dec)
+            self.gd.get_panstarrs_data()
             ps1_data = np.genfromtxt(str(file_name) +'.csv', delimiter=',', skip_header=1)
             ps1_objid = ps1_data[:,0]; ps_ra = ps1_data[:,1]; err_ps_ra = ps1_data[:,2]; ps_dec = ps1_data[:,3]; \
             err_ps_dec = ps1_data[:,4]; gmag = ps1_data[:,5]; e_gmag = ps1_data[:,6]; gkron = ps1_data[:,7];\
@@ -178,8 +181,8 @@ class Read_Data():
                                 yinfoflag3[indices_all_filtered]
         return raw_optical_data
 
-    def read_nir_data(ra, dec):
-        ra_name = str(ra).replace('.','_'); dec_name = str(dec).replace('.', '_')
+    def read_nir_data(self):
+        ra_name = str(self.ra).replace('.','_'); dec_name = str(self.dec).replace('.', '_')
         file_name = 'UKIDSS' + '_' + 'RA'+str(ra_name) + 'DEC' + str(dec_name) + '.csv'
         print('UKIDSS file name=', file_name)
         file_exists = os.path.exists(file_name)
@@ -192,7 +195,7 @@ class Read_Data():
             print('############################################')
             print('Generating observed UKIDSS NIR data file...')
             print("")
-            ukidss_data = Get_Data.get_ukidss_data(ra,dec)
+            self.gd.get_ukidss_data()
             ukidss_data = np.genfromtxt(str(file_name), delimiter=',', skip_header=1)
             petro_j = ukidss_data[:,2]; e_petro_j = ukidss_data[:,3]
             petro_h = ukidss_data[:,4]; e_petro_h = ukidss_data[:,5]
@@ -203,11 +206,13 @@ class Read_Data():
                     (petro_h != -999999488) & (e_petro_h != -999999488) &\
                         (petro_k != -999999488) & (e_petro_k != -999999488) &\
                             (e_petro_j < 0.2) & (e_petro_h < 0.2) & (e_petro_k < 0.2))[0]
+            
             if len(nir_filter_index) == 0.0:
 
                     new_nir_filter_index = np.where((petro_j != -999999488)\
                                 & (petro_k != -999999488) & (petro_h != -999999488) &\
-                                (e_petro_j < 0.2) & (e_petro_h < 0.2) & (e_petro_k < 0.2))[0]
+                                (np.abs(e_petro_j) < 0.2) & (np.abs(e_petro_h) < 0.2)\
+                                & (np.abs(e_petro_k) < 0.2))[0]
                     
                     e_petro_j = 0.005*petro_j[new_nir_filter_index]
                     e_petro_h = 0.05*petro_h[new_nir_filter_index]
@@ -352,11 +357,11 @@ class Read_Data():
                         e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
         return nir_data
 
-    def read_gaia_data(ra, dec):
+    def read_gaia_data(self):
             header = ['source_id','ra', 'ra_error,dec', 'dec_error', 'parallax', 'parallax_error',\
                       'pm', 'pmra', 'pmra_error', 'pmdec', 'pmdec_error', 'ruwe']
             
-            ra_name = str(ra).replace('.','_'); dec_name = str(dec).replace('.', '_')    
+            ra_name = str(self.ra).replace('.','_'); dec_name = str(self.dec).replace('.', '_')    
             file_name = 'GAIA' + '_' + 'RA'+str(ra_name) + 'DEC' + str(dec_name)  
             try:
                 gaia_data = np.genfromtxt(str(file_name) + '.csv', delimiter=',', skip_header=1)
@@ -368,7 +373,7 @@ class Read_Data():
                 gaia_data = gaia_source_id, gaia_ra, gaia_ra_error, gaia_dec, gaia_dec_error, gaia_parallax, gaia_parallax_error,\
                     gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec, gaia_pm_dec_error, gaia_ruwe
             except FileNotFoundError:
-                Get_Data.get_gaia_data(ra,dec)
+                self.gd.get_gaia_data()
                 gaia_data = np.genfromtxt(str(file_name) + '.csv', delimiter=',', skip_header=1)
                 gaia_source_id = gaia_data[:,0]; gaia_ra = gaia_data[:,1]; gaia_ra_error = gaia_data[:,2];\
                     gaia_dec = gaia_data[:,3]; gaia_dec_error = gaia_data[:,4]; gaia_parallax = gaia_data[:,5];\

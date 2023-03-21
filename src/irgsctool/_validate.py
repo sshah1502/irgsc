@@ -1,13 +1,15 @@
 import os
 import sys
+import csv
+from datetime import date
+import matplotlib.pylab as pylab
+import numpy as np
 from ._fitting import Generate_IRGSC
 from ._read_data import Read_Data
-import numpy as np
 from matplotlib import pyplot as plt
 from ._get_data import Get_Data
-from datetime import date
-import csv
-import matplotlib.pylab as pylab
+from ._read_data import Read_Data
+
 params = {'legend.fontsize': 'x-large',
           'figure.figsize': (10,10),
          'axes.labelsize': 'x-large',
@@ -16,10 +18,13 @@ params = {'legend.fontsize': 'x-large',
          'ytick.labelsize':'x-large'}
 pylab.rcParams.update(params)
 from matplotlib.offsetbox import AnchoredText
-import pytz
 current_datetime = date.today()
-
 home_dir = os.getcwd()
+
+def find_nearest(array, value):
+        array = np.asarray(array)
+        idx = (np.abs(array - value)).argmin()
+        return array[idx]
 
 header = ['ps1_objid', 'ps1_ra', 'ps1_ra_error', 'ps1_dec', 'ps1_dec_error', 'ps1_gpsf', 'ps1_gpsf_error', \
 'ps1_rpsf', 'ps1_rpsf_error', 'ps1_ipsf', 'ps1_ipsf_error', 'ps1_zpsf', 'ps1_zpsf_error', 'ps1_ypsf',\
@@ -34,13 +39,13 @@ header = ['ps1_objid', 'ps1_ra', 'ps1_ra_error', 'ps1_dec', 'ps1_dec_error', 'ps
                                     'yinfoflag3', 'diff_j', 'diff_h', 'diff_k', 'observed_j', 'obseved_j_error',\
                                         'observed_h', 'observed_h_error', 'observed_k', 'observed_k_error']
 class Validate():
-    def find_nearest(array, value):
-        array = np.asarray(array)
-        idx = (np.abs(array - value)).argmin()
-        return array[idx]
-    
-    def read_irgsc(ra,dec):
-        ra_name = str(ra).replace('.','_'); dec_name = str(dec).replace('.', '_')
+    def __init__(self, ra, dec):
+        self.ra, self.dec = ra, dec
+        self.rd = Read_Data(ra,dec)
+
+    def read_irgsc(self):
+        ra_name = str(self.ra).replace('.','_')
+        dec_name = str(self.dec).replace('.', '_')
         try:
             irgsc_data = np.genfromtxt('IRGSC' + '_' + 'RA' + str(ra_name) + 'DEC' + str(dec_name) +\
                       str(current_datetime) + '.csv', delimiter=',', skip_header=1)
@@ -74,7 +79,7 @@ class Validate():
                             rinfoflag3, iinfoflag, iinfoflag2, iinfoflag3, zinfoflag, zinfoflag2,\
                             zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3
         except FileNotFoundError:
-            Generate_IRGSC.generate_irgsc(ra,dec)
+            Generate_IRGSC.generate_irgsc(self.ra,self.dec)
             irgsc_data = np.genfromtxt('IRGSC' + '_' + 'RA' + str(ra_name) + 'DEC' + str(dec_name) +\
                       str(current_datetime) + '.csv', delimiter=',', skip_header=1)
             ps1_objid = irgsc_data[:,0]; ps_ra = irgsc_data[:,1]; err_ps_ra = irgsc_data[:,2]; ps_dec = irgsc_data[:,3]; \
@@ -108,7 +113,7 @@ class Validate():
                             zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3
         return irgsc_data
 
-    def validate(ra,dec,validate=True):
+    def validate(self, validate=True):
         """
             Function to compare the observed and computed NIR magnitudes for a given field.
             If this is set to True, the function first obtains the UKIDSS data for the given field.
@@ -121,9 +126,9 @@ class Validate():
         print("")
         print('###############################################################################')
 
-        if validate is not None:
-            ukidss_data = Read_Data.read_nir_data(ra, dec)
-            irgsc_data = Validate.read_irgsc(ra,dec)
+        if validate is True:
+            ukidss_data = self.rd.read_nir_data()
+            irgsc_data = Validate.read_irgsc(self.ra,self.dec)
             ukidss_j, ukidss_h, ukidss_k, e_ukidss_j, e_ukidss_h, e_ukidss_k, ukidss_ra, ukidss_dec = ukidss_data
             ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, e_ec_gmag, ec_rmag,\
                 e_ec_rmag, ec_imag, e_ec_imag, ec_zmag, e_ec_zmag, ec_ymag, e_ec_ymag, teff,\
@@ -139,7 +144,7 @@ class Validate():
         
         validate_params=[]; ob_j = []; e_ob_j = []; ob_h = []; e_ob_h = []; ob_k = []; e_ob_k = []
         diff_jf = []; diff_hf = []; diff_kf = []
-        ra_name = str(ra).replace('.','_'); dec_name = str(dec).replace('.', '_')
+        ra_name = str(self.ra).replace('.','_'); dec_name = str(self.dec).replace('.', '_')
         with open('validated_IRGSC' + '_' + 'RA' + str(ra_name) + '_' + 'DEC' + str(dec_name) + '_' + str(current_datetime) + '.csv', 'w') as file2:
             writer=csv.writer(file2)
             writer.writerow(header)
@@ -259,7 +264,7 @@ class Validate():
         # Set labels on marginals
         ax_marg_y.set_xlabel('N')
         ax_marg_x.set_ylabel('N')
-        plt.savefig('validation_plot_j' + '_' + 'RA' + '_' + str(ra) + '_' + 'DEC' + str(dec)+'.png')
+        plt.savefig('validation_plot_j' + '_' + 'RA' + '_' + str(self.ra) + '_' + 'DEC' + str(self.dec)+'.png')
         plt.clf()
 
         bins2 = np.arange(diff_hf.min(), diff_hf.max()+.1, 0.1)
@@ -295,7 +300,7 @@ class Validate():
         # Set labels on marginals
         ax_marg_y.set_xlabel('N')
         ax_marg_x.set_ylabel('N')
-        plt.savefig('validation_plot_h' + '_' + 'RA' + '_' + str(ra) + '_' + 'DEC' + str(dec)+'.png')
+        plt.savefig('validation_plot_h' + '_' + 'RA' + '_' + str(self.ra) + '_' + 'DEC' + str(self.dec)+'.png')
         plt.clf()
 
         bins2 = np.arange(np.min(diff_jf), np.max(diff_jf)+.1, 0.1)
@@ -331,6 +336,6 @@ class Validate():
         # Set labels on marginals
         ax_marg_y.set_xlabel('N')
         ax_marg_x.set_ylabel('N')
-        plt.savefig('validation_plot_k' + '_' + 'RA' + '_' + str(ra) + '_' + 'DEC' + str(dec)+'.png')
+        plt.savefig('validation_plot_k' + '_' + 'RA' + '_' + str(self.ra) + '_' + 'DEC' + str(self.dec)+'.png')
         plt.clf()
 
