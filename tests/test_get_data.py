@@ -1,7 +1,7 @@
 from irgsctool import Get_Data
 import os
 
-def test_PS()
+def test_PS():
   tab = Get_Data.get_panstarrs_data(227.26,0)
   assert len(tab)>1 and len(tab.keys())== 44
   
