@@ -5,6 +5,5 @@ astropy
 dustmaps
 numpy
 datetime
-csv
 requests
 pyvo
