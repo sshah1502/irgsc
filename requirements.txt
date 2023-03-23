@@ -1,0 +1,9 @@
+astroquery
+astropy
+matplotlib
+astropy
+dustmaps
+numpy
+datetime
+requests
+pyvo
