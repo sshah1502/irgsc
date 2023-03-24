@@ -1,25 +1,29 @@
+#pylint: disable=wrong-import-position
+#pylint: disable=import-error
 from datetime import date
 import csv
 import numpy as np
 from ._sam import Models
-from ._extinction_correction import Extinction_Correction as EC
-from ._read_data import Read_Data
+from ._extinction_correction import ExtinctionCorrection as EC
+from ._read_data import ReadData
 current_datetime = date.today()
 
 
-header = ['ps1_objid', 'ps1_ra', 'ps1_ra_error', 'ps1_dec', 'ps1_dec_error', 'ps1_gpsf', 'ps1_gpsf_error', \
-'ps1_rpsf', 'ps1_rpsf_error', 'ps1_ipsf', 'ps1_ipsf_error', 'ps1_zpsf', 'ps1_zpsf_error', 'ps1_ypsf',\
-    'ps1_ypsf_error', 'teff', 'logg', 'feh', 'sam_g','sam_r','sam_i','sam_z','sam_y','sam_j','sam_h',\
-        'sam_k', 'scale_factor', 'scale_factor_error', 'chi2', 'computed_j', 'computed_j_error', 'computed_h',\
-            'computed_h_error', 'computed_k', 'computed_k_error', 'gaia_source_id', 'gaia_ra', 'gaia_ra_error',\
-                'gaia_dec', 'gaia_dec_error', 'gaia_parallax', 'gaia_parallax_error', 'gaia_pm', 'gaia_pm_ra',\
-                    'gaia_pm_ra_error', 'gaia_pm_dec', 'gaia_pm_dec_error', 'gaia_ruwe', 'objinfoflag',\
-                        'qualityflag', 'ndetections', 'nstackdetections', 'ginfoflag', 'ginfoflag2',\
-                            'ginfoflag3', 'rinfoflag', 'rinfoflag2', 'rinfoflag3','iinfoflag', 'iinfoflag2',\
-                                'iinfoflag3','zinfoflag', 'zinfoflag2', 'zinfoflag3', 'yinfoflag', 'yinfoflag2',\
-                                    'yinfoflag3', 'SAM Flag']
+header = ['ps1_objid','ps1_ra','ps1_ra_error','ps1_dec','ps1_dec_error',\
+'ps1_gpsf','ps1_gpsf_error','ps1_rpsf','ps1_rpsf_error','ps1_ipsf',\
+'ps1_ipsf_error','ps1_zpsf','ps1_zpsf_error','ps1_ypsf','ps1_ypsf_error',\
+'teff','logg','feh','sam_g','sam_r','sam_i','sam_z','sam_y','sam_j','sam_h',\
+'sam_k','scale_factor','scale_factor_error','chi2','computed_j',\
+'computed_j_error','computed_h','computed_h_error', 'computed_k',\
+'computed_k_error','gaia_source_id','gaia_ra','gaia_ra_error','gaia_dec',\
+'gaia_dec_error','gaia_parallax','gaia_parallax_error','gaia_pm','gaia_pm_ra',\
+'gaia_pm_ra_error','gaia_pm_dec','gaia_pm_dec_error','gaia_ruwe','objinfoflag',\
+'qualityflag','ndetections','nstackdetections','ginfoflag','ginfoflag2',\
+'ginfoflag3','rinfoflag','rinfoflag2','rinfoflag3','iinfoflag','iinfoflag2',\
+'iinfoflag3','zinfoflag','zinfoflag2','zinfoflag3','yinfoflag','yinfoflag2',\
+'yinfoflag3', 'SAM Flag']
 
-def stdv(sfavg, v1, v2, v3, v4, v5): 
+def stdv(sfavg, v1, v2, v3, v4, v5):
     """
           function to calculate standard deviation
     """
@@ -58,10 +62,10 @@ def calc_sf(j, om, e_om, sm, index_min_ang_seperation, aj, ah, ak):
         sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k = sm
 
         sf_mean = (1/5.0)*((ec_gmag[j] - sam_g[index_min_ang_seperation])\
-                       + (ec_rmag[j] - sam_r[index_min_ang_seperation])\
-                        + (ec_imag[j] - sam_i[index_min_ang_seperation])\
-                            + (ec_zmag[j] - sam_z[index_min_ang_seperation])\
-                                + (ec_ymag[j] - sam_y[index_min_ang_seperation]))
+                           +(ec_rmag[j] - sam_r[index_min_ang_seperation])\
+                                +(ec_imag[j] - sam_i[index_min_ang_seperation])\
+                                    +(ec_zmag[j] - sam_z[index_min_ang_seperation])\
+                                        + (ec_ymag[j] - sam_y[index_min_ang_seperation]))
 
         e_sf_mean = (1/5)*np.sqrt(e_ec_gmag[j]**2 + e_ec_rmag[j]**2 + e_ec_imag[j]**2\
                                 + e_ec_zmag[j]**2  + e_ec_ymag[j]**2 )
@@ -69,7 +73,7 @@ def calc_sf(j, om, e_om, sm, index_min_ang_seperation, aj, ah, ak):
         #0.91 is the conversion constant from J_AB to J_Vega
         #1.39 is the conversion constant from H_AB to H_Vega
         #1.85 is the conversion constant from K_AB to K_Vega
-        
+
         cj = sf_mean + aj + sam_j[index_min_ang_seperation] - 0.91
         ch = sf_mean + ah + sam_h[index_min_ang_seperation] - 1.39
         ck = sf_mean + ak + sam_k[index_min_ang_seperation] - 1.85
@@ -90,58 +94,59 @@ def compute_dquad(j, oc, mc):
         j = np.int64(j)
         obs_gr, obs_gi, obs_gz, obs_gy, obs_ri, obs_ry, obs_rz, obs_iz, obs_iy, obs_zy = oc
         sam_gr, sam_gi, sam_gz, sam_gy, sam_ri, sam_rz, sam_ry, sam_iz, sam_iy, sam_zy = mc
-        dev_gr = (obs_gr[j] - sam_gr)
-        dev_gi = (obs_gi[j] - sam_gi)
-        dev_gz = (obs_gz[j] - sam_gz)
-        dev_gy = (obs_gy[j] - sam_gy)
-        dev_ri = (obs_ri[j] - sam_ri)
-        dev_rz = (obs_rz[j] - sam_rz)
-        dev_ry = (obs_ry[j] - sam_ry)
-        dev_iz = (obs_iz[j] - sam_iz)
-        dev_iy = (obs_iy[j] - sam_iy)
-        dev_zy = (obs_zy[j] - sam_zy)
-        dquad = (dev_gr**2 + dev_gi**2 + dev_gz**2 + dev_gy**2 + dev_ri**2\
-                 + dev_rz**2 + dev_ry**2 + dev_iz**2 + dev_iy**2 + dev_zy**2)
+        dev_gr = obs_gr[j] - sam_gr
+        dev_gi = obs_gi[j] - sam_gi
+        dev_gz = obs_gz[j] - sam_gz
+        dev_gy = obs_gy[j] - sam_gy
+        dev_ri = obs_ri[j] - sam_ri
+        dev_rz = obs_rz[j] - sam_rz
+        dev_ry = obs_ry[j] - sam_ry
+        dev_iz = obs_iz[j] - sam_iz
+        dev_iy = obs_iy[j] - sam_iy
+        dev_zy = obs_zy[j] - sam_zy
+        dquad = dev_gr**2 + dev_gi**2 + dev_gz**2 + dev_gy**2 + dev_ri**2\
+                 + dev_rz**2 + dev_ry**2 + dev_iz**2 + dev_iy**2 + dev_zy**2
         return dquad, np.min(dquad), dev_gr, dev_gi, dev_gz, dev_gy, dev_ri,\
             dev_rz, dev_ry, dev_iz, dev_iy, dev_zy
 
 
-class Generate_IRGSC():
+class GenerateIRGSC():
     """
     class to generate IRGSC
     """
 
     def __init__(self, ra, dec):
          self.ra, self.dec = ra, dec
-         self.rd = Read_Data(ra,dec)
+         self.rd = ReadData(ra,dec)
          self.ec = EC(ra, dec)
 
 
     def generate_irgsc(self, use_optimal_method=True):
         """
-            This function finds the best fitting model to the observed colors of the stellar source.
+            This function finds the best fitting model to the
+            observed colors of the stellar source.
 
-            The best fitting model is chosen from a combination of Kurucz/Castelli-Kurucz and Phoenix 
-            synthetic spectra convolved with the PANSTARRS response function (or BANDPASS) which is 
-            integrated w.r.t. the wavelength and normalised to the product of the PANSTARRS response
-            function and wavelength. The model parameters are: T_eff, log(g) and [Fe/H].
+            The best fitting model is chosen from a combination
+            of Kurucz/Castelli-Kurucz and Phoenix synthetic spectra 
+            convolved with the PANSTARRS response function (or 
+            BANDPASS) which is integrated w.r.t. the wavelength and
+            normalised to the product of the PANSTARRS response
+            function and wavelength. 
+            The model parameters are: T_eff, log(g) and [Fe/H].
 
             The range of models selected for fitting is:
-            Model Name                      T_eff (K)          log(g) (dex)          [Fe/H] (dex)
-            Phoenix (C1) :                  2800 - 5000          3.0 - 5.5           -5.0 - -1.5
-            Phoenix (C2)                    2800 - 4000          0.0 - 3.0              -0.5 - 1.5
-            Kurucz/Castelli-Kurucz (K0):    4000 - 10000          ---                     ---
-
+            Model Name                   T_eff (K)       log(g) (dex)      [Fe/H] (dex)
+            Phoenix (C1) :               2800 - 5000     3.0 - 5.5         -5.0 - -1.5
+            Phoenix (C2)                 2800 - 4000     0.0 - 3.0         -0.5 - 1.5
+            Kurucz/Castelli-Kurucz (K0): 4000 - 10000    ---               ---
         """
         if use_optimal_method is True:
             print("")
-            print('################################################################################')
-            print('Computing the NIR magnitudes for all stars using the optimal method')
-            print('################################################################################')
+            print('#########################################')
+            print('Computing the NIR magnitudes for the sources using the optimal method')
+            print('#########################################')
             print("")
 
-
-            ps_phot = self.ec.extinction_corrected_photometry()
             ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, e_ec_gmag, gkron, e_gkron,\
             ec_rmag, e_ec_rmag, rkron, e_rkron, ec_imag, e_ec_imag, ikron, e_ikron, ec_zmag,\
             e_ec_zmag, zkron, e_zkron, ec_ymag, e_ec_ymag, ykron, e_ykron, objinfoflag, qualityflag,\
@@ -156,7 +161,7 @@ class Generate_IRGSC():
 
             model_params_k0 = Models.select_sam(teff_range=[4000,10000],
                                                 logg_range=None, feh_range=None,
-                                                use_sam = 'Kurucz',use_optimal_method=True)            
+                                                use_sam = 'Kurucz',use_optimal_method=True)
             model_params_c1 = Models.select_sam(teff_range=[2800,5000],
                                                 logg_range=[3.0,5.5],
                                                 feh_range=[-5.0,-1.5],
@@ -200,10 +205,10 @@ class Generate_IRGSC():
             (ec_gmag - ec_rmag), (ec_gmag - ec_ymag), (ec_rmag - ec_imag),\
             (ec_rmag - ec_ymag), (ec_rmag - ec_zmag), (ec_imag - ec_zmag),\
             (ec_imag - ec_ymag), (ec_zmag - ec_ymag)
-            
+
             model_colours = sam_gr, sam_gi, sam_gz, sam_gy, sam_ri, sam_rz,\
             sam_ry, sam_iz, sam_iy, sam_zy
-            
+
             observed_optical_magnitudes = ec_gmag, ec_rmag, ec_imag,\
                 ec_zmag, ec_ymag
             e_observed_optical_magnitudes = e_ec_gmag, e_ec_rmag,\
@@ -212,24 +217,26 @@ class Generate_IRGSC():
                 sam_j, sam_h, sam_k
 
             data = []
-            ra_name = str(self.ra).replace('.','_'); dec_name = str(self.dec).replace('.', '_')
+            ra_name=str(self.ra).replace('.','_');dec_name=str(self.dec)\
+                .replace('.', '_')
 
-            with open('IRGSC' + '_' + 'RA' + str(ra_name) + 'DEC' + str(dec_name) +\
-                      str(current_datetime)+'.csv', 'w', encoding='UTF8') as file1:
+            with open('IRGSC'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)+\
+                    str(current_datetime)+'.csv','w',encoding='UTF8') as file1:
                 writer=csv.writer(file1)
                 writer.writerow(header)
                 for j in range(len(ec_gmag)):
                     dquad_arr, min_dquad, _, _, _, _, _, _, _, _, _, _ = \
                         compute_dquad(j, oc = observed_colours, mc = model_colours)
-                    min_dquad_element = find_nearest(dquad_arr, min_dquad)
-                    index_best_fit_sam = np.where(min_dquad_element == (dquad_arr))[0]
-                    sf_avg, sigma_sf, computed_j, computed_j_error, computed_h, computed_h_error, \
-                        computed_k, computed_k_error = calc_sf(j, observed_optical_magnitudes, \
-                                                                                        e_observed_optical_magnitudes,\
-                                                                                        sam_magnitudes, index_best_fit_sam, aj, ah, ak)
-                    gaia_angular_seperation = 3600*np.sqrt(((ps_ra[j] - gaia_ra)\
-                                                            * np.cos(np.radians(ps_dec[j])))**2\
-                                                                + (ps_dec[j] - gaia_dec)**2)
+                    min_dquad_element = find_nearest(dquad_arr,min_dquad)
+                    index_best_fit_sam = np.where(min_dquad_element==(dquad_arr))[0]
+                    sf_avg,sigma_sf,computed_j,computed_j_error,computed_h,computed_h_error,\
+                        computed_k, computed_k_error=calc_sf(j, observed_optical_magnitudes,\
+                                                            e_observed_optical_magnitudes,\
+                                                            sam_magnitudes, index_best_fit_sam,\
+                                                            aj, ah, ak)
+                    gaia_angular_seperation = 3600*np.sqrt(((ps_ra[j]
+                                                            -gaia_ra)*np.cos(np.radians(ps_dec[j])))**2
+                                                            +(ps_dec[j] - gaia_dec)**2)
                     index_min_ang_seperation = np.where(gaia_angular_seperation<=1.0)[0]
                     if len(index_min_ang_seperation) > 1.0:
                             gaia_ang_seperation_selected = gaia_angular_seperation[index_min_ang_seperation]
@@ -292,4 +299,4 @@ class Generate_IRGSC():
                                 iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j], zinfoflag3[j], yinfoflag[j],\
                                 iinfoflag2[j], yinfoflag3[j]
                             writer.writerow(data)
-                return data
+        return data

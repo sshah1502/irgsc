@@ -1,10 +1,9 @@
-import os
-import sys
-from ._read_data import Read_Data
+#pylint: disable=wrong-import-position
+#pylint: disable=import-error
 import numpy as np
 from matplotlib import pyplot as plt
 import matplotlib.pylab as pylab
-from ._read_data import Read_Data
+from ._read_data import ReadData
 
 params = {'legend.fontsize': 'x-large',
           'figure.figsize': (10,10),
@@ -14,16 +13,22 @@ params = {'legend.fontsize': 'x-large',
          'ytick.labelsize':'x-large'}
 pylab.rcParams.update(params)
 
-class Star_Galaxy_Classification():
+class StarGalaxyClassification():
+    """
+    Class contains star_galaxy_classification() object
+    which is used to seperate the stars and galaxies
+    in the PANSTARRS optical data.
+    """
     def __init__(self, ra, dec):
         self.ra, self.dec = ra, dec
-        self.rd = Read_Data(ra, dec)
+        self.rd = ReadData(ra, dec)
 
     def star_galaxy_classification(self):
 
         """
-            Function to seperate the probable stellar sources from the optical 
-            dataset which is filtered for nan values
+            Function to seperate stars and galaxies using
+            the (psf-kron) method applied to all the five
+            optical filters.
         """
 
         print("")
@@ -31,6 +36,7 @@ class Star_Galaxy_Classification():
         print('Seperating Stars and Galaxies from the input optical PANSTARRS dataset')
         print("")
         print("#######################################################################")
+        
         ps_phot = self.rd.read_optical_data()
         print("")
         print('Using psf-kron criteria to seperate stars and galaxies')

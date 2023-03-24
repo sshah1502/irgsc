@@ -4,11 +4,11 @@ import csv
 from datetime import date
 import matplotlib.pylab as pylab
 import numpy as np
-from ._fitting import Generate_IRGSC
-from ._read_data import Read_Data
+from ._fitting import GenerateIRGSC
+from ._read_data import ReadData
 from matplotlib import pyplot as plt
-from ._get_data import Get_Data
-from ._read_data import Read_Data
+from ._get_data import GetData
+from ._read_data import ReadData
 
 params = {'legend.fontsize': 'x-large',
           'figure.figsize': (10,10),
@@ -41,7 +41,7 @@ header = ['ps1_objid', 'ps1_ra', 'ps1_ra_error', 'ps1_dec', 'ps1_dec_error', 'ps
 class Validate():
     def __init__(self, ra, dec):
         self.ra, self.dec = ra, dec
-        self.rd = Read_Data(ra,dec)
+        self.rd = ReadData(ra,dec)
 
     def read_irgsc(self):
         ra_name = str(self.ra).replace('.','_')
@@ -79,7 +79,7 @@ class Validate():
                             rinfoflag3, iinfoflag, iinfoflag2, iinfoflag3, zinfoflag, zinfoflag2,\
                             zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3
         except FileNotFoundError:
-            gc = Generate_IRGSC(self.ra,self.dec)
+            gc = GenerateIRGSC(self.ra,self.dec)
             gc.generate_irgsc()
             irgsc_data = np.genfromtxt('IRGSC' + '_' + 'RA' + str(ra_name) + 'DEC' + str(dec_name) +\
                       str(current_datetime) + '.csv', delimiter=',', skip_header=1)

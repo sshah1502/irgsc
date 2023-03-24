@@ -19,14 +19,13 @@ import numpy as np
 from dustmaps.config import config
 config['data_dir'] = os.getcwd()
 import dustmaps.sfd
-from ._fitting import Generate_IRGSC
+from ._read_data import ReadData
+from ._get_data import GetData
+from ._fitting import GenerateIRGSC
 from ._validate import Validate
-from ._extinction_correction import Extinction_Correction
-from ._read_data import Read_Data
-from ._get_data import Get_Data
-from ._sgc import Star_Galaxy_Classification
+from ._extinction_correction import ExtinctionCorrection
+from ._sgc import StarGalaxyClassification
 from ._sam import Models
-
 
 home_dir = os.getcwd()
 print('')
@@ -66,8 +65,8 @@ SOFTWARE.
 
 """
 
-class Irgsc(Generate_IRGSC, Validate, Extinction_Correction,
-            Read_Data, Get_Data, Star_Galaxy_Classification):
+class Irgsc(GenerateIRGSC, Validate, ExtinctionCorrection,
+            ReadData, GetData, StarGalaxyClassification):
     """
     Initialisation of Irgsc Class
     """
@@ -94,6 +93,8 @@ class Irgsc(Generate_IRGSC, Validate, Extinction_Correction,
         self.ra = ra
         self.dec = dec
         self.validate=validate
+        gd = GetData(self.ra, self.dec)
+        rd = ReadData(self.ra, self.dec)
         if self.ra < 0.0 or self.dec<-30.0:
             raise ValueError('Please check the input coordinates')
             sys.exit(0)
@@ -109,8 +110,8 @@ class Irgsc(Generate_IRGSC, Validate, Extinction_Correction,
         try:
             validating_data = np.genfromtxt(file_name+'.csv')
         except FileNotFoundError:
-            Get_Data.get_ukidss_data(self.ra, self.dec)
-            validating_data = Read_Data.read_nir_data(self.ra, self.dec)
+            gd.get_ukidss_data(self.ra, self.dec)
+            validating_data = rd.read_nir_data(self.ra, self.dec)
             self.validate = True
             if len(validating_data) == 0.0:
                 self.validate = False
@@ -125,7 +126,7 @@ class Irgsc(Generate_IRGSC, Validate, Extinction_Correction,
         try:
             optical_data = np.genfromtxt(file_name + '.csv')
         except FileNotFoundError:
-            Get_Data.get_panstarrs_data(self.ra, self.dec)
+            gd.get_panstarrs_data(self.ra, self.dec)
             optical_data = np.genfromtxt(file_name + '.csv')
             if len(optical_data) == 0.0:
                 raise ValueError('PANSTARRS optical data not available.\
@@ -138,7 +139,7 @@ class Irgsc(Generate_IRGSC, Validate, Extinction_Correction,
         try:
             gaia_data = np.genfromtxt(file_name + '.csv')
         except FileNotFoundError:
-            Get_Data.get_gaia_data(self.ra, self.dec)
+            gd.get_gaia_data(self.ra, self.dec)
             gaia_data = np.genfromtxt(file_name + '.csv')
             if len(gaia_data) == 0.0:
                 print('GAIA data not available for this field!!!')
