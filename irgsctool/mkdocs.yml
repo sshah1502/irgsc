@@ -5,4 +5,5 @@ nav:
   - About : about.md
   - UserGuide: userguide.md
   - API: apireference.md
+  - License: license.md
 theme: readthedocs
