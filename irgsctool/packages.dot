@@ -1,0 +1,29 @@
+digraph "packages" {
+rankdir=BT
+charset="utf-8"
+"irgsctool" [color="black", label=<irgsctool>, shape="box", style="solid"];
+"irgsctool._extinction_correction" [color="black", label=<irgsctool._extinction_correction>, shape="box", style="solid"];
+"irgsctool._fitting" [color="black", label=<irgsctool._fitting>, shape="box", style="solid"];
+"irgsctool._get_data" [color="black", label=<irgsctool._get_data>, shape="box", style="solid"];
+"irgsctool._read_data" [color="black", label=<irgsctool._read_data>, shape="box", style="solid"];
+"irgsctool._sam" [color="black", label=<irgsctool._sam>, shape="box", style="solid"];
+"irgsctool._sgc" [color="black", label=<irgsctool._sgc>, shape="box", style="solid"];
+"irgsctool._validate" [color="black", label=<irgsctool._validate>, shape="box", style="solid"];
+"irgsctool.run_config" [color="black", label=<irgsctool.run_config>, shape="box", style="solid"];
+"irgsctool" -> "irgsctool._extinction_correction" [arrowhead="open", arrowtail="none"];
+"irgsctool" -> "irgsctool._fitting" [arrowhead="open", arrowtail="none"];
+"irgsctool" -> "irgsctool._get_data" [arrowhead="open", arrowtail="none"];
+"irgsctool" -> "irgsctool._read_data" [arrowhead="open", arrowtail="none"];
+"irgsctool" -> "irgsctool._sam" [arrowhead="open", arrowtail="none"];
+"irgsctool" -> "irgsctool._sgc" [arrowhead="open", arrowtail="none"];
+"irgsctool" -> "irgsctool._validate" [arrowhead="open", arrowtail="none"];
+"irgsctool._extinction_correction" -> "irgsctool._sgc" [arrowhead="open", arrowtail="none"];
+"irgsctool._fitting" -> "irgsctool._extinction_correction" [arrowhead="open", arrowtail="none"];
+"irgsctool._fitting" -> "irgsctool._read_data" [arrowhead="open", arrowtail="none"];
+"irgsctool._fitting" -> "irgsctool._sam" [arrowhead="open", arrowtail="none"];
+"irgsctool._read_data" -> "irgsctool._get_data" [arrowhead="open", arrowtail="none"];
+"irgsctool._sgc" -> "irgsctool._read_data" [arrowhead="open", arrowtail="none"];
+"irgsctool._validate" -> "irgsctool._fitting" [arrowhead="open", arrowtail="none"];
+"irgsctool._validate" -> "irgsctool._get_data" [arrowhead="open", arrowtail="none"];
+"irgsctool._validate" -> "irgsctool._read_data" [arrowhead="open", arrowtail="none"];
+}

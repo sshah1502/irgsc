@@ -18,6 +18,22 @@ class GetData():
     limitation of pyvo.
     The data retrieved is stored in .csv format with the name
     of the survey + ra + dec
+
+    Input:
+        R.A. (float) degrees
+        Dec. (float) degrees
+    Range:
+        Dec > -30 degrees
+    
+    Examples:
+            >>> get_panstarrs_data(0.0,0.0)
+            'PS1_RA_0_0_DEC_0_0.csv'
+            >>> get_gaia_data(0.0,0.0)
+            'GAIA_RA_0_0_DEC_0_0.csv'
+            >>> get_ukidss_data(0.0,0.0)
+            'UKIDSS_RA_0_0_DEC_0_0.csv'
+
+
     """
 
     def __init__(self, ra, dec):

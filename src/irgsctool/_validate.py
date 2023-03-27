@@ -206,6 +206,10 @@ class Validate():
                     diff_hf = np.append(diff_hf, diff_h)
                     diff_kf = np.append(diff_kf, diff_k)
         
+        indjp = np.where(np.abs(diff_jf)<0.2)[0]
+        indhp = np.where(np.abs(diff_hf)<0.2)[0]
+        indkp = np.where(np.abs(diff_kf)<0.2)[0]
+
         plt.clf()
         plt.scatter(ob_j, e_ob_j, s=5, alpha = 0.5)
         plt.grid()
@@ -252,6 +256,10 @@ class Validate():
         biny_max = find_nearest(ny, np.median(ny))
         print('binymax=', biny_max)
         ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
+        ax_joint.set_title('Median and spread of the scatter =' + str("{:.3f}".format(np.median(diff_jf)))\
+                           +'$\pm$'+str("{:.3f}".format(np.std(diff_jf))))
+        ax_marg_x.set_title('No. of sources lying in the range -0.2 < ($J_{o}$ - $J_{c}$) < 0.2 =' + \
+                            str("{:.2f}".format(100*len(indjp)/len(diff_jf))+'%'))
         ax_marg_y.set_ylim(-2,2)
         ax_marg_x.grid()
         ax_marg_x.legend(loc='best')
@@ -266,7 +274,8 @@ class Validate():
         # Set labels on marginals
         ax_marg_y.set_xlabel('N')
         ax_marg_x.set_ylabel('N')
-        plt.savefig('validation_plot_j' + '_' + 'RA' + '_' + str(self.ra) + '_' + 'DEC' + str(self.dec)+'.png')
+        plt.savefig('validation_plot_j' + '_' + 'RA' + '_' + str(self.ra) + '_' + 'DEC' + str(self.dec)\
+                    +'.png')
         plt.clf()
 
         bins2 = np.arange(diff_hf.min(), diff_hf.max()+.1, 0.1)
@@ -289,6 +298,10 @@ class Validate():
         biny_max = find_nearest(ny, np.median(ny))
         print('binymax=', biny_max)
         ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
+        ax_joint.set_title('Median and spread of the scatter =' + str("{:.3f}".format(np.median(diff_hf)))\
+                           +'$\pm$'+str("{:.3f}".format(np.std(diff_hf))))
+        ax_marg_x.set_title('No. of sources lying in the range -0.2 < ($H_{o}$ - $H_{c}$) < 0.2 =' + \
+                            str("{:.2f}".format(100*len(indhp)/len(diff_hf))+'%'))
         ax_marg_y.set_ylim(-2,2)
         ax_marg_x.grid()
         ax_marg_x.legend(loc='best')
@@ -303,7 +316,8 @@ class Validate():
         # Set labels on marginals
         ax_marg_y.set_xlabel('N')
         ax_marg_x.set_ylabel('N')
-        plt.savefig('validation_plot_h' + '_' + 'RA' + '_' + str(self.ra) + '_' + 'DEC' + str(self.dec)+'.png')
+        plt.savefig('validation_plot_h' + '_' + 'RA' + '_' + str(self.ra) + '_' + 'DEC' + str(self.dec)+\
+                    '.png')
         plt.clf()
 
         bins2 = np.arange(np.min(diff_jf), np.max(diff_jf)+.1, 0.1)
@@ -322,7 +336,8 @@ class Validate():
         nx, bx, px = ax_marg_x.hist(ob_k, color = 'm', edgecolor = 'g', alpha = 0.5,\
                                         label = 'Observed J')
         ny, by, px = ax_marg_y.hist(diff_kf, bins = bins2, orientation="horizontal",\
-                                    edgecolor = 'g', alpha = 0.5, facecolor = 'orange', label = 'Difference')
+                                    edgecolor = 'g', alpha = 0.5, facecolor = 'orange', label =\
+                                        'Difference')
         biny_max = find_nearest(ny, np.median(ny))
         print('binymax=', biny_max)
         ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
@@ -331,6 +346,10 @@ class Validate():
         ax_marg_x.legend(loc='best')
         ax_marg_y.grid()
         ax_marg_y.legend(loc='best')
+        ax_joint.set_title('Median and spread of the scatter =' + str("{:.3f}".format(np.median(diff_kf)))\
+                           +'$\pm$'+str("{:.3f}".format(np.std(diff_kf))))
+        ax_marg_x.set_title('No. of sources lying in the range -0.2 < ($K_{o}$ - $K_{c}$) < 0.2 =' +\
+                            str("{:.2f}".format(100*len(indkp)/len(diff_kf))+'%'))
         # Turn off tick labels on marginals
         plt.setp(ax_marg_x.get_xticklabels(), visible=False)
         plt.setp(ax_marg_y.get_yticklabels(), visible=False)
@@ -340,5 +359,6 @@ class Validate():
         # Set labels on marginals
         ax_marg_y.set_xlabel('N')
         ax_marg_x.set_ylabel('N')
-        plt.savefig('validation_plot_k' + '_' + 'RA' + '_' + str(self.ra) + '_' + 'DEC' + str(self.dec)+'.png')
+        plt.savefig('validation_plot_k' + '_' + 'RA' + '_' + str(self.ra) + '_' + 'DEC' + str(self.dec)+\
+                    '.png')
         plt.clf()
