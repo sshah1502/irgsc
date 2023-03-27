@@ -1,0 +1,7 @@
+site_name: irgsctool
+site_url: https://github.com/sshah1502/irgsc
+nav:
+  - Home : index.md
+  - About : about.md
+  - UserGuide: userguide.md
+  - API: apireference.md
