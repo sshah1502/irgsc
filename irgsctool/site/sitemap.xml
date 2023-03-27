@@ -16,6 +16,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://github.com/sshah1502/irgsc/license/</loc>
+         <lastmod>2023-03-27</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://github.com/sshah1502/irgsc/userguide/</loc>
          <lastmod>2023-03-27</lastmod>
          <changefreq>daily</changefreq>
