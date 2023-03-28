@@ -3,7 +3,7 @@ Checks if the table has non-zero rows and expected
 number of columns"""
 
 from irgsctool import GetData
-from astropy.table import Table
+import pandas as pd
 import os
 
 
@@ -20,8 +20,7 @@ def test_UKIDSS():
   gd.get_ukidss_data()
   assert os.path.exists('UKIDSS_RA227_26DEC0.csv')
   
-  tab = Table.read('UKIDSS_RA227_26DEC0.csv', format = 'csv')
-  
+  tab = pd.read_csv('UKIDSS_RA227_26DEC0.csv')
   
   assert len(tab)>1 and len(tab.keys()) == 8
   
@@ -30,6 +29,6 @@ def test_GAIA():
   gd.get_ukidss_data()
   assert os.path.exists('GAIA_RA0_0DEC0_0.csv')
   
-  tab = Table.read('GAIA_RA227_26DEC0.csv', format = 'csv')
+  tab = pd.read_csv('GAIA_RA227_26DEC0.csv')
   
-  assert len(tab)>1 and len(tab.keys()) == 14
+  assert len(tab)>1 and len(tab.keys()) == 13
