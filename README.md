@@ -12,11 +12,12 @@ The IRGSC generated has various information about the sources shown in the follo
 the source by the PANSTARRS team, which gives further information about the nature of the source
 and the quality of its detection, which can help understand more about a particular object of interest.
 It is to be noted that although this package relies on the PANSTARRS StackObjectView table, the Right
-Ascension and Declination of the source is obtained from the mean photometric information as they are well calibrated using Gaia DR2 [read this].</p>
+Ascension and Declination of the source is obtained from the mean photometric information as they are well calibrated using Gaia DR2.</p>
 
-| Column Name | Description |
-| :----------- |:------------:|
+| Column Name | Description | Type  |
+| :----------- |:------------:|:------|
 | PS1_ObjID    | Object ID in the PANSTARRS data|
+| PS1_ra       | R.A. of the source in PS1 weighted mean photometry
 
 
 ### Installation
