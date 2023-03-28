@@ -85,7 +85,7 @@ Ascension and Declination of the source is obtained from the mean photometric in
 | yinfoflag2 | These flags indicate the details of the y filter stack photometry | float|
 | yinfoflag3 | These flags indicate the details of the y filter stack photometry | float|
 
-#Requirements
+# Requirements
 This package is developed for Python versions above 3.6. It uses various other packages like:
 astroquery
 astropy
