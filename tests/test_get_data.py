@@ -2,7 +2,7 @@
 Checks if the table has non-zero rows and expected
 number of columns"""
 
-from irgsctool import Get_Data
+from irgsctool import GetData
 from astropy.table import Table
 import os
 
