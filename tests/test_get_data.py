@@ -7,7 +7,7 @@ import pandas as pd
 import os
 
 
-gd = GetData(227.26,0)
+gd = GetData(0.0,0.0)
 
 
 def test_PS():
@@ -18,9 +18,9 @@ def test_PS():
 def test_UKIDSS():
   """UKIDSS Test"""
   gd.get_ukidss_data()
-  assert os.path.exists('UKIDSS_RA227_26DEC0.csv')
+  assert os.path.exists('UKIDSS_RA0_0DEC0_0.csv')
   
-  tab = pd.read_csv('UKIDSS_RA227_26DEC0.csv')
+  tab = pd.read_csv('UKIDSS_RA0_0DEC0_0.csv')
   
   assert len(tab)>1 and len(tab.keys()) == 8
   
@@ -29,6 +29,6 @@ def test_GAIA():
   gd.get_ukidss_data()
   assert os.path.exists('GAIA_RA0_0DEC0_0.csv')
   
-  tab = pd.read_csv('GAIA_RA227_26DEC0.csv')
+  tab = pd.read_csv('GAIA_RA0_0DEC0_0.csv')
   
   assert len(tab)>1 and len(tab.keys()) == 13
