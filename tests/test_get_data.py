@@ -26,7 +26,7 @@ def test_UKIDSS():
   
 def test_GAIA():
   """GAIA Test"""
-  tab = gd.get_ukidss_data()
+  tab = gd.get_gaia_data()
   
   assert os.path.exists('GAIA_RA0_0DEC0_0.csv')
   assert len(tab)>1 and len(tab.keys()) == 14
