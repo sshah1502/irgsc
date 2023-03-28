@@ -2,3 +2,5 @@
 
 ##### API
 ***irgsctool***
+
+::: src._get_data
