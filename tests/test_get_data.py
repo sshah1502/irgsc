@@ -7,7 +7,7 @@ from astropy.table import Table
 import os
 
 
-gd = Get_Data(227.26,0)
+gd = GetData(227.26,0)
 
 
 def test_PS():
