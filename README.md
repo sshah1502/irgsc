@@ -14,12 +14,35 @@ and the quality of its detection, which can help understand more about a particu
 It is to be noted that although this package relies on the PANSTARRS StackObjectView table, the Right
 Ascension and Declination of the source is obtained from the mean photometric information as they are well calibrated using Gaia DR2.</p>
 
-| Column Name | Description | Type  |
+| Column Name | Description | Data Type  |
 | :----------- |:------------:|:------|
 | PS1_ObjID    | Object ID in the PANSTARRS data| float |
-| PS1_ra       | R.A. of the source in the PANSTARRS DR2 weighted mean photometry| float|
+| PS1_ra       | Right Ascencion of the source in the PANSTARRS DR2 weighted mean photometry| float|
+| PS1_ra_error | Uncertainty in PS1_ra| float|
 | PS1_dec      | Declination of the source in the PANSTARRS DR2 weighted mean photometry| float|
-
+| PS1_dec_error| Uncertainty in the PS1_dec| float|
+| PS1_gpsf     | psf magnitude of the source in the g-band stacked photometry | float|
+| PS1_gpsf     | Uncertainty in PS1_gpsf|
+| PS1_rpsf     | psf magnitude of the source in the r-band stacked photometry | float|
+| PS1_rpsf     | Uncertainty in PS1_rpsf | float|
+| PS1_ipsf     | psf magnitude of the source in the i-band stacked photometry | float|
+| PS1_ipsf     | Uncertainty in PS1_ipsf | float|
+| PS1_zpsf     | psf magnitude of the source in the z-band stacked photometry | float|
+| PS1_zpsf     | Uncertainty in PS1_zpsf | float|
+| PS1_ypsf     | psf magnitude of the source in the y-band stacked photometry | float|
+| PS1_ypsf     | Uncertainty in PS1_ypsf | float|
+| SAM_Name     | Name of the best-fitted Stellar Atmospheric Model (SAM)| string|
+| Teff         | Best-fitted model parameter: Teff| float|
+| logg         | Best-fitted model parameter: log(g)| float|
+| [Fe/H]       | Best-fitted model parameter: [Fe/H]| float|
+|sam_g         | Best-fitted model magnitudes in PANSTARRS g-filter| float|
+|sam_r         | Best-fitted model magnitudes in PANSTARRS r-filter| float|
+|sam_i         | Best-fitted model magnitudes in PANSTARRS i-filter| float|
+|sam_z         | Best-fitted model magnitudes in PANSTARRS z-filter| float|
+|sam_y         | Best-fitted model magnitudes in PANSTARRS y-filter| float|
+|sam_j         | Best-fitted model magnitudes in PANSTARRS j-filter| float|
+|sam_h         | Best-fitted model magnitudes in PANSTARRS h-filter| float|
+|sam_k         | Best-fitted model magnitudes in PANSTARRS k-filter| float|
 
 ### Installation
 ```
