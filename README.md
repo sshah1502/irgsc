@@ -87,21 +87,29 @@ Ascension and Declination of the source is obtained from the mean photometric in
 
 # Requirements
 This package is developed for Python versions above 3.6. It uses various other packages like:
-astroquery
-astropy
-matplotlib
-astropy
-dustmaps
-numpy
-datetime
-requests
-pyvo
+astroquery,
+astropy,
+matplotlib,
+astropy,
+dustmaps,
+numpy,
+datetime,
+requests, and 
+pyvo.
+### Note:It is recommended to uninstall any of these packages present in the system. 
 
 
 # Installation
+There are two ways to install this package:
+## 1. Using pip:
 ```
 pip install irgsctool
 
+```
+## 2. Using .zip file from GitHub:
+Download the .zip file from [here](https://github.com/sshah1502/irgsc) and unzip it. Then open the directory in terminal and type:
+```
+pip install .
 ```
 
 # Usage
