@@ -16,8 +16,9 @@ Ascension and Declination of the source is obtained from the mean photometric in
 
 | Column Name | Description | Type  |
 | :----------- |:------------:|:------|
-| PS1_ObjID    | Object ID in the PANSTARRS data|
-| PS1_ra       | R.A. of the source in PS1 weighted mean photometry
+| PS1_ObjID    | Object ID in the PANSTARRS data| float |
+| PS1_ra       | R.A. of the source in the PANSTARRS DR2 weighted mean photometry| float|
+| PS1_dec      | Declination of the source in the PANSTARRS DR2 weighted mean photometry| float|
 
 
 ### Installation
