@@ -16,7 +16,7 @@ Ascension and Declination of the source is obtained from the mean photometric in
 
 | Column Name | Description | Data Type  |
 | :----------- |:------------|:------|
-| PS1_ObjID    | Object ID in the PANSTARRS data| float |
+| PS1_ObjID    | Source identifier in the PANSTARRS data| float |
 | PS1_ra       | Right Ascencion of the source in the PANSTARRS DR2 weighted mean photometry| float|
 | PS1_ra_error | Uncertainty in PS1_ra| float|
 | PS1_dec      | Declination of the source in the PANSTARRS DR2 weighted mean photometry| float|
@@ -43,6 +43,20 @@ Ascension and Declination of the source is obtained from the mean photometric in
 |sam_j         | Best-fitted model magnitudes in PANSTARRS j-filter| float|
 |sam_h         | Best-fitted model magnitudes in PANSTARRS h-filter| float|
 |sam_k         | Best-fitted model magnitudes in PANSTARRS k-filter| float|
+| scale factor | The scale factor computed after fitting the SAM| float|
+| scale factor error| Error in the computed scale factor| float|
+| d_dev        | The parameter denoting the goodness-of-fit| float|
+| Computed J   | The computed J magnitude in the Vega system| float|
+| Computed J error| Error in computed J magnitude| float|
+| Computed H   | The computed H magnitude in the Vega system| float|
+| Computed H error| Error in computed H magnitude| float|
+| Computed K   | The computed K magnitude in the Vega system| float|
+| Computed K error| Error in computed K magnitude| float|
+| gaia source id| Source identifier in Gaia DR3| float|
+| gaia ra | R.A. of the source in Gaia DR3 catalog| float|
+| gaia dec | Decl. of the source in the Gaia DR3 catalog| float|
+
+
 
 ### Installation
 ```
