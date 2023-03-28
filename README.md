@@ -53,10 +53,37 @@ Ascension and Declination of the source is obtained from the mean photometric in
 | Computed K   | The computed K magnitude in the Vega system| float|
 | Computed K error| Error in computed K magnitude| float|
 | gaia source id| Source identifier in Gaia DR3| float|
-| gaia ra | R.A. of the source in Gaia DR3 catalog| float|
-| gaia dec | Decl. of the source in the Gaia DR3 catalog| float|
-
-
+| gaia ra | Right Ascension of the source in Gaia DR3 catalog| float|
+| gaia ra error| Uncertainty in gaia ra| float|
+| gaia dec | Declination of the source in Gaia DR3 catalog| float|
+| gaia dec error | Uncertainty in gaia dec | float|
+| gaia parallax| Parallax (mas) of the source in the Gaia DR3 catalog| float|
+| gaia parallax error| Uncertainty in gaia parallax| float|
+| gaia pm| pm of the source (mas/yr) in Gaia DR3 catalog| float|
+| gaia pm ra| pm of the source along R.A. axis in the Gaia DR3 catalog| float|
+| gaia pm ra error| Uncertainty gaia pm ra | float|
+| gaia pm dec| pm of the source along Dec. axis in the Gaia DR3 catalog| float|
+| gaia pm dec error| Uncertainty gaia pm dec | float|
+| gaia ruwe| Renormalised Unit Weight Error flag of the source in Gaia DR3| float|
+| objinfoflag | These flag values of the source in PANSTARRS data specify whether the object is a QSO, transient, asteroid, extended, a known solar system object, etc. in nature| float|
+| objqualityflag | These flag values denote if an object is real or a possible false positive | float|
+| ndetections |The number of times something is detected from the individual exposures| float|
+| nstackdetections | The number of stack detections after which the stack photometric measurements are done | float|
+| ginfoflag | These flags indicate the details of the g filter stack photometry | float|
+| ginfoflag2 | These flags indicate the details of the g filter stack photometry | float|
+| ginfoflag3 | These flags indicate the details of the g filter stack photometry | float|
+| rinfoflag | These flags indicate the details of the r filter stack photometry | float|
+| rinfoflag2 | These flags indicate the details of the r filter stack photometry | float|
+| rinfoflag3 | These flags indicate the details of the r filter stack photometry | float|
+| iinfoflag | These flags indicate the details of the i filter stack photometry | float|
+| iinfoflag2 | These flags indicate the details of the i filter stack photometry | float|
+| iinfoflag3 | These flags indicate the details of the i filter stack photometry | float|
+| zinfoflag | These flags indicate the details of the z filter stack photometry | float|
+| zinfoflag2 | These flags indicate the details of the z filter stack photometry | float|
+| zinfoflag3 | These flags indicate the details of the z filter stack photometry | float|
+| yinfoflag | These flags indicate the details of the y filter stack photometry | float|
+| yinfoflag2 | These flags indicate the details of the y filter stack photometry | float|
+| yinfoflag3 | These flags indicate the details of the y filter stack photometry | float|
 
 ### Installation
 ```
