@@ -87,21 +87,29 @@ Ascension and Declination of the source is obtained from the mean photometric in
 
 # Requirements
 This package is developed for Python versions above 3.6. It uses various other packages like:
-astroquery
-astropy
-matplotlib
-astropy
-dustmaps
-numpy
-datetime
-requests
-pyvo
+astroquery,
+astropy,
+matplotlib,
+astropy,
+dustmaps,
+numpy,
+datetime,
+requests, and 
+pyvo.
+### Note:It is recommended to uninstall any of these packages present in the system. 
 
 
 # Installation
+There are two ways to install this package:
+## 1. Using pip:
 ```
 pip install irgsctool
 
+```
+## 2. Using .zip file from GitHub:
+Download the .zip file from [here](https://github.com/sshah1502/irgsc) and unzip it. Then open the directory in terminal and type:
+```
+pip install .
 ```
 
 # Usage
@@ -116,10 +124,10 @@ gc = GC(ra(float),dec(float))
 gc.generate_irgsc()
 ```
 
-The module Generate_IRGSC is the module that generates the catalog. Irrespective of whether UKIDSS data is available or not, this module (the command gc.generate_irgsc()) generates the catalog using the optical PANSTARRS data from 3pi steradian survey for given ra (float) and decl.(float). The name of the generated catalog has IRGSC prefix followed by RA, Dec., and the data of generation.
+The module Generate_IRGSC is the module that generates the catalog in .csv format. Irrespective of whether UKIDSS data is available or not, this module (the command gc.generate_irgsc()) generates the catalog using the optical PANSTARRS data from 3pi steradian survey for given ra (float) and decl.(float). The name of the generated catalog has IRGSC prefix followed by RA, Dec., and the data of generation. eg. IRGSC_RA_0_0_DEC_0_0.csv for (ra,dec) = (0.0, 0.0)
 
 ```
-import Validate
+from irgssctool import Validate
 vd = Validate(ra,dec)
 vd.validate()
 ```
