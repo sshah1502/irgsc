@@ -15,7 +15,7 @@ It is to be noted that although this package relies on the PANSTARRS StackObject
 Ascension and Declination of the source is obtained from the mean photometric information as they are well calibrated using Gaia DR2.</p>
 
 | Column Name | Description | Data Type  |
-| :----------- |:------------:|:------|
+| :----------- |:------------|:------|
 | PS1_ObjID    | Object ID in the PANSTARRS data| float |
 | PS1_ra       | Right Ascencion of the source in the PANSTARRS DR2 weighted mean photometry| float|
 | PS1_ra_error | Uncertainty in PS1_ra| float|
