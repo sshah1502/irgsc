@@ -85,7 +85,20 @@ Ascension and Declination of the source is obtained from the mean photometric in
 | yinfoflag2 | These flags indicate the details of the y filter stack photometry | float|
 | yinfoflag3 | These flags indicate the details of the y filter stack photometry | float|
 
-### Installation
+#Requirements
+This package is developed for Python versions above 3.6. It uses various other packages like:
+astroquery
+astropy
+matplotlib
+astropy
+dustmaps
+numpy
+datetime
+requests
+pyvo
+
+
+# Installation
 ```
 pip install irgsctool
 
@@ -93,17 +106,17 @@ pip install irgsctool
 
 # Usage
 ```
- class IRGSC
+ class GenerateIRGSC
 ```
 This class is defined by importing irgsctool module and passing the R.A. and Decl. arguments. In this package, the catalog is generated using the optimal method described in the work report (link). After initializing, this module alerts if there is no observed NIR UKIDSS data for the given field.
 
 ```
-from irgsctool import Generate_IRGSC as GC
-gc = GC(ra,dec)
+from irgsctool import GenerateIRGSC as GC
+gc = GC(ra(float),dec(float))
 gc.generate_irgsc()
 ```
 
-The module Generate_IRGSC is the module that generates the catalog. Irrespective of whether UKIDSS data is available or not, this module (the command gc.generate_irgsc()) generates the catalog using the optical PANSTARRS data from 3pi steradian survey for given ra and decl.
+The module Generate_IRGSC is the module that generates the catalog. Irrespective of whether UKIDSS data is available or not, this module (the command gc.generate_irgsc()) generates the catalog using the optical PANSTARRS data from 3pi steradian survey for given ra (float) and decl.(float). The name of the generated catalog has IRGSC prefix followed by RA, Dec., and the data of generation.
 
 ```
 import Validate
