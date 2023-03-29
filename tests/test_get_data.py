@@ -22,7 +22,7 @@ def test_UKIDSS():
   
   tab = pd.read_csv('UKIDSS_RA0_0DEC0_0.csv')
   
-  assert len(tab)>1 and len(tab.keys()) == 8
+  assert len(tab)>1 and len(tab.keys()) == 9
   
 def test_GAIA():
   """GAIA Test"""
