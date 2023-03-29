@@ -3,6 +3,7 @@
 from irgsctool import GenerateIRGSC
 from irgsctool._fitting import find_nearest, calc_sf, compute_dquad
 from datetime import date
+import pandas as pd
 
 
 def test_find_nearest():
