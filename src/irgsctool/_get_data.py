@@ -125,7 +125,7 @@ class GetData():
                             radius = 0.25*u.deg, programme_id = str(catalogs[i]),\
                                 database='UKIDSSDR11PLUS', attributes = ['ra', 'dec', 'jPetroMag', 'jPetroMagErr', 'hPetroMag', 'hPetroMagErr', 'kPetroMag', 'kPetroMagErr'], verbose=True)
 
-                table.write(filename)
+                table.write(file_name)
             except Exception:
                 raise ValueError('No observations in'+' '+str(catalogs[i])+' ' + 'catalog of UKIDSS')
         return table
