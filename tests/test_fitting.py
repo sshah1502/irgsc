@@ -4,7 +4,7 @@ from irgsctool import GenerateIRGSC
 from irgsctool._fitting import find_nearest, calc_sf, compute_dquad
 from datetime import date
 import pandas as pd
-
+import os
 
 def test_find_nearest():
   A = [1,2,3,4,5,6]
