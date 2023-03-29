@@ -96,7 +96,7 @@ numpy,
 datetime,
 requests, and 
 pyvo.
-### Note:It is recommended to uninstall any of these packages present in the system. 
+### Note: It is recommended to install the package in a fresh environment.
 
 
 # Installation
