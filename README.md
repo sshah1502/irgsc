@@ -128,6 +128,7 @@ The module Generate_IRGSC is the module that generates the catalog in .csv forma
 
 ```
 class Validate
+```
 
 from irgssctool import Validate
 vd = Validate(ra,dec)
