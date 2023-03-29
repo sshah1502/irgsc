@@ -111,6 +111,10 @@ Download the .zip file from [here](https://github.com/sshah1502/irgsc) and unzip
 ```
 pip install .
 ```
+## 3 Using the Development version from GitHub:
+```
+pip install git+https://github.com/sshah1502/irgsc@main
+```
 
 # Usage
 ```
