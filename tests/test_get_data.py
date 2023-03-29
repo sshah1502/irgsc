@@ -3,6 +3,7 @@ Checks if the table has non-zero rows and expected
 number of columns"""
 
 from irgsctool import GetData
+import os
 
 gd = GetData(0.0,0.0)
 
