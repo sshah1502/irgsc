@@ -13,15 +13,15 @@ gd = GetData(0.0,0.0)
 def test_PS():
   """PanSTARRS Test"""
   tab = gd.get_panstarrs_data()
+  
+  assert os.path.exists('PS1_RA0_0DEC0_0.csv')
   assert len(tab)>1 and len(tab.keys())== 44
   
 def test_UKIDSS():
   """UKIDSS Test"""
-  gd.get_ukidss_data()
-  assert os.path.exists('UKIDSS_RA0_0DEC0_0.csv')
+  tab = gd.get_ukidss_data()
   
-  tab = pd.read_csv('UKIDSS_RA0_0DEC0_0.csv')
-  
+  assert os.path.exists('UKIDSS_RA0_0DEC0_0.csv') 
   assert len(tab)>1 and len(tab.keys()) == 9
   
 def test_GAIA():
