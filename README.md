@@ -100,7 +100,7 @@ pyvo.
 
 
 # Installation
-There are two ways to install this package:
+
 ## 1. Using pip:
 ```
 pip install irgsctool
