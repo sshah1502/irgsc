@@ -159,7 +159,7 @@ class GenerateIRGSC():
             gaia_parallax_error, gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
             gaia_pm_dec_error, gaia_ruwe = gaia_data
             
-            k0 = Models('kurucz')
+            k0 = Models('Kurucz')
             k0.read_sam_file()
             
             c1 = Models('Phoenix')
