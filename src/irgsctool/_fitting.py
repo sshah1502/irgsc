@@ -45,7 +45,15 @@ def calc_sf(j, om, e_om, sm, index_min_ang_seperation, aj, ah, ak):
 
         """
         This function calculates the scale factor using
-        the best fitted model to the observed data.
+        the best fitted model to the observed data. The
+        scale factor is defined as the difference in the
+        observed and the model magnitudes.
+
+        Computed NIR magnitudes are found by adding the
+        scale factor to the model NIR magnitudes generated
+        by integrating the convolved UKIDSS response function,
+        the model flux and wavelength normalised to the 
+        integral of UKIDSS response f
 
         Returns:
                 sf_mean: Scale Factor averaged over the PANSTARRS colors
@@ -112,7 +120,11 @@ def compute_dquad(j, oc, mc):
 
 class GenerateIRGSC():
     """
-    class to generate IRGSC
+    The <strong> class </strong> to generate IRGSC.
+    
+    It generates a catalog of probable stellar sources in the PANSTARRS data
+        with their computed magnitudes, astrometric information from
+        GAIA DR3 data, best fitted model parameters and flags.
     """
 
     def __init__(self, ra, dec):
@@ -123,7 +135,7 @@ class GenerateIRGSC():
 
     def generate_irgsc(self, use_optimal_method=True):
         """
-            This function finds the best fitting model to the
+            <justify> This function finds the best fitting model to the
             observed colors of the stellar source.
 
             The best fitting model is chosen from a combination
@@ -131,14 +143,25 @@ class GenerateIRGSC():
             convolved with the PANSTARRS response function (or 
             BANDPASS) which is integrated w.r.t. the wavelength and
             normalised to the product of the PANSTARRS response
-            function and wavelength. 
-            The model parameters are: T_eff, log(g) and [Fe/H].
+            function and wavelength. This is also called as 
+            Effective Stimulus (ES).
+
+            $$
+            ES = \\frac{\\int{F_{\\lambda}P_{\\lambda}{\\lambda}
+            d{\\lambda}}}{\\int{P_{\\lambda}{\\lambda}d{\\lambda}}}
+            $$
+            
+            The spectra is obtained from pysynphot [More information here](https://pysynphot.readthedocs.io)
+            The model parameters are: $T_{eff}$, log(g) and [Fe/H].
 
             The range of models selected for fitting is:
-            Model Name                   T_eff (K)       log(g) (dex)      [Fe/H] (dex)
-            Phoenix (C1) :               2800 - 5000     3.0 - 5.5         -5.0 - -1.5
-            Phoenix (C2)                 2800 - 4000     0.0 - 3.0         -0.5 - 1.5
-            Kurucz/Castelli-Kurucz (K0): 4000 - 10000    ---               ---
+
+            | Model Name    |               $T_{eff}$ (K)   |    log(g) (dex)  |    [Fe/H] (dex)|
+            | :-------------| :-------------------------| :----------------| :--------------|
+            | Phoenix (C1)  |                2800 - 5000 |    3.0 - 5.5    |     -5.0 - -1.5| 
+            | Phoenix (C2)  |              2800 - 4000   |   0.0 - 3.0     |     -0.5 - 1.5 | 
+            | Kurucz/Castelli-Kurucz (K0) |  4000 - 10000  |   ---         |       ---      | x`
+            </justify>
         """
         if use_optimal_method is True:
             print("")
