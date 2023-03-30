@@ -257,7 +257,7 @@ class Validate():
         print('binymax=', biny_max)
         ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
         ax_joint.set_title('Median and spread of the scatter =' + str("{:.3f}".format(np.median(diff_jf)))\
-                           +'$\pm$'+str("{:.3f}".format(np.std(diff_jf))))
+                           +r'$\pm$'+str("{:.3f}".format(np.std(diff_jf))))
         ax_marg_x.set_title('No. of sources lying in the range -0.2 < ($J_{o}$ - $J_{c}$) < 0.2 =' + \
                             str("{:.2f}".format(100*len(indjp)/len(diff_jf))+'%'))
         ax_marg_y.set_ylim(-2,2)
@@ -299,7 +299,7 @@ class Validate():
         print('binymax=', biny_max)
         ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
         ax_joint.set_title('Median and spread of the scatter =' + str("{:.3f}".format(np.median(diff_hf)))\
-                           +'$\pm$'+str("{:.3f}".format(np.std(diff_hf))))
+                           +r'$\pm$'+str("{:.3f}".format(np.std(diff_hf))))
         ax_marg_x.set_title('No. of sources lying in the range -0.2 < ($H_{o}$ - $H_{c}$) < 0.2 =' + \
                             str("{:.2f}".format(100*len(indhp)/len(diff_hf))+'%'))
         ax_marg_y.set_ylim(-2,2)
@@ -347,7 +347,7 @@ class Validate():
         ax_marg_y.grid()
         ax_marg_y.legend(loc='best')
         ax_joint.set_title('Median and spread of the scatter =' + str("{:.3f}".format(np.median(diff_kf)))\
-                           +'$\pm$'+str("{:.3f}".format(np.std(diff_kf))))
+                           +r'$\pm$'+str("{:.3f}".format(np.std(diff_kf))))
         ax_marg_x.set_title('No. of sources lying in the range -0.2 < ($K_{o}$ - $K_{c}$) < 0.2 =' +\
                             str("{:.2f}".format(100*len(indkp)/len(diff_kf))+'%'))
         # Turn off tick labels on marginals

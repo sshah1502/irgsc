@@ -4,34 +4,11 @@ use_directory_urls: false
 watch:
   - docs
 theme: 
-  name: material
-  logo: TMT_LOGO.PNG
+  name: readthedocs
+  logo: img/TMT_LOGO.PNG
 plugins:
   - mkdocstrings
-  - mkdocstrings-python
   - glightbox
-plugins:
-   - glightbox:
-       touchNavigation: true
-       loop: false
-       effect: zoom
-       slide_effect: slide
-       width: 100%
-       height: auto
-       zoomable: true
-       draggable: true
-       skip_classes:
-         - custom-skip-class-name
-       auto_caption: false
-       caption_position: bottom
-markdown_extensions:
-  - attr_list
-  - md_in_html
-  - abbr
-  - toc:
-        permalink: "#"
-        baselevel: 2
-        separator: "_"
 nav:
   - Home : index.md
   - About : about.md
@@ -39,4 +16,13 @@ nav:
   - API: apireference.md
   - License: license.md
   - Tutorials: tutorials.md
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 

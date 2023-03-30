@@ -1,10 +1,6 @@
-"""
-    IRGSC, aa python pacakge to generate a NIR catalog of the stars in the TMT's observable sky.
-    version - v1.0
-    Author - Sarang Shah
-    Please add the following acknowledgment if you use our package in your work.
 
-            "This work has made use of Infrared Guide Star Catalog (IRGSC) developed 
+"""
+            This work has made use of Infrared Guide Star Catalog (IRGSC) developed 
             as a part of the Thirty Meter Telescope (TMT) project."
 
     If you have any questions or suggestions for improvements to this repo,

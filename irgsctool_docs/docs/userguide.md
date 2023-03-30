@@ -1,6 +1,9 @@
-### API Reference
+# User Guide
 
-##### API
-***irgsctool***
+## Generate IRGSC
 
-::: irgsctool.src.GetData
+::: irgsctool._fitting
+
+## Validate the generated IRGSC
+
+::: irgsctool._validate
