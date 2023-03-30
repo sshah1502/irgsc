@@ -1,3 +1,4 @@
+Flask == 2.1.0
 astroquery
 astropy
 matplotlib
