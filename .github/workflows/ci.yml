@@ -19,6 +19,7 @@ jobs:
           key: ${{ github.ref }}
           path: .cache
       - run: pip install --upgrade pip
+      - run: pip install .
       - run: pip install mkdocstrings
       - run: pip install mkdocstrings-python
       - run: pip install mkdocs-glightbox
