@@ -18,8 +18,5 @@ jobs:
         with:
           key: ${{ github.ref }}
           path: /docs
-      - run: pip install mkdocs-glightbox
-      - run: pip install mkdocstrings
-      - run: pip install "mkdocstrings [python]"
-      - run: pip install mkdocs-material
+      - run: pip install .
       - run: mkdocs gh-deploy --force
