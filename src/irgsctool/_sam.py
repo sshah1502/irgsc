@@ -15,13 +15,15 @@ class Models():
                         print("")
                         print('Reading Interpolated Kurucz SAMs')
                         print("")
-                        print('data_dir=', os.getcwd())
+                        print('data_dir = ', data_dir)
 
                         p2 = np.genfromtxt(str(data_dir) +'/data/interpolated_kurucz.txt')
                 elif self.sam == 'Phoenix':
                         print("")
                         print('Reading Interpolated Phoenix SAMs')
                         print("")
+                        print('data_dir = ', data_dir)
+                        
                         p2 = np.genfromtxt(str(data_dir)+'/data/interpolated_phoenix.txt')
         
                 teff = p2[:,0]; logg = p2[:,2]; feh = p2[:,1]; sam_g = p2[:,3]; sam_r = p2[:,4];\
