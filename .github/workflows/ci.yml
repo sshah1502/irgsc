@@ -17,7 +17,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           key: ${{ github.ref }}
-          path: .cache
+          path: /docs
       - run: pip install mkdocs-glightbox
       - run: pip install mkdocstrings
       - run: pip install "mkdocstrings [python]"
