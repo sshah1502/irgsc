@@ -1,15 +1,14 @@
-name: ci
+name: ci 
 on:
   push:
     branches:
-      - master
+      - master 
       - main
 permissions:
   contents: write
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.event.repository.fork == false
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -18,9 +17,6 @@ jobs:
       - uses: actions/cache@v2
         with:
           key: ${{ github.ref }}
-          path: /irgsctool/docs
-      - run: apt-get install pngquant 
-      - run: pip install git+https://${GH_TOKEN}@github.com/squidfunk/mkdocs-material-insiders.git
+          path: .cache
+      - run: pip install mkdocs-material 
       - run: mkdocs gh-deploy --force
-env:
-  GH_TOKEN: ${{ secrets.GH_TOKEN }} 
