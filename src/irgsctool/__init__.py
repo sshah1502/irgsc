@@ -18,7 +18,7 @@ from datetime import date
 import numpy as np
 from dustmaps.config import config
 config['data_dir'] = os.getcwd()
-import dustmaps.sfd
+
 from ._read_data import ReadData
 from ._get_data import GetData
 from ._fitting import GenerateIRGSC
