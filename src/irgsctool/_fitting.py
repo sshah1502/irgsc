@@ -160,8 +160,13 @@ class GenerateIRGSC():
             gaia_pm_dec_error, gaia_ruwe = gaia_data
             
             k0 = Models('kurucz')
+            k0.read_sam_file()
+            
             c1 = Models('Phoenix')
+            c1.read_sam_file()
+            
             c2 = Models('Phoenix')
+            c2.read_sam_file()
 
             model_params_k0 = k0.select_sam(teff_range=[4000,10000],
                                                 logg_range=None, feh_range=None,
