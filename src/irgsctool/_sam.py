@@ -1,33 +1,42 @@
+from pathlib import Path
 import os
 import sys
 import numpy as np
-data_dir = os.getcwd()
-class Models():
-        def read_sam_file(use_sam=None):
 
-                if use_sam == 'Kurucz':
+data_dir = Path(__file__).parent.joinpath()
+
+class Models():
+        def __init__(self, use_sam=None):
+                self.sam = use_sam
+        
+        def read_sam_file(self):
+
+                if self.sam == 'Kurucz':
                         print("")
                         print('Reading Interpolated Kurucz SAMs')
                         print("")
-                        print('data_dir=', os.getcwd())
+                        print('data_dir = ', data_dir)
 
-                        p2 = np.genfromtxt(str(os.getcwd())+'/'+'src/irgsctool/data/'+'interpolated_kurucz.txt')
-                elif use_sam == 'Phoenix':
+                        p2 = np.genfromtxt(str(data_dir) +'/data/interpolated_kurucz.txt')
+                elif self.sam == 'Phoenix':
                         print("")
                         print('Reading Interpolated Phoenix SAMs')
                         print("")
-                        p2 = np.genfromtxt(str(os.getcwd())+'/'+'src/irgsctool/data/'+'interpolated_phoenix.txt')
+                        print('data_dir = ', data_dir)
+                        
+                        p2 = np.genfromtxt(str(data_dir)+'/data/interpolated_phoenix.txt')
         
                 teff = p2[:,0]; logg = p2[:,2]; feh = p2[:,1]; sam_g = p2[:,3]; sam_r = p2[:,4];\
                         sam_i = p2[:,5]; sam_z = p2[:,6]; sam_y = p2[:,7]; sam_j = p2[:,8];\
                         sam_h = p2[:,9]; sam_k = p2[:,10]
         
                 sam_params =  teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k
+                self.sam_params = sam_params
                 return sam_params
 
-        def select_sam(teff_range=None, logg_range=None, feh_range=None, use_sam =None, use_optimal_method=False):
+        def select_sam(self, teff_range=None, logg_range=None, feh_range=None, use_optimal_method=False):
                 teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k\
-                                        = Models.read_sam_file(use_sam=use_sam)
+                                        = self.sam_params
                 if use_optimal_method is True:
                         if teff_range is None and logg_range is None and feh_range is None:
                                 raise  TypeError("Parameter range must be provided in order to use\
@@ -52,5 +61,5 @@ class Models():
                                                 sam_i[index_sam], sam_z[index_sam], sam_y[index_sam], sam_j[index_sam],\
                                                         sam_h[index_sam], sam_k[index_sam]                                
                                 
-                                
+                        self.selected_params = sam_params
                         return sam_params
