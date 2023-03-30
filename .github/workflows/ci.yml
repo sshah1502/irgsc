@@ -20,6 +20,6 @@ jobs:
           path: .cache
       - run: pip install --upgrade pip
       - run: pip install mkdocstrings
-      - run: pip install "mkdocstrings - [python]"
+      - run: pip install "mkdocstrings [python]"
       - run: pip install mkdocs-material
       - run: mkdocs gh-deploy --force
