@@ -1,5 +1,5 @@
 site_name: irgsctool
-site_url: ""
+site_url: "https://sshah1502.github.io/irgsc/"
 use_directory_urls: false
 watch:
   - docs
