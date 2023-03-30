@@ -2,6 +2,7 @@
 of the package as well as Models Class"""
 
 from irgsctool import Models
+from pathlib import Path
 
 data_dir = Path(__file__).parent.joinpath()
 
