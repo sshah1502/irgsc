@@ -93,7 +93,7 @@ class GetData():
             job=Gaia.cone_search(coordinate=coord, radius=u.Quantity(0.25, u.deg),\
                         table_name="gaiadr3.gaia_source",\
                         output_file=file_name, output_format='csv', verbose=True,\
-                            dump_to_file=True, columns=['source_id','ra', 'ra_error,dec',\
+                            dump_to_file=True, columns=['source_id','ra', 'ra_error','dec',\
                                                         'dec_error', 'parallax', 'parallax_error',\
                                                         'pm', 'pmra', 'pmra_error', 'pmdec',\
                                                         'pmdec_error', 'ruwe'])

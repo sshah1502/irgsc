@@ -116,7 +116,7 @@ pip install .
 ```
  class GenerateIRGSC
 ```
-This class is defined by importing irgsctool module and passing the R.A. and Decl. arguments. In this package, the catalog is generated using the optimal method described in the work report (link). After initializing, this module alerts if there is no observed NIR UKIDSS data for the given field.
+This class is defined by importing irgsctool module and passing the R.A. and Decl. arguments. In this package, the catalog is generated using the optimal method described in the work report (link). After initializing, this module alerts the user if there is no observed NIR UKIDSS data for the given field.
 
 ```
 from irgsctool import GenerateIRGSC as GC
@@ -127,6 +127,9 @@ gc.generate_irgsc()
 The module Generate_IRGSC is the module that generates the catalog in .csv format. Irrespective of whether UKIDSS data is available or not, this module (the command gc.generate_irgsc()) generates the catalog using the optical PANSTARRS data from 3pi steradian survey for given ra (float) and decl.(float). The name of the generated catalog has IRGSC prefix followed by RA, Dec., and the data of generation. eg. IRGSC_RA_0_0_DEC_0_0.csv for (ra,dec) = (0.0, 0.0)
 
 ```
+class Validate
+```
+
 from irgssctool import Validate
 vd = Validate(ra,dec)
 vd.validate()
