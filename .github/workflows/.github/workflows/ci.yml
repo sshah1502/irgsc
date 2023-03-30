@@ -18,7 +18,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           key: ${{ github.ref }}
-          path: .cache
+          path: /irgsctool/docs
       - run: apt-get install pngquant 
       - run: pip install git+https://${GH_TOKEN}@github.com/squidfunk/mkdocs-material-insiders.git
       - run: mkdocs gh-deploy --force
