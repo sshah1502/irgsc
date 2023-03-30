@@ -96,11 +96,11 @@ numpy,
 datetime,
 requests, and 
 pyvo.
-### Note:It is recommended to uninstall any of these packages present in the system. 
+### Note: It is recommended to install the package in a fresh environment.
 
 
 # Installation
-There are two ways to install this package:
+
 ## 1. Using pip:
 ```
 pip install irgsctool
@@ -110,6 +110,10 @@ pip install irgsctool
 Download the .zip file from [here](https://github.com/sshah1502/irgsc) and unzip it. Then open the directory in terminal and type:
 ```
 pip install .
+```
+## 3 Using the Development version from GitHub:
+```
+pip install git+https://github.com/sshah1502/irgsc@main
 ```
 
 # Usage

@@ -181,18 +181,27 @@ class GenerateIRGSC():
             gaia_source_id, gaia_ra, gaia_ra_error, gaia_dec, gaia_dec_error, gaia_parallax,\
             gaia_parallax_error, gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
             gaia_pm_dec_error, gaia_ruwe = gaia_data
+            
+            k0 = Models('Kurucz')
+            k0.read_sam_file()
+            
+            c1 = Models('Phoenix')
+            c1.read_sam_file()
+            
+            c2 = Models('Phoenix')
+            c2.read_sam_file()
 
-            model_params_k0 = Models.select_sam(teff_range=[4000,10000],
+            model_params_k0 = k0.select_sam(teff_range=[4000,10000],
                                                 logg_range=None, feh_range=None,
-                                                use_sam = 'Kurucz',use_optimal_method=True)
-            model_params_c1 = Models.select_sam(teff_range=[2800,5000],
+                                                use_optimal_method=True)
+            model_params_c1 = c1.select_sam(teff_range=[2800,5000],
                                                 logg_range=[3.0,5.5],
                                                 feh_range=[-5.0,-1.5],
-                                                use_sam = 'Phoenix',use_optimal_method=True)
-            model_params_c2 = Models.select_sam(teff_range=[2800,4000],
+                                                use_optimal_method=True)
+            model_params_c2 = c2.select_sam(teff_range=[2800,4000],
                                                 logg_range=[0.0,3.0],
                                                 feh_range=[-0.5,1.5],
-                                                use_sam = 'Phoenix',use_optimal_method=True)
+                                                use_optimal_method=True)
 
             teff_c1, logg_c1, feh_c1, sam_g_c1, sam_r_c1, sam_i_c1, sam_z_c1, sam_y_c1, sam_j_c1,\
             sam_h_c1, sam_k_c1 = model_params_c1
