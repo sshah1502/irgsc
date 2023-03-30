@@ -1,8 +1,5 @@
 # API Reference
 
-## Class irgsc
-
-::: irgsctool._main
 
 ## Class GetData
 
