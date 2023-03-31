@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name          = 'irgsctool',
-    version       = '0.1.2',    
+    version       = '0.1.3',    
     description   = 'Python tool to generate a catalog of NIR guide stars for the AO observations of the Thirty Meter Telescope.',
     url           = '',
     author        = 'Sarang Shah',
