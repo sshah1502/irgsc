@@ -5,7 +5,7 @@ watch:
   - docs
 theme: 
   name: readthedocs
-  logo: img/TMT_LOGO.PNG
+  logo: img/TMTLOGO.PNG
 plugins:
   - mkdocstrings
   - glightbox
