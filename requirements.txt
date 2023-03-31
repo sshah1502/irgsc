@@ -1,0 +1,10 @@
+Flask == 2.1.0
+astroquery
+astropy
+matplotlib
+astropy
+dustmaps
+numpy
+datetime
+requests
+pyvo

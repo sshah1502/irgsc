@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html class="writer-html5" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://sshah1502.github.io/irgsc/tutorials.html" rel="canonical"/>
+<link href="img/favicon.ico" rel="shortcut icon"/>
+<title>Tutorials - irgsctool</title>
+<link href="css/theme.css" rel="stylesheet"/>
+<link href="css/theme_extra.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" rel="stylesheet"/>
+<link href="assets/_mkdocstrings.css" rel="stylesheet"/>
+<script>
+        // Current page data
+        var mkdocs_page_name = "Tutorials";
+        var mkdocs_page_input_path = "tutorials.md";
+        var mkdocs_page_url = "/irgsc/tutorials.html";
+      </script>
+<script defer="" src="js/jquery-3.6.0.min.js"></script>
+<!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<link href="assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            </style><script src="assets/javascripts/glightbox.min.js"></script></head>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a href="index.html">
+<img alt="Logo" class="logo" src="img/TMT_LOGO.PNG"/>
+</a>
+</div>
+<div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="" href="userguide.md">UserGuide</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="apireference.html">API</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="tutorials.html">Tutorials</a>
+<ul class="current">
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="Mobile navigation menu" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="index.html">irgsctool</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a alt="Docs" class="icon icon-home" href="index.html"></a> »</li>
+<li>Tutorials</li>
+<li class="wy-breadcrumbs-aside">
+</li>
+</ul>
+<hr/>
+</div>
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div class="section" itemprop="articleBody">
+<h2 id="irgsctool-tutorials">irgsctool - tutorials</h2>
+<h2 id="1-generating-irgsc-for-a-given-set-of-coordinates">1. Generating IRGSC for a given set of coordinates</h2>
+<pre><code class="language-python">from irgsctool import GenerateIRGSC
+gc = GenerateIRGSC(ra=0.0, dec=0.0)
+gc.generate_irgsc()
+</code></pre>
+<p>This results in a catalog file: 'IRGSC_R_A_0_0_DEC_0_0.csv' that contains probable stellar sources in 0.25 degrees radius around the input coordinates. The following plots are also generated:
+<center></center></p>
+<figure>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="100%" href="img/ccd.png"><img alt="ccd" height="500" src="img/ccd.png" width="600"/></a>
+<figcaption><em><strong>Figure 1:</strong></em> The generated plot shows a color-color diagram where stars follow the magenta locus and the galaxies are randomly scattered.</figcaption>
+</figure>
+<p>
+<center></center></p>
+<figure>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="100%" href="img/psfkron.png"><img alt="PSFKRON" height="500" src="img/psfkron.png" width="600"/></a>
+<figcaption><em><strong>Figure 2:</strong></em> The (psf-kron) relation of the sources plotted on the y-axis w.r.t i-psf on the x-axis. The galaxies form a random scatter while the stellar point sources are below 0.05 on the y-axis.</figcaption>
+</figure>
+<p></p>
+<p><center></center></p>
+<figure>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="100%" href="img/imag.png"><img alt="imag" height="500" src="img/imag.png" width="600"/></a>
+<figcaption><em><strong>Figure 3:</strong></em> A histogram showing the depth of PANSTARRS data when only i-band observations are considered. This is sufficient depth to upto J = 22 mags in the IRGSC.</figcaption>
+</figure>
+<p>
+<center></center></p>
+<figure>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="100%" href="img/allmag.png"><img alt="allmag" height="500" src="img/allmag.png" width="600"/></a>
+<figcaption><em><strong>Figure 4:</strong></em> The figure shows the histogram of the sources that are detected in all the five filters of the PANSTARRS. The condition in the generation of IRGSC that the sources must have detection in all the filters reduces the depth of the input optical data.</figcaption>
+</figure>
+<p></p>
+<h2 id="2-validating-the-irgsc">2. Validating the IRGSC</h2>
+<pre><code class="language-python">from irgsctool import ValidateIRGSC
+vd = ValidateIRGSC(0.0,0.0)
+vd.validate(validate=True)
+</code></pre>
+<p>This results in the validated catalog file: 
+validated_IRGSC_R_A_0_0_DEC_0_0.csv' that contains additional information about the observed NIR data and the comparison between the observed and computed NIR data. This comparison when plotted appears as shown in Figure (5,6,7).
+<center></center></p>
+<figure>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="100%" href="img/j.png"><img alt="comparison_j" height="500" src="img/j.png" width="600"/></a>
+<figcaption><em><strong>Figure 5:</strong></em> The figure shows the comparison of the computed and observed J band magnitudes.</figcaption>
+</figure>
+<p>
+<center></center></p>
+<figure>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="100%" href="img/h.png"><img alt="comparison_h" height="500" src="img/h.png" width="600"/></a>
+<figcaption><em><strong>Figure 6:</strong></em> The figure shows the comparison of the computed and observed J band magnitudes.</figcaption>
+</figure>
+<p>
+<center></center></p>
+<figure>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="100%" href="img/k.png"><img alt="comparison_k" height="500" src="img/k.png" width="600"/></a>
+<figcaption><em><strong>Figure 7:</strong></em> The figure shows the comparison of the computed and observed J band magnitudes.</figcaption>
+</figure>
+<p></p>
+</div>
+</div><footer>
+<div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href="license.html" title="License"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+</div>
+<hr/>
+<div role="contentinfo">
+<!-- Copyright etc -->
+</div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span><a href="license.html" style="color: #fcfcfc">« Previous</a></span>
+</span>
+</div>
+<script>var base_url = '.';</script>
+<script defer="" src="js/theme_extra.js"></script>
+<script defer="" src="js/theme.js"></script>
+<script defer="" src="javascripts/mathjax.js"></script>
+<script defer="" src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script defer="">
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+<script>const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});</script></body>
+</html>
