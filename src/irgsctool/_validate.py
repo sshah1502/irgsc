@@ -28,17 +28,26 @@ def find_nearest(array, value):
 
 header = ['ps1_objid', 'ps1_ra', 'ps1_ra_error', 'ps1_dec', 'ps1_dec_error', 'ps1_gpsf', 'ps1_gpsf_error', \
 'ps1_rpsf', 'ps1_rpsf_error', 'ps1_ipsf', 'ps1_ipsf_error', 'ps1_zpsf', 'ps1_zpsf_error', 'ps1_ypsf',\
-    'ps1_ypsf_error', 'teff', 'logg', 'feh', 'sam_g','sam_r','sam_i','sam_z','sam_y','sam_j','sam_h',\
-        'sam_k', 'scale_factor', 'scale_factor_error', 'chi2', 'computed_j', 'computed_j_error', 'computed_h',\
-            'computed_h_error', 'computed_k', 'computed_k_error', 'gaia_source_id', 'gaia_ra', 'gaia_ra_error',\
-                'gaia_dec', 'gaia_dec_error', 'gaia_parallax', 'gaia_parallax_error', 'gaia_pm', 'gaia_pm_ra',\
-                    'gaia_pm_ra_error', 'gaia_pm_dec', 'gaia_pm_dec_error', 'gaia_ruwe', 'objinfoflag',\
-                        'qualityflag', 'ndetections', 'nstackdetections', 'ginfoflag', 'ginfoflag2',\
-                            'ginfoflag3', 'rinfoflag', 'rinfoflag2', 'rinfoflag3','iinfoflag', 'iinfoflag2',\
-                                'iinfoflag3','zinfoflag', 'zinfoflag2', 'zinfoflag3', 'yinfoflag', 'yinfoflag2',\
-                                    'yinfoflag3', 'diff_j', 'diff_h', 'diff_k', 'observed_j', 'obseved_j_error',\
-                                        'observed_h', 'observed_h_error', 'observed_k', 'observed_k_error']
+'ps1_ypsf_error', 'teff', 'logg', 'feh', 'sam_g','sam_r','sam_i','sam_z','sam_y','sam_j','sam_h',\
+'sam_k', 'scale_factor', 'scale_factor_error', 'chi2', 'computed_j', 'computed_j_error', 'computed_h',\
+'computed_h_error', 'computed_k', 'computed_k_error', 'gaia_source_id', 'gaia_ra', 'gaia_ra_error',\
+'gaia_dec', 'gaia_dec_error', 'gaia_parallax', 'gaia_parallax_error', 'gaia_pm', 'gaia_pm_ra',\
+'gaia_pm_ra_error', 'gaia_pm_dec', 'gaia_pm_dec_error', 'gaia_ruwe', 'objinfoflag',\
+'qualityflag', 'ndetections', 'nstackdetections', 'ginfoflag', 'ginfoflag2',\
+'ginfoflag3', 'rinfoflag', 'rinfoflag2', 'rinfoflag3','iinfoflag', 'iinfoflag2',\
+'iinfoflag3','zinfoflag', 'zinfoflag2', 'zinfoflag3', 'yinfoflag', 'yinfoflag2',\
+'yinfoflag3', 'diff_j', 'diff_h', 'diff_k', 'observed_j', 'obseved_j_error',\
+'observed_h', 'observed_h_error', 'observed_k', 'observed_k_error']
 class Validate():
+    """
+    Validate class includes functions to validate the generated irgsc,
+    generate a validated catalog file and plot the validation plots.
+    Raises:
+            ValueError: if the UKIDSS DR11 database does not <br>
+                        contain the observations for a given set of <br>
+                        coordinates 
+            
+    """
     def __init__(self, ra, dec):
         self.ra, self.dec = ra, dec
         self.rd = ReadData(ra,dec)
