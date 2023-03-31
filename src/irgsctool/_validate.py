@@ -38,12 +38,12 @@ header = ['ps1_objid', 'ps1_ra', 'ps1_ra_error', 'ps1_dec', 'ps1_dec_error', 'ps
 'iinfoflag3','zinfoflag', 'zinfoflag2', 'zinfoflag3', 'yinfoflag', 'yinfoflag2',\
 'yinfoflag3', 'diff_j', 'diff_h', 'diff_k', 'observed_j', 'obseved_j_error',\
 'observed_h', 'observed_h_error', 'observed_k', 'observed_k_error']
+
 class ValidateIRGSC():
     """
-    ------------------------------------------
-    The ***Validate*** class includes functions to validate the generated irgsc,
-    generate a validated catalog and plot the comparison of the
-    observed and computed NIR magnitudes.
+            <justify> The ***Validate*** class includes methods to validate the generated irgsc,
+            generate a validated catalog and plot the comparison of the
+            observed and computed NIR magnitudes. </justify>
            
     """
     def __init__(self, ra, dec):
@@ -52,9 +52,13 @@ class ValidateIRGSC():
 
     def read_irgsc(self):
         """
-        ***irgsctool.validate.read_irgsc()*** reads the generated IRGSC for a given set of coordinates.
-        Raises:
-                FileNotFoundError: if there is no generated IRGSC available and then generates it.
+            
+            `irgsctool.validate.read_irgsc()`
+        
+            This function reads the generated IRGSC for a given set of coordinates.
+            Raises:
+                FileNotFoundError: This error arises if there is no generated IRGSC
+                available. However, this function then generates it.
 
         """
         ra_name = str(self.ra).replace('.','_')
@@ -62,60 +66,81 @@ class ValidateIRGSC():
         try:
             irgsc_data = np.genfromtxt('IRGSC' + '_' + 'RA' + str(ra_name) + 'DEC' + str(dec_name) +\
                       str(current_datetime) + '.csv', delimiter=',', skip_header=1)
-            ps1_objid = irgsc_data[:,0]; ps_ra = irgsc_data[:,1]; err_ps_ra = irgsc_data[:,2]; ps_dec = irgsc_data[:,3]; \
-            err_ps_dec = irgsc_data[:,4]; ec_gmag = irgsc_data[:,5]; e_ec_gmag = irgsc_data[:,6]; ec_rmag = irgsc_data[:,7]; \
-            e_ec_rmag = irgsc_data[:,8]; ec_imag = irgsc_data[:,9]; e_ec_imag = irgsc_data[:,10]; ec_zmag = irgsc_data[:,11]; \
-            e_ec_zmag = irgsc_data[:,12]; ec_ymag = irgsc_data[:,13]; e_ec_ymag = irgsc_data[:,14]; teff = irgsc_data[:,15]; \
-                logg = irgsc_data[:,16]; feh = irgsc_data[:,17]; sam_g = irgsc_data[:,18]; sam_r = irgsc_data[:,19]; sam_i = irgsc_data[:,20]; sam_z = irgsc_data[:,21];\
-                sam_y = irgsc_data[:,22]; sam_j = irgsc_data[:,23]; sam_h = irgsc_data[:,24]; sam_k = irgsc_data[:,25]; sf_avg = irgsc_data[:,26]; sigma_sf = irgsc_data[:,27];\
-                    min_dquad_element = irgsc_data[:,28]; computed_j = irgsc_data[:,29]; computed_j_error = irgsc_data[:,30]; computed_h = irgsc_data[:,31];\
-                    computed_h_error = irgsc_data[:,32]; computed_k = irgsc_data[:,33]; computed_k_error = irgsc_data[:,34];\
-                        gaia_source_id = irgsc_data[:,35]; gaia_ra = irgsc_data[:,36]; gaia_ra_error = irgsc_data[:,37];\
-                        gaia_dec = irgsc_data[:,38]; gaia_dec_error = irgsc_data[:,39]; gaia_parallax = irgsc_data[:,40];\
-                            gaia_parallax_error = irgsc_data[:,41]; gaia_pm = irgsc_data[:,42]; gaia_pm_ra = irgsc_data[:,43]; gaia_pm_ra_error = irgsc_data[:,44];\
-                            gaia_pm_dec = irgsc_data[:,45]; gaia_pm_dec_error = irgsc_data[:,46]; gaia_ruwe = irgsc_data[:,47];\
-                                objinfoflag = irgsc_data[:,48]; qualityflag = irgsc_data[:,49]; ndetections = irgsc_data[:,50];\
-                                    nstackdetections = irgsc_data[:,51]; ginfoflag = irgsc_data[:,52]; ginfoflag2 = irgsc_data[:,53];\
-                                        ginfoflag3 = irgsc_data[:,54]; rinfoflag = irgsc_data[:,55]; rinfoflag2 = irgsc_data[:,56];\
-                                        rinfoflag3 = irgsc_data[:,57]; iinfoflag = irgsc_data[:,58]; iinfoflag2 = irgsc_data[:,59];\
-                                            iinfoflag3 = irgsc_data[:,60]; zinfoflag = irgsc_data[:,61]; zinfoflag2 = irgsc_data[:,62];\
-                                            zinfoflag3 = irgsc_data[:,63]; yinfoflag = irgsc_data[:,64]; yinfoflag2 = irgsc_data[:,65];\
-                                            yinfoflag3 = irgsc_data[:,66]
-            irgsc_data = ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, e_ec_gmag, ec_rmag, e_ec_rmag,\
-            ec_imag, e_ec_imag, ec_zmag, e_ec_zmag, ec_ymag, e_ec_ymag, teff, logg, feh, sam_g,\
-                sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k, sf_avg, sigma_sf, min_dquad_element,\
-                computed_j, computed_j_error, computed_h, computed_h_error, computed_k, computed_k_error,\
-                    gaia_source_id, gaia_ra, gaia_ra_error, gaia_dec, gaia_dec_error, gaia_parallax,\
-                    gaia_parallax_error, gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
-                        gaia_pm_dec_error, gaia_ruwe, objinfoflag, qualityflag, ndetections,\
-                        nstackdetections, ginfoflag, ginfoflag2, ginfoflag3, rinfoflag, rinfoflag2,\
-                            rinfoflag3, iinfoflag, iinfoflag2, iinfoflag3, zinfoflag, zinfoflag2,\
-                            zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3
+
         except FileNotFoundError:
             gc = GenerateIRGSC(self.ra,self.dec)
             gc.generate_irgsc()
-            irgsc_data = np.genfromtxt('IRGSC' + '_' + 'RA' + str(ra_name) + 'DEC' + str(dec_name) +\
+        irgsc_data = np.genfromtxt('IRGSC' + '_' + 'RA' + str(ra_name) + 'DEC' + str(dec_name) +\
                       str(current_datetime) + '.csv', delimiter=',', skip_header=1)
-            ps1_objid = irgsc_data[:,0]; ps_ra = irgsc_data[:,1]; err_ps_ra = irgsc_data[:,2]; ps_dec = irgsc_data[:,3]; \
-            err_ps_dec = irgsc_data[:,4]; ec_gmag = irgsc_data[:,5]; e_ec_gmag = irgsc_data[:,6]; ec_rmag = irgsc_data[:,7]; \
-            e_ec_rmag = irgsc_data[:,8]; ec_imag = irgsc_data[:,9]; e_ec_imag = irgsc_data[:,10]; ec_zmag = irgsc_data[:,11]; \
-            e_ec_zmag = irgsc_data[:,12]; ec_ymag = irgsc_data[:,13]; e_ec_ymag = irgsc_data[:,14]; teff = irgsc_data[:,15]; \
-                logg = irgsc_data[:,16]; feh = irgsc_data[:,17]; sam_g = irgsc_data[:,18]; sam_r = irgsc_data[:,19]; sam_i = irgsc_data[:,20]; sam_z = irgsc_data[:,21];\
-                sam_y = irgsc_data[:,22]; sam_j = irgsc_data[:,23]; sam_h = irgsc_data[:,24]; sam_k = irgsc_data[:,25]; sf_avg = irgsc_data[:,26]; sigma_sf = irgsc_data[:,27];\
-                    min_dquad_element = irgsc_data[:,28]; computed_j = irgsc_data[:,29]; computed_j_error = irgsc_data[:,30]; computed_h = irgsc_data[:,31];\
-                    computed_h_error = irgsc_data[:,32]; computed_k = irgsc_data[:,33]; computed_k_error = irgsc_data[:,34];\
-                        gaia_source_id = irgsc_data[:,35]; gaia_ra = irgsc_data[:,36]; gaia_ra_error = irgsc_data[:,37];\
-                        gaia_dec = irgsc_data[:,38]; gaia_dec_error = irgsc_data[:,39]; gaia_parallax = irgsc_data[:,40];\
-                            gaia_parallax_error = irgsc_data[:,41]; gaia_pm = irgsc_data[:,42]; gaia_pm_ra = irgsc_data[:,43]; gaia_pm_ra_error = irgsc_data[:,44];\
-                            gaia_pm_dec = irgsc_data[:,45]; gaia_pm_dec_error = irgsc_data[:,46]; gaia_ruwe = irgsc_data[:,47];\
-                                objinfoflag = irgsc_data[:,48]; qualityflag = irgsc_data[:,49]; ndetections = irgsc_data[:,50];\
-                                    nstackdetections = irgsc_data[:,51]; ginfoflag = irgsc_data[:,52]; ginfoflag2 = irgsc_data[:,53];\
-                                        ginfoflag3 = irgsc_data[:,54]; rinfoflag = irgsc_data[:,55]; rinfoflag2 = irgsc_data[:,56];\
-                                        rinfoflag3 = irgsc_data[:,57]; iinfoflag = irgsc_data[:,58]; iinfoflag2 = irgsc_data[:,59];\
-                                            iinfoflag3 = irgsc_data[:,60]; zinfoflag = irgsc_data[:,61]; zinfoflag2 = irgsc_data[:,62];\
-                                            zinfoflag3 = irgsc_data[:,63]; yinfoflag = irgsc_data[:,64]; yinfoflag2 = irgsc_data[:,65];\
-                                            yinfoflag3 = irgsc_data[:,66]
-            irgsc_data = ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, e_ec_gmag, ec_rmag, e_ec_rmag,\
+        ps1_objid = irgsc_data[:,0]
+        ps_ra = irgsc_data[:,1]
+        err_ps_ra = irgsc_data[:,2]
+        ps_dec = irgsc_data[:,3]
+        err_ps_dec = irgsc_data[:,4]
+        ec_gmag = irgsc_data[:,5]
+        e_ec_gmag = irgsc_data[:,6]
+        ec_rmag = irgsc_data[:,7]
+        e_ec_rmag = irgsc_data[:,8]
+        ec_imag = irgsc_data[:,9]
+        e_ec_imag = irgsc_data[:,10]
+        ec_zmag = irgsc_data[:,11]
+        e_ec_zmag = irgsc_data[:,12]
+        ec_ymag = irgsc_data[:,13]
+        e_ec_ymag = irgsc_data[:,14]
+        teff = irgsc_data[:,15]
+        logg = irgsc_data[:,16]
+        feh = irgsc_data[:,17]
+        sam_g = irgsc_data[:,18]
+        sam_r = irgsc_data[:,19]
+        sam_i = irgsc_data[:,20]
+        sam_z = irgsc_data[:,21]
+        sam_y = irgsc_data[:,22]
+        sam_j = irgsc_data[:,23]
+        sam_h = irgsc_data[:,24]
+        sam_k = irgsc_data[:,25]
+        sf_avg = irgsc_data[:,26]
+        sigma_sf = irgsc_data[:,27]
+        min_dquad_element = irgsc_data[:,28]
+        computed_j = irgsc_data[:,29]
+        computed_j_error = irgsc_data[:,30]
+        computed_h = irgsc_data[:,31]
+        computed_h_error = irgsc_data[:,32]
+        computed_k = irgsc_data[:,33]
+        computed_k_error = irgsc_data[:,34]
+        gaia_source_id = irgsc_data[:,35]
+        gaia_ra = irgsc_data[:,36]
+        gaia_ra_error = irgsc_data[:,37]
+        gaia_dec = irgsc_data[:,38]
+        gaia_dec_error = irgsc_data[:,39]
+        gaia_parallax = irgsc_data[:,40]
+        gaia_parallax_error = irgsc_data[:,41]
+        gaia_pm = irgsc_data[:,42]
+        gaia_pm_ra = irgsc_data[:,43]
+        gaia_pm_ra_error = irgsc_data[:,44]
+        gaia_pm_dec = irgsc_data[:,45]
+        gaia_pm_dec_error = irgsc_data[:,46]
+        gaia_ruwe = irgsc_data[:,47]
+        objinfoflag = irgsc_data[:,48]
+        qualityflag = irgsc_data[:,49]
+        ndetections = irgsc_data[:,50]
+        nstackdetections = irgsc_data[:,51]
+        ginfoflag = irgsc_data[:,52]
+        ginfoflag2 = irgsc_data[:,53]
+        ginfoflag3 = irgsc_data[:,54]
+        rinfoflag = irgsc_data[:,55]
+        rinfoflag2 = irgsc_data[:,56]
+        rinfoflag3 = irgsc_data[:,57]
+        iinfoflag = irgsc_data[:,58]
+        iinfoflag2 = irgsc_data[:,59]
+        iinfoflag3 = irgsc_data[:,60]
+        zinfoflag = irgsc_data[:,61]
+        zinfoflag2 = irgsc_data[:,62]
+        zinfoflag3 = irgsc_data[:,63]
+        yinfoflag = irgsc_data[:,64]
+        yinfoflag2 = irgsc_data[:,65]
+        yinfoflag3 = irgsc_data[:,66]
+
+        irgsc_data = ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, e_ec_gmag, ec_rmag, e_ec_rmag,\
             ec_imag, e_ec_imag, ec_zmag, e_ec_zmag, ec_ymag, e_ec_ymag, teff, logg, feh, sam_g,\
                 sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k, sf_avg, sigma_sf, min_dquad_element,\
                 computed_j, computed_j_error, computed_h, computed_h_error, computed_k, computed_k_error,\
@@ -127,12 +152,19 @@ class ValidateIRGSC():
                             zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3
         return irgsc_data
 
-    def validate(self, validate=True):
+    def validate(self, validate=None):
         """
-            Function to compare the observed and computed NIR magnitudes for a given field.
-            If this is set to True, the function first obtains the UKIDSS data for the given field.
-            Raises an error if UKIDSS data is not available.
-            Raises warning if J and H band data from UKIDSS is not available.
+            
+            `irgsctool.ValidateIRGSC.calidate(validate=True)`
+            
+            This method compares the observed and computed NIR magnitudes for a given field.
+            If this is set to True, the method first obtains the UKIDSS data for the given field.
+            The output is a validated IRGSC and plots showing the comparison of the 
+            computed NIR magnitudes with the observed ones.
+            
+            Raises:
+                    ValueError: if validate is False
+
         """
         print("")
         print('###############################################################################')
@@ -140,7 +172,9 @@ class ValidateIRGSC():
         print("")
         print('###############################################################################')
 
-        if validate is True:
+        if validate is not True:
+            raise ValueError('Cannot proceed as validate=False')
+        elif validate is True:
             ukidss_data = self.rd.read_nir_data()
             irgsc_data = self.read_irgsc()
             ukidss_j, ukidss_h, ukidss_k, e_ukidss_j, e_ukidss_h, e_ukidss_k, ukidss_ra, ukidss_dec = ukidss_data

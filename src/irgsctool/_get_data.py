@@ -1,6 +1,3 @@
-"""
-Module to obtain data or a given set of input coordinates.
-"""
 import sys
 import numpy as np
 import pyvo as vo
@@ -12,27 +9,21 @@ import astropy.units as u
 
 class GetData():
     """
-    Class to obtain PANSTARRS DR2 Stacked optical photometry
+    <justify> *** GetData class *** contains methods to obtain 
+    PANSTARRS DR2 stacked optical photometry
     data, UKIDSS NIR observed data and GAIA DR3 astrometry data.
     The default search radius is 0.25 degrees due to the
     limitation of pyvo.
     The data retrieved is stored in .csv format with the name
-    of the survey + ra + dec
+    of the survey + str(ra) + str(dec) </justify>
 
-    Input:
-        R.A. (float) degrees
-        Dec. (float) degrees
-    Range:
-        Dec > -30 degrees
-    
     Examples:
-            >>> get_panstarrs_data(0.0,0.0)
+            >>> irgsctool.GetData.get_panstarrs_data(0.0,0.0)
             'PS1_RA_0_0_DEC_0_0.csv'
-            >>> get_gaia_data(0.0,0.0)
+            >>> irgsctool.GetData.get_gaia_data(0.0,0.0)
             'GAIA_RA_0_0_DEC_0_0.csv'
-            >>> get_ukidss_data(0.0,0.0)
+            >>> irgsctool.GetData.get_ukidss_data(0.0,0.0)
             'UKIDSS_RA_0_0_DEC_0_0.csv'
-
 
     """
 
@@ -41,10 +32,16 @@ class GetData():
 
     def get_panstarrs_data(self):
         """
-        Query to obtain the PANSTARRS data from DR2 database.
+        `irgsctool.GetData.get_panstarrs_data()`
+
+        <justify> This function sends a query to obtain the PANSTARRS 
+        data from DR2 database.
         The query uses pyvo TAPService module for retrieving the data.
         The data is selected from StackObjectView db and the maximum
-        search radius is 0.25 degrees.
+        search radius is 0.25 degrees.</justify>
+        Raises:
+                ValueError if there is no observed PANSTARRS DR2 data for the
+                            given set of input coordinates.
         """
         ra_name = str(self.ra).replace('.','_')
         dec_name = str(self.dec).replace('.', '_')
@@ -75,9 +72,15 @@ class GetData():
 
     def get_gaia_data(self):
         """
-        Query to obtain GAIA DR# data. This function uses astroquery module.
-        The ROW_LIMIT is set to -1 which implies that the query retriees all\
-        the rows in the given field.
+        `irgsctool.GetData.get_gaia_data()`
+
+        <justify> This function sends a query to obtain GAIA DR3 data
+        using the astroquery module.
+        The ROW_LIMIT is set to -1 which implies that the query retriees all
+        the rows in the given field.</justify>
+        Raises:
+                ValueError if there is no observed GAIA DR3 data for the
+                            given set of input coordinates.
         """
         ra_name = str(self.ra).replace('.','_')
         dec_name = str(self.dec).replace('.', '_')
@@ -104,10 +107,18 @@ class GetData():
 
     def get_ukidss_data(self):
         """
-        Query to obtain UKIDSS DR11 NIR data using astroquery.
+        `irgsctool.GetData.get_ukidss_data()`
+
+        <justify> This function sends a query to obtain UKIDSS DR11
+        NIR data using astroquery.
         UKIDSS consists of five sub-surveys viz. UDS, GPS, GCS,
         DXS and LAS. The query loops over this surveys and retrieves
         the data for the given coordinates.
+        The surveys which do not contain J and H band data,
+        the function sends an alert. <\justify>
+        Raises:
+                ValueError if there is no observed UKIDSS data for the
+                            given set of input coordinates.
 
 
         """

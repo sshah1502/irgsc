@@ -15,9 +15,11 @@ pylab.rcParams.update(params)
 
 class StarGalaxyClassification():
     """
-    Class contains star_galaxy_classification() object
-    which is used to seperate the stars and galaxies
-    in the PANSTARRS optical data.
+
+        *** StarGalaxyClassification class *** contains star_galaxy_classification()
+        method which is used to seperate the stars and galaxies in the PANSTARRS
+        optical data.
+
     """
     def __init__(self, ra, dec):
         self.ra, self.dec = ra, dec
@@ -26,9 +28,22 @@ class StarGalaxyClassification():
     def star_galaxy_classification(self):
 
         """
-            Function to seperate stars and galaxies using
-            the (psf-kron) method applied to all the five
-            optical filters.
+            `irgsctool.StarGalaxyClassification.star_galaxy_classification()`
+
+            This method is used to seperate stars and galaxies using
+            the condition applied to all the five optical filters:
+            
+            $$
+            (psf-kron) < 0.05
+            $$
+
+            This relation filters the input optical data for only probable
+            stellar sources. The (psf-kron) diagram showing stars
+            and galaxies in the data as well as (g-r) vs (r-i)
+            CCD is also plotted by this method.
+
+            Returns:
+                    ndarray: PANSTARRS data containing most probable stellar sources
         """
 
         print("")

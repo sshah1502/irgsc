@@ -1,7 +1,3 @@
-"""
-Module to generate extinction corrected photometry.
-This model is dependant on dustmaps package and makes use of dustmaps.sfd
-"""
 #pylint: disable=wrong-import-position
 #pylint: disable=import-error
 import numpy as np
@@ -13,15 +9,9 @@ from ._sgc import StarGalaxyClassification as sgc
 
 class ExtinctionCorrection():
         """
-                        This module has two functions:
-                        1. 'get_reddening': which uses "dustmaps" python package to obtain
-                                the Schegel et.al. 1998 reddening map. This value of reddening is converted to
-                                Schafly & Finkbeiner 2011 value by scaling the original value by 0.86.
-                                aj, ah and ak are then comnputed by assuming the reddening law constant
-                                in J, H and K bands.
-                        2. 'extinction_corrected_photometry': which computes the optical extinction
-                                in PANSTARRS bands by using the relations given by Tonry et.al. 2012.
-                                It returns extinction and reddening corrected PANSTARRS photometry.
+                        *** ExtinctionCorrection class *** has two methods; one to obtain the reddening and 
+                        NIR extinction coefficients, while the other to correct the PANSTARRS 
+                        data for extinction in each optical filter.
         """
         def __init__(self, ra, dec):
                 self.ra, self.dec = ra, dec
@@ -29,9 +19,23 @@ class ExtinctionCorrection():
 
         def get_reddening(self):
                 """
-                Function to obtain Schelgel et.al. 1998 (sfd) reddening value.
-                This work uses Schlafly & Finkbeiner 2011 (snf) which is:
-                snf = 0.86*sfd
+                        `irgsctool.ExtinctionCorrection.get_reddening()`
+                
+                        This method obtains the reddening value for a given set of 
+                        input coordinates from Schelgel et.al. 1998 (sfd) reddening
+                        map. irgsctool uses Schlafly & Finkbeiner 2011 (snf) reddening
+                        map which is snf = 0.86*sfd.
+
+                        Raises:
+                                FileNotFoundError: if the sfd files are not present.
+                        
+                        Returns:
+                                ebv: Reddening from Schlafly & Finkbeiner 2011
+                                err_ebv: Uncertinty in reddening
+                                aj: J-band extinction coefficient.
+                                ah: H-band extinction coefficient.
+                                ak: K-band extinction coefficient.
+
                 """
                 try:
                         coords = SkyCoord((self.ra)*u.degree, (self.dec)\
@@ -62,10 +66,14 @@ class ExtinctionCorrection():
 
         def extinction_corrected_photometry(self):
                 """
-                Function to correct the input optical photometry for reddening
-                and extinction along the line of site.
+                        `irgsctool.ExtinctionCorrection.extinction_correctdd_photometry()`
 
-                Returns extinction corrected PANSTARRS optical photometry.
+                        This method corrects the input optical PANSTARRS data for reddening
+                        and extinction along the line of site.
+
+                        Returns:
+                                ndarray: Extinction corrected PANSTARRS optical photometry.
+
                 """
                 print("########################################")
                 print("")

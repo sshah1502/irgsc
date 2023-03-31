@@ -1,7 +1,9 @@
 ### About irgsctool
 __irgsctool__ to generate the catalog of NIR guide stars for Adaptive Optics (AO) observations of the Thirty Meter Telescope (TMT). The module computes the NIR magnitudes of the optical sources in the PANSTARRS data.
-### Motivation to generate irgsctool
+### Motivation to generate irgsctool 
 <p style="text-align: justify;">The performance of any ground-based optical/near-infrared (NIR) telescope is affected by the turbulence in the atmosphere of Earth. When the light from a distant astronomical source passes through Earth's turbulent atmosphere, it distorts the wavefront of the light. These distortions make the science images appear fuzzy/blurry. To improve the performance of the ground-based optical/NIR telescopes by compensating for the effects of wavefront distortions, astronomers use a technique known as Adaptive Optics (AO). An AO system tries to correct the distortions using a WaveFront Sensor (WFS), which takes some of the astronomical light, a deformable mirror that lies in the optical path, and a computer that receives input from the detector (Refer Figure: (1)).</p>
+
+![Figure 1](/img/aos.png){ align=left }
 
 <center>
 <figure>

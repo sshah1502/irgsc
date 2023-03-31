@@ -1,7 +1,3 @@
-"""
-Module to read the data downloaded for the given
-set of input coordinates.
-"""
 import os
 import sys
 from datetime import date
@@ -21,23 +17,30 @@ params = {'legend.fontsize': 'x-large',
 pylab.rcParams.update(params)
 
 class ReadData():
-    """Class to read the photometric data from PS1 DR2,
-    GAIA DR3 and UKIDSS DR11. 
+    """
+    *** ReadData *** class contains methods to read the photometric data from PS1 DR2,
+    GAIA DR3 and UKIDSS DR11.
     """
     def __init__(self, ra, dec):
          self.ra, self.dec = ra, dec
          self.gd = GetData(ra,dec)
 
     def read_optical_data(self):
-
         """
-        Reads the input optical PANSTARRS data. The number of columns are 32.
+            `irgsctool.ReadData.read_optical_data()`
+            ------------------------------------------
 
-        Returns the input optical data with nan values removed (if present)
-        and restricts the data to the sources having SNR >= 5.
+            <justify> 
+            This function reads the input optical PANSTARRS data.
+            The number of columns in the input file are 32.
+            After reading the input data, this function filters it for
+            nan values (if present) and restricts the data to the sources having
+            detection in all the five bands and that have SNR atleast 5.
+            This data is then fed to the Star-Galaxy classification routine to
+            seperate stars and galaxies in the data. <\justify>
 
-        This data is then fed to the Star-Galaxy classification routine to
-        seperate stars and galaxies in the data.
+            Raises:
+                FileNotFoundError: if the optical input data file is not available.
         """
         ra_name = str(self.ra).replace('.','_')
         dec_name = str(self.dec).replace('.', '_')
@@ -104,8 +107,7 @@ class ReadData():
             zinfoflag, zinfoflag2, zinfoflag3, yinfoflag, yinfoflag2,\
             yinfoflag3
 
-        print('Number of rows in the PANSTARRS file:',\
-              len(ps1_objid))
+        print('Number of rows in the PANSTARRS file:', len(ps1_objid))
 
         oid1 = np.array([list(set(ps1_objid))])[0]
         oid1 = [*set(ps1_objid)]
@@ -239,7 +241,7 @@ class ReadData():
         plt.savefig('hist_panstarrs_data.png')
         plt.clf()
 
-        raw_optical_data = ps1_objid[indices_all_filtered],\
+        filtered_optical_data = ps1_objid[indices_all_filtered],\
             ps_ra[indices_all_filtered], err_ps_ra[indices_all_filtered],\
             ps_dec[indices_all_filtered], err_ps_dec[indices_all_filtered],\
             gmag[indices_all_filtered], e_gmag[indices_all_filtered],\
@@ -262,7 +264,7 @@ class ReadData():
             zinfoflag2[indices_all_filtered], zinfoflag3[indices_all_filtered],\
             yinfoflag[indices_all_filtered], yinfoflag2[indices_all_filtered],\
             yinfoflag3[indices_all_filtered]
-        return raw_optical_data
+        return filtered_optical_data
 
     def read_nir_data(self):
         """

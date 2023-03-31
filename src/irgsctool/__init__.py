@@ -34,7 +34,8 @@ __status__ = "Development"
 class irgsc(GetData, ReadData, StarGalaxyClassification, ExtinctionCorrection, Models,
             GenerateIRGSC, ValidateIRGSC):
     """
-    Initialisation of parent irgsc Class.
+    ------------------------------------------
+    Initialisation of parent *** irgsc class ***. This class has several child classes.
     """
     print ('##########################################################################')
     print("")
@@ -45,7 +46,7 @@ class irgsc(GetData, ReadData, StarGalaxyClassification, ExtinctionCorrection, M
 
     def __init__(self, ra, dec, validate=None):
         """
-        __init__ function described using input  ra and dec.
+        This method described using input  ra and dec.
         It checks whther the data from PANSTARRS DR2, UKISS DR11 and
         Gaia DR3 can be obtained.
         Raises:
@@ -53,7 +54,8 @@ class irgsc(GetData, ReadData, StarGalaxyClassification, ExtinctionCorrection, M
                         PANSTARRS 3-pi survey. The code will not\
                              proceed further.
             Warning: if the data is not available in the Gaia DR3\
-                        survey.
+                        survey. In the IRGSC, the Gaia values will\
+                            be replaces with -999.
 
         """
         print('')

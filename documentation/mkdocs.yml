@@ -1,67 +1,119 @@
 site_name: irgsctool
 site_url: https://sshah1502.github.io/irgsc/
 repo_url: https://github.com/sshah1502/irgsc/
-repo_name: GitHub
 edit_uri: tree/main/documentation/docs
 site_author: Sarang Shah
 use_directory_urls: true
-watch:
-  - docs
 theme: 
   name: readthedocs
-  palette: 
-
-    # Palette toggle for light mode
-    - scheme: default
-      toggle:
-        icon: material/brightness-7 
-        name: Switch to dark mode
-
-    # Palette toggle for dark mode
-    - scheme: slate
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
+  highlightjs: true
   logo: img/TMTLOGO.PNG
+  nav_style: dark
   features:
-    - content.code.copy
-    - content.code.select
+    - content.action.edit
+    - navigation.footer
+  icon:
+    edit: material/pencil 
+    view: material/eye
+
+markdown_extensions:
+  - pymdownx.highlight:
+      pygments_lang_class: true
+markdown_extensions:
+  - pymdownx.highlight:
+      auto_title: true
+
 plugins:
-  - mkdocstrings
+  - git-committers:
+      repository: sshah1502/irgsc/
+      branch: main
+  - git-authors:
+  - optimize
+  - offline
+
+
+plugins:
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_root_heading: false
+            show_root_toc_entry: false
+            show_source: true
+            show_category_heading: false
+            show_heading: false
+            docstring_section_style: spacy
+            show_bases: false
+            show_source: false
+            merge_init_into_class: true
+            fontcolor: black
+      watch:
+        - docs
   - glightbox
+       touchNavigation: true
+       loop: false
+       effect: zoom
+       slide_effect: slide
+       width: 100%
+       height: auto
+       zoomable: true
+       draggable: true
+       skip_classes:
+         - custom-skip-class-name
+       auto_caption: false
+       caption_position: bottom
+       privacy:
   - search
+  - awesome-pages
+  - minify:
+      minify_html: true
+
 nav:
   - Home : index.md
   - About : about.md
   - API: apireference.md
-  - UserGuide: userguide.md
   - Tutorials: tutorials.md
   - Acknowledgements: acknowledgements.md
   - License: license.md
 
 markdown_extensions:
-  - pymdownx.arithmatex:
+  - attr_list
+  - md_in_html
+  - pymdownx.arithmatex: # mathjax
       generic: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
+  - codehilite
+  - pymdownx.highlight:
+      use_pygments: true
+  - toc:
+      toc_depth: 4
+
+markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
-      line_spans: __span
-      pygments_lang_class: true
-  - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences
-  - pymdownx.inline
+
 
 markdown_extensions:
   - attr_list
   - md_in_html
-  - pymdownx.superfences
-  - footnotes
 
 markdown_extensions:
+  - toc:
+        permalink: link
   - pymdownx.arithmatex:
       generic: true
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true 
 
 extra_javascript:
   - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
