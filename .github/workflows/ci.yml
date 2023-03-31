@@ -17,7 +17,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           key: ${{ github.ref }}
-          path: /documentation/
+          path: /documentation/site
       - run: pip install --upgrade pip
       - run: pip install .
       - run: pip install mkdocstrings
