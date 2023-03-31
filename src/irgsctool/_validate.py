@@ -38,21 +38,25 @@ header = ['ps1_objid', 'ps1_ra', 'ps1_ra_error', 'ps1_dec', 'ps1_dec_error', 'ps
 'iinfoflag3','zinfoflag', 'zinfoflag2', 'zinfoflag3', 'yinfoflag', 'yinfoflag2',\
 'yinfoflag3', 'diff_j', 'diff_h', 'diff_k', 'observed_j', 'obseved_j_error',\
 'observed_h', 'observed_h_error', 'observed_k', 'observed_k_error']
-class Validate():
+class ValidateIRGSC():
     """
-    Validate class includes functions to validate the generated irgsc,
-    generate a validated catalog file and plot the validation plots.
-    Raises:
-            ValueError: if the UKIDSS DR11 database does not <br>
-                        contain the observations for a given set of <br>
-                        coordinates 
-            
+    ------------------------------------------
+    The ***Validate*** class includes functions to validate the generated irgsc,
+    generate a validated catalog and plot the comparison of the
+    observed and computed NIR magnitudes.
+           
     """
     def __init__(self, ra, dec):
         self.ra, self.dec = ra, dec
         self.rd = ReadData(ra,dec)
 
     def read_irgsc(self):
+        """
+        ***irgsctool.validate.read_irgsc()*** reads the generated IRGSC for a given set of coordinates.
+        Raises:
+                FileNotFoundError: if there is no generated IRGSC available and then generates it.
+
+        """
         ra_name = str(self.ra).replace('.','_')
         dec_name = str(self.dec).replace('.', '_')
         try:

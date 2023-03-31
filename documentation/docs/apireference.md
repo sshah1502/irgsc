@@ -1,28 +1,19 @@
 # API Reference
 
+This page introduces to the classes and functions in the ***irgsctool*** package. The main class is the ***irgsc*** class which has several subclasses like GetData, ReadData, StarGalaxyClassification, ExtinctionCorrection, GenerateIRGSC, ValidateIRGSC
 
-## Class GetData
+::: irgsctool
 
 ::: irgsctool._get_data
 
-## Class ReadData
-
 ::: irgsctool._read_data
-
-## Class Models
-
-::: irgsctool._sam
-
-## Class StarGalaxyClassification
 
 ::: irgsctool._sgc
 
-## Class ExtinctionCorrection
-
 ::: irgsctool._extinction_correction
 
-## Class GenerateIRGSC
+::: irgsctool._sam
+
 ::: irgsctool._fitting
 
-## Class Validate
 ::: irgsctool._validate

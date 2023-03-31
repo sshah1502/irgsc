@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="None" name="description"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="None" name="description"/><meta content="Sarang Shah" name="author"/><link href="https://sshah1502.github.io/irgsc/" rel="canonical"/>
 <link href="img/favicon.ico" rel="shortcut icon"/>
 <title>irgsctool</title>
 <link href="css/theme.css" rel="stylesheet"/>
@@ -15,7 +15,7 @@
         // Current page data
         var mkdocs_page_name = "Home";
         var mkdocs_page_input_path = "index.md";
-        var mkdocs_page_url = null;
+        var mkdocs_page_url = "/irgsc/";
       </script>
 <script defer="" src="js/jquery-3.6.0.min.js"></script>
 <!--[if lt IE 9]>
@@ -34,13 +34,17 @@
 <nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
 <div class="wy-side-scroll">
 <div class="wy-side-nav-search">
-<a href="index.html">
-<img alt="Logo" class="logo" src="img/TMT_LOGO.PNG"/>
-</a>
+<a href=".">
+<img alt="Logo" class="logo" src="img/TMTLOGO.PNG"/>
+</a><div role="search">
+<form action="./search.html" class="wy-form" id="rtd-search-form" method="get">
+<input name="q" placeholder="Search docs" title="Type search term here" type="text"/>
+</form>
+</div>
 </div>
 <div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal current" href="index.html">Home</a>
+<li class="toctree-l1 current"><a class="reference internal current" href=".">Home</a>
 <ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a>
 </li>
@@ -50,29 +54,35 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#2-uing-zip-file-on-github-here">2. Uing .zip file on GitHub here</a>
 </li>
-</ul>
+<li class="toctree-l3"><a class="reference internal" href="#3-using-the-development-version-from-github">3. Using the Development version from GitHub:</a>
 </li>
 </ul>
 </li>
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="about.html">About</a>
-</li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="userguide.html">UserGuide</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="apireference.html">API</a>
+<li class="toctree-l1"><a class="reference internal" href="about/">About</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="license.html">License</a>
+<li class="toctree-l1"><a class="reference internal" href="apireference/">API</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a>
+<li class="toctree-l1"><a class="reference internal" href="userguide/">UserGuide</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/">Tutorials</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements/">Acknowledgements</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="license/">License</a>
 </li>
 </ul>
 </div>
@@ -81,14 +91,15 @@
 <section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
 <nav aria-label="Mobile navigation menu" class="wy-nav-top" role="navigation">
 <i class="fa fa-bars" data-toggle="wy-nav-top"></i>
-<a href="index.html">irgsctool</a>
+<a href=".">irgsctool</a>
 </nav>
 <div class="wy-nav-content">
 <div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
 <ul class="wy-breadcrumbs">
-<li><a alt="Docs" class="icon icon-home" href="index.html"></a> »</li>
+<li><a alt="Docs" class="icon icon-home" href="."></a> »</li>
 <li>Home</li>
 <li class="wy-breadcrumbs-aside">
+<a class="icon icon-github" href="https://github.com/sshah1502/irgsc/tree/main/documentation/docs/index.md"> Edit on GitHub</a>
 </li>
 </ul>
 <hr/>
@@ -109,10 +120,16 @@
 <pre><code class="language-bash">pip install .
 </code></pre>
 <p>This will install irgsctool locally in your system.</p>
+<h3 id="3-using-the-development-version-from-github">3. Using the Development version from GitHub:</h3>
+<p>Open the terminal in your system and run:</p>
+<pre><code>pip install git+https://github.com/sshah1502/irgsc@main
+
+</code></pre>
+<p>This will also install the package locally in your system.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
-<a class="btn btn-neutral float-right" href="about.html" title="About">Next <span class="icon icon-circle-arrow-right"></span></a>
+<a class="btn btn-neutral float-right" href="about/" title="About">Next <span class="icon icon-circle-arrow-right"></span></a>
 </div>
 <hr/>
 <div role="contentinfo">
@@ -127,7 +144,10 @@
 </div>
 <div aria-label="Versions" class="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
-<span><a href="about.html" style="color: #fcfcfc">Next »</a></span>
+<span>
+<a class="fa fa-github" href="https://github.com/sshah1502/irgsc/" style="color: #fcfcfc"> GitHub</a>
+</span>
+<span><a href="about/" style="color: #fcfcfc">Next »</a></span>
 </span>
 </div>
 <script>var base_url = '.';</script>
@@ -136,6 +156,7 @@
 <script defer="" src="javascripts/mathjax.js"></script>
 <script defer="" src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script defer="" src="search/main.js"></script>
 <script defer="">
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);
@@ -145,5 +166,5 @@
 </html>
 <!--
 MkDocs version : 1.4.2
-Build Date UTC : 2023-03-31 06:45:00.883481+00:00
+Build Date UTC : 2023-03-31 12:53:05.016169+00:00
 -->

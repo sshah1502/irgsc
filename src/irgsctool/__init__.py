@@ -1,20 +1,8 @@
-
-"""
-                irgsctool, a python pacakge to generate a NIR catalog of the stars in the TMT's observable sky.
-                version - v0.1.2
-                Author - Sarang Shah
-            Please add the following acknowledgment if you use our package in your work.
-            This work has made use of Infrared Guide Star Catalog (IRGSC) developed 
-            as a part of the Thirty Meter Telescope (TMT) project."
-
-    If you have any questions or suggestions for improvements to this repo,
-    please email: sarang.itcc@iiap.res.in.
-    
-"""
 #pylint: disable=wrong-import-position
 import sys
 import os
 from datetime import date
+import warnings
 import numpy as np
 from dustmaps.config import config
 config['data_dir'] = os.getcwd()
@@ -22,7 +10,7 @@ config['data_dir'] = os.getcwd()
 from ._read_data import ReadData
 from ._get_data import GetData
 from ._fitting import GenerateIRGSC
-from ._validate import Validate
+from ._validate import ValidateIRGSC
 from ._extinction_correction import ExtinctionCorrection
 from ._sgc import StarGalaxyClassification
 from ._sam import Models
@@ -32,6 +20,7 @@ print('')
 print('Your home directory is:', home_dir)
 print('####################################################')
 print('')
+
 __author__ = "Sarang Shah"
 __copyright__ = "Copyright 2023, TMT/DMS/IRGSC"
 __credits__ = ["Sarang Shah"]
@@ -41,34 +30,11 @@ __maintainer__ = "Sarang Shah"
 __email__ = "sarang.itcc@iiap.res.in"
 __status__ = "Development"
 
-"""MIT License
 
-Copyright (c) [2023] [tmt-irgsc]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARraNTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARraNTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTraCT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-"""
-
-class Irgsc(GenerateIRGSC, Validate, ExtinctionCorrection,
-            ReadData, GetData, StarGalaxyClassification):
+class irgsc(GetData, ReadData, StarGalaxyClassification, ExtinctionCorrection, Models,
+            GenerateIRGSC, ValidateIRGSC):
     """
-    Initialisation of Irgsc Class
+    Initialisation of parent irgsc Class.
     """
     print ('##########################################################################')
     print("")
@@ -79,9 +45,15 @@ class Irgsc(GenerateIRGSC, Validate, ExtinctionCorrection,
 
     def __init__(self, ra, dec, validate=None):
         """
-        __init__ function described using ra and decl.
-        Checks whther the data from PANSTARRS, UKISS and
-        Gaia can be obtained for the given set of ra and decl.
+        __init__ function described using input  ra and dec.
+        It checks whther the data from PANSTARRS DR2, UKISS DR11 and
+        Gaia DR3 can be obtained.
+        Raises:
+            ValueError: if the data is not available in UKIDSS or
+                        PANSTARRS 3-pi survey. The code will not\
+                             proceed further.
+            Warning: if the data is not available in the Gaia DR3\
+                        survey.
 
         """
         print('')
@@ -129,7 +101,7 @@ class Irgsc(GenerateIRGSC, Validate, ExtinctionCorrection,
             gd.get_panstarrs_data(self.ra, self.dec)
             optical_data = np.genfromtxt(file_name + '.csv')
             if len(optical_data) == 0.0:
-                raise ValueError('PANSTARRS optical data not available.\
+                raise ValueError('Optical data is outside the range of PANSTARRS 3-pi survey.\
                                  Please check the input coordinates!!!')
             sys.exit(0)
 
@@ -142,4 +114,6 @@ class Irgsc(GenerateIRGSC, Validate, ExtinctionCorrection,
             gd.get_gaia_data(self.ra, self.dec)
             gaia_data = np.genfromtxt(file_name + '.csv')
             if len(gaia_data) == 0.0:
-                print('GAIA data not available for this field!!!')
+                warnings.warn('GAIA data not available for this field!!!\
+                                The generated catalog will contain -999\
+                                    values for GAIA information.')

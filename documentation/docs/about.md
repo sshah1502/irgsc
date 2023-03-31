@@ -21,4 +21,3 @@ __irgsctool__ to generate the catalog of NIR guide stars for Adaptive Optics (AO
     <figcaption><em><strong>Figure 2:</strong></em> A rendered image of the facility AO system on TMT - NFIRAOS.</figcaption>
 </figure>
 </justify>
-

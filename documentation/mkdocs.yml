@@ -1,21 +1,61 @@
 site_name: irgsctool
-site_url: ""
-use_directory_urls: false
+site_url: https://sshah1502.github.io/irgsc/
+repo_url: https://github.com/sshah1502/irgsc/
+repo_name: GitHub
+edit_uri: tree/main/documentation/docs
+site_author: Sarang Shah
+use_directory_urls: true
 watch:
   - docs
 theme: 
   name: readthedocs
+  palette: 
+
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
   logo: img/TMTLOGO.PNG
+  features:
+    - content.code.copy
+    - content.code.select
 plugins:
   - mkdocstrings
   - glightbox
+  - search
 nav:
   - Home : index.md
   - About : about.md
-  - UserGuide: userguide.md
   - API: apireference.md
-  - License: license.md
+  - UserGuide: userguide.md
   - Tutorials: tutorials.md
+  - Acknowledgements: acknowledgements.md
+  - License: license.md
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.inline
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - pymdownx.superfences
+  - footnotes
 
 markdown_extensions:
   - pymdownx.arithmatex:
@@ -25,4 +65,3 @@ extra_javascript:
   - javascripts/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-

@@ -24,47 +24,17 @@ header = ['ps1_objid','ps1_ra','ps1_ra_error','ps1_dec','ps1_dec_error',\
 'yinfoflag3', 'SAM Flag']
 
 def stdv(sfavg, v1, v2, v3, v4, v5):
-    """
-          function to calculate standard deviation
-    """
     mu = sfavg
     n=5
     sig = (((mu - v1)**2 + (mu - v2)**2 + (mu-v3)**2 + (mu - v4)**2 + (mu - v5)**2)/n)**0.5
     return sig
 
 def find_nearest(array, value):
-    """
-    function to find the nearest element
-    in an array to the given value
-    """
     array = np.asarray(array)
     idx = (np.abs(array - value)).argmin()
     return array[idx]
 
 def calc_sf(j, om, e_om, sm, index_min_ang_seperation, aj, ah, ak):
-
-        """
-        This function calculates the scale factor using
-        the best fitted model to the observed data. The
-        scale factor is defined as the difference in the
-        observed and the model magnitudes.
-
-        Computed NIR magnitudes are found by adding the
-        scale factor to the model NIR magnitudes generated
-        by integrating the convolved UKIDSS response function,
-        the model flux and wavelength normalised to the 
-        integral of UKIDSS response f
-
-        Returns:
-                sf_mean: Scale Factor averaged over the PANSTARRS colors
-                e_sf_mean: error in the scale factor
-                cj: computed J magnitude
-                ch: computed H magnitude
-                ck: computed K magnitude
-                e_cj, e_ch, e_ck: errors in the computed NIR magnitudes
-        The NIR magnitudes are returned in Vega system.
-        """
-
         ec_gmag, ec_rmag, ec_imag, ec_zmag, ec_ymag = om
         e_ec_gmag, e_ec_rmag, e_ec_imag, e_ec_zmag, e_ec_ymag = e_om
         sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k = sm
@@ -94,11 +64,6 @@ def calc_sf(j, om, e_om, sm, index_min_ang_seperation, aj, ah, ak):
 
 
 def compute_dquad(j, oc, mc):
-        """
-            Calculates the quantity d_quad which is the cumulative difference
-            in the observed and the model colors.
-    
-        """
         j = np.int64(j)
         obs_gr, obs_gi, obs_gz, obs_gy, obs_ri, obs_ry, obs_rz, obs_iz, obs_iy, obs_zy = oc
         sam_gr, sam_gi, sam_gz, sam_gy, sam_ri, sam_rz, sam_ry, sam_iz, sam_iy, sam_zy = mc
@@ -120,11 +85,9 @@ def compute_dquad(j, oc, mc):
 
 class GenerateIRGSC():
     """
-    The <strong> class </strong> to generate IRGSC.
-    
-    It generates a catalog of probable stellar sources in the PANSTARRS data
-        with their computed magnitudes, astrometric information from
-        GAIA DR3 data, best fitted model parameters and flags.
+    <justify> The <strong> GenerateIRGSC class </strong> hosts functions to generates a catalog of
+    probable stellar sources in the PANSTARRS data with their computed magnitudes, astrometric
+    information from GAIA DR3 data, best fitted model parameters and flags.</justify>
     """
 
     def __init__(self, ra, dec):
@@ -135,16 +98,15 @@ class GenerateIRGSC():
 
     def generate_irgsc(self, use_optimal_method=True):
         """
-            <justify> This function finds the best fitting model to the
-            observed colors of the stellar source.
-
-            The best fitting model is chosen from a combination
-            of Kurucz/Castelli-Kurucz and Phoenix synthetic spectra 
-            convolved with the PANSTARRS response function (or 
-            BANDPASS) which is integrated w.r.t. the wavelength and
-            normalised to the product of the PANSTARRS response
-            function and wavelength. This is also called as 
-            Effective Stimulus (ES).
+            `irgsctool.GenerateIRGSC.generate_irgsc***(use_optimal_method=True)`
+            
+            <justify> This function finds 
+            the best fitting model to the observed colors of the stellar source.
+            The best fitting model is chosen from a combination of Kurucz/Castelli-Kurucz 
+            and Phoenix synthetic spectra convolved with the PANSTARRS response function
+            (or BANDPASS) which is integrated w.r.t. the wavelength and normalised to
+            the product of the PANSTARRS response function and wavelength. This is also
+            called as Effective Stimulus (ES).
 
             $$
             ES = \\frac{\\int{F_{\\lambda}P_{\\lambda}{\\lambda}
@@ -152,16 +114,8 @@ class GenerateIRGSC():
             $$
             
             The spectra is obtained from pysynphot [More information here](https://pysynphot.readthedocs.io)
-            The model parameters are: $T_{eff}$, log(g) and [Fe/H].
+            The model parameters are: $T_{eff}$, log(g) and [Fe/H].</justify>
 
-            The range of models selected for fitting is:
-
-            | Model Name    |               $T_{eff}$ (K)   |    log(g) (dex)  |    [Fe/H] (dex)|
-            | :-------------| :-------------------------| :----------------| :--------------|
-            | Phoenix (C1)  |                2800 - 5000 |    3.0 - 5.5    |     -5.0 - -1.5| 
-            | Phoenix (C2)  |              2800 - 4000   |   0.0 - 3.0     |     -0.5 - 1.5 | 
-            | Kurucz/Castelli-Kurucz (K0) |  4000 - 10000  |   ---         |       ---      | x`
-            </justify>
         """
         if use_optimal_method is True:
             print("")
