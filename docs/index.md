@@ -19,3 +19,11 @@ After downloading the .zip file, unzip it into a directory and type
 pip install .
 ```
 This will install irgsctool locally in your system.
+
+### 3. Using the Development version from GitHub:
+Open the terminal in your system and run:
+```
+pip install git+https://github.com/sshah1502/irgsc@main
+
+```
+This will also install the package locally in your system.

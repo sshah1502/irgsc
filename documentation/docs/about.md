@@ -1,13 +1,11 @@
-### About irgsctool
+# About irgsctool
 __irgsctool__ to generate the catalog of NIR guide stars for Adaptive Optics (AO) observations of the Thirty Meter Telescope (TMT). The module computes the NIR magnitudes of the optical sources in the PANSTARRS data.
-### Motivation to generate irgsctool 
+## Motivation to generate irgsctool 
 <p style="text-align: justify;">The performance of any ground-based optical/near-infrared (NIR) telescope is affected by the turbulence in the atmosphere of Earth. When the light from a distant astronomical source passes through Earth's turbulent atmosphere, it distorts the wavefront of the light. These distortions make the science images appear fuzzy/blurry. To improve the performance of the ground-based optical/NIR telescopes by compensating for the effects of wavefront distortions, astronomers use a technique known as Adaptive Optics (AO). An AO system tries to correct the distortions using a WaveFront Sensor (WFS), which takes some of the astronomical light, a deformable mirror that lies in the optical path, and a computer that receives input from the detector (Refer Figure: (1)).</p>
-
-![Figure 1](/img/aos.png){ align=left }
 
 <center>
 <figure>
-    <img src="/img/aos.png" width="600" height="500"
+    <img src="img/aos.png" width="600" height="500"
          alt="AOS">
     <figcaption><em><strong>Figure 1:</strong></em> A conceptual image of the working of an AO system.</figcaption>
 </figure>
@@ -23,3 +21,81 @@ __irgsctool__ to generate the catalog of NIR guide stars for Adaptive Optics (AO
     <figcaption><em><strong>Figure 2:</strong></em> A rendered image of the facility AO system on TMT - NFIRAOS.</figcaption>
 </figure>
 </justify>
+
+## Nature of the generated catalog
+The IRGSC generated has various information about the sources shown in the following Table. This table describes the columns in the IRGSC generated for a particular test field. The details of the flags, e.g., infoflags, filterflags, and qualityflags can be found [here](https://outerspace.stsci.edu/display/PANSTARRS/PS1+StackObjectView+table+fields). These flags indicate various values assigned to
+the source by the PANSTARRS team, which gives further information about the nature of the source
+and the quality of its detection, which can help understand more about a particular object of interest.
+It is to be noted that although this package relies on the PANSTARRS StackObjectView table, the Right
+Ascension and Declination of the source is obtained from the mean photometric information as they are well calibrated using Gaia DR2.</p>
+
+| Column Name | Description | Data Type  |
+| :----------- |:------------|:------|
+| PS1_ObjID    | Source identifier in the PANSTARRS data| float |
+| PS1_ra       | Right Ascencion of the source in the PANSTARRS DR2 weighted mean photometry| float|
+| PS1_ra_error | Uncertainty in PS1_ra| float|
+| PS1_dec      | Declination of the source in the PANSTARRS DR2 weighted mean photometry| float|
+| PS1_dec_error| Uncertainty in the PS1_dec| float|
+| PS1_gpsf     | psf magnitude of the source in the g-band stacked photometry | float|
+| PS1_gpsf     | Uncertainty in PS1_gpsf|
+| PS1_rpsf     | psf magnitude of the source in the r-band stacked photometry | float|
+| PS1_rpsf     | Uncertainty in PS1_rpsf | float|
+| PS1_ipsf     | psf magnitude of the source in the i-band stacked photometry | float|
+| PS1_ipsf     | Uncertainty in PS1_ipsf | float|
+| PS1_zpsf     | psf magnitude of the source in the z-band stacked photometry | float|
+| PS1_zpsf     | Uncertainty in PS1_zpsf | float|
+| PS1_ypsf     | psf magnitude of the source in the y-band stacked photometry | float|
+| PS1_ypsf     | Uncertainty in PS1_ypsf | float|
+| SAM_Name     | Name of the best-fitted Stellar Atmospheric Model (SAM)| string|
+| Teff         | Best-fitted model parameter: Teff| float|
+| logg         | Best-fitted model parameter: log(g)| float|
+| [Fe/H]       | Best-fitted model parameter: [Fe/H]| float|
+|sam_g         | Best-fitted model magnitudes in PANSTARRS g-filter| float|
+|sam_r         | Best-fitted model magnitudes in PANSTARRS r-filter| float|
+|sam_i         | Best-fitted model magnitudes in PANSTARRS i-filter| float|
+|sam_z         | Best-fitted model magnitudes in PANSTARRS z-filter| float|
+|sam_y         | Best-fitted model magnitudes in PANSTARRS y-filter| float|
+|sam_j         | Best-fitted model magnitudes in PANSTARRS j-filter| float|
+|sam_h         | Best-fitted model magnitudes in PANSTARRS h-filter| float|
+|sam_k         | Best-fitted model magnitudes in PANSTARRS k-filter| float|
+| scale factor | The scale factor computed after fitting the SAM| float|
+| scale factor error| Error in the computed scale factor| float|
+| d_dev        | The parameter denoting the goodness-of-fit| float|
+| Computed J   | The computed J magnitude in the Vega system| float|
+| Computed J error| Error in computed J magnitude| float|
+| Computed H   | The computed H magnitude in the Vega system| float|
+| Computed H error| Error in computed H magnitude| float|
+| Computed K   | The computed K magnitude in the Vega system| float|
+| Computed K error| Error in computed K magnitude| float|
+| gaia source id| Source identifier in Gaia DR3| float|
+| gaia ra | Right Ascension of the source in Gaia DR3 catalog| float|
+| gaia ra error| Uncertainty in gaia ra| float|
+| gaia dec | Declination of the source in Gaia DR3 catalog| float|
+| gaia dec error | Uncertainty in gaia dec | float|
+| gaia parallax| Parallax (mas) of the source in the Gaia DR3 catalog| float|
+| gaia parallax error| Uncertainty in gaia parallax| float|
+| gaia pm| pm of the source (mas/yr) in Gaia DR3 catalog| float|
+| gaia pm ra| pm of the source along R.A. axis in the Gaia DR3 catalog| float|
+| gaia pm ra error| Uncertainty gaia pm ra | float|
+| gaia pm dec| pm of the source along Dec. axis in the Gaia DR3 catalog| float|
+| gaia pm dec error| Uncertainty gaia pm dec | float|
+| gaia ruwe| Renormalised Unit Weight Error flag of the source in Gaia DR3| float|
+| objinfoflag | These flag values of the source in PANSTARRS data specify whether the object is a QSO, transient, asteroid, extended, a known solar system object, etc. in nature| float|
+| objqualityflag | These flag values denote if an object is real or a possible false positive | float|
+| ndetections |The number of times something is detected from the individual exposures| float|
+| nstackdetections | The number of stack detections after which the stack photometric measurements are done | float|
+| ginfoflag | These flags indicate the details of the g filter stack photometry | float|
+| ginfoflag2 | These flags indicate the details of the g filter stack photometry | float|
+| ginfoflag3 | These flags indicate the details of the g filter stack photometry | float|
+| rinfoflag | These flags indicate the details of the r filter stack photometry | float|
+| rinfoflag2 | These flags indicate the details of the r filter stack photometry | float|
+| rinfoflag3 | These flags indicate the details of the r filter stack photometry | float|
+| iinfoflag | These flags indicate the details of the i filter stack photometry | float|
+| iinfoflag2 | These flags indicate the details of the i filter stack photometry | float|
+| iinfoflag3 | These flags indicate the details of the i filter stack photometry | float|
+| zinfoflag | These flags indicate the details of the z filter stack photometry | float|
+| zinfoflag2 | These flags indicate the details of the z filter stack photometry | float|
+| zinfoflag3 | These flags indicate the details of the z filter stack photometry | float|
+| yinfoflag | These flags indicate the details of the y filter stack photometry | float|
+| yinfoflag2 | These flags indicate the details of the y filter stack photometry | float|
+| yinfoflag3 | These flags indicate the details of the y filter stack photometry | float|

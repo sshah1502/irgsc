@@ -302,7 +302,7 @@ class ValidateIRGSC():
                                     facecolor = 'orange', label = 'Difference')
         biny_max = find_nearest(ny, np.median(ny))
         print('binymax=', biny_max)
-        ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
+        #ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
         ax_joint.set_title('Median and spread of the scatter =' + str("{:.3f}".format(np.median(diff_jf)))\
                            +r'$\pm$'+str("{:.3f}".format(np.std(diff_jf))))
         ax_marg_x.set_title('No. of sources lying in the range -0.2 < ($J_{o}$ - $J_{c}$) < 0.2 =' + \
@@ -344,7 +344,7 @@ class ValidateIRGSC():
                                  edgecolor = 'g', alpha = 0.5, facecolor = 'orange', label = 'Difference')
         biny_max = find_nearest(ny, np.median(ny))
         print('binymax=', biny_max)
-        ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
+        #ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
         ax_joint.set_title('Median and spread of the scatter =' + str("{:.3f}".format(np.median(diff_hf)))\
                            +r'$\pm$'+str("{:.3f}".format(np.std(diff_hf))))
         ax_marg_x.set_title('No. of sources lying in the range -0.2 < ($H_{o}$ - $H_{c}$) < 0.2 =' + \
@@ -387,7 +387,7 @@ class ValidateIRGSC():
                                         'Difference')
         biny_max = find_nearest(ny, np.median(ny))
         print('binymax=', biny_max)
-        ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
+        #ax_marg_y.set_title('Median at:%0.2f'%(by[np.where(ny==biny_max)[0][0]]))
         ax_marg_y.set_ylim(-2,2)
         ax_marg_x.grid()
         ax_marg_x.legend(loc='best')
