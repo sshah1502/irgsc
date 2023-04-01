@@ -1,51 +1,104 @@
-# Sample workflow for building and deploying a Jekyll site to GitHub Pages
-name: Deploy Jekyll with GitHub Pages dependencies preinstalled
+site_name: irgsctool
+site_url: https://sshah1502.github.io/irgsc/
+repo_url: https://github.com/sshah1502/irgsc/
+edit_uri: tree/main/documentation/docs
+site_author: Sarang Shah
+use_directory_urls: false
+markdown_extensions:
+    - pymdownx.snippets:
+theme: 
+  name: readthedocs
+  logo: img/TMTLOGO.PNG
+  nav_style: dark
+  features:
+    - content.action.edit
+    - navigation.footer
+  icon:
+    edit: material/pencil 
+    view: material/eye
 
-on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
+markdown_extensions:
+  - pymdownx.highlight:
+      pygments_lang_class: true
+markdown_extensions:
+  - pymdownx.highlight:
+      auto_title: true
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+plugins:
+  - git-committers:
+      repository: sshah1502/irgsc/
+      branch: main
+  - git-authors:
+  - optimize
+  - offline
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+plugins:
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_root_heading: false
+            show_root_toc_entry: false
+            show_source: true
+            show_category_heading: false
+            show_heading: false
+            docstring_section_style: spacy
+            show_bases: false
+            show_source: false
+            merge_init_into_class: true
+            fontcolor: black
+      watch:
+        - docs
+  - glightbox
+  - search
 
-jobs:
-  # Build job
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: .
-          destination: ._site/
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+nav:
+  - Home : index.md
+  - About : about.md
+  - API: apireference.md
+  - Tutorials: tutorials.md
+  - Acknowledgements: acknowledgements.md
+  - License: license.md
 
-  # Deployment job
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - pymdownx.arithmatex: # mathjax
+      generic: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
+  - codehilite
+  - pymdownx.highlight:
+      use_pygments: true
+  - toc:
+      toc_depth: 4
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+
+markdown_extensions:
+  - toc:
+        permalink: link
+  - pymdownx.arithmatex:
+      generic: true
+markdown_extensions:
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true 
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
