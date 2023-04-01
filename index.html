@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="None" name="description"/><link href="https://sshah1502.github.io/irgsc/index.html" rel="canonical"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="None" name="description"/><meta content="Sarang Shah" name="author"/><link href="https://sshah1502.github.io/irgsc/index.html" rel="canonical"/>
 <link href="img/favicon.ico" rel="shortcut icon"/>
 <title>irgsctool</title>
 <link href="css/theme.css" rel="stylesheet"/>
@@ -35,8 +35,12 @@
 <div class="wy-side-scroll">
 <div class="wy-side-nav-search">
 <a href="index.html">
-<img alt="Logo" class="logo" src="img/TMT_LOGO.PNG"/>
-</a>
+<img alt="Logo" class="logo" src="img/TMTLOGO.PNG"/>
+</a><div role="search">
+<form action="./search.html" class="wy-form" id="rtd-search-form" method="get">
+<input name="q" placeholder="Search docs" title="Type search term here" type="text"/>
+</form>
+</div>
 </div>
 <div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
 <ul class="current">
@@ -62,19 +66,19 @@
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="" href="userguide.md">UserGuide</a>
-</li>
-</ul>
-<ul>
 <li class="toctree-l1"><a class="reference internal" href="apireference.html">API</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="license.html">License</a>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a>
 </li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a>
 </li>
 </ul>
 </div>
@@ -91,6 +95,7 @@
 <li><a alt="Docs" class="icon icon-home" href="index.html"></a> »</li>
 <li>Home</li>
 <li class="wy-breadcrumbs-aside">
+<a class="icon icon-github" href="https://github.com/sshah1502/irgsc/tree/main/documentation/docs/index.md"> Edit on GitHub</a>
 </li>
 </ul>
 <hr/>
@@ -103,20 +108,19 @@
 <h2 id="installation">Installation</h2>
 <p>This package can be installed in two ways:</p>
 <h3 id="1-using-pip">1. Using pip</h3>
-<p>In a fresh environment, enter the following command</p>
-<pre><code class="language-bash">pip install irgsctool
-</code></pre>
+<p>In a fresh environment, enter the following command
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>irgsctool
+</code></pre></div></p>
 <h3 id="2-uing-zip-file-on-github-here">2. Uing .zip file on GitHub <a href="https://github.com/sshah1502/irgsc">here</a></h3>
-<p>After downloading the .zip file, unzip it into a directory and type</p>
-<pre><code class="language-bash">pip install .
-</code></pre>
-<p>This will install irgsctool locally in your system.</p>
+<p>After downloading the .zip file, unzip it into a directory and type
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>.
+</code></pre></div>
+This will install irgsctool locally in your system.</p>
 <h3 id="3-using-the-development-version-from-github">3. Using the Development version from GitHub:</h3>
-<p>Open the terminal in your system and run:</p>
-<pre><code>pip install git+https://github.com/sshah1502/irgsc@main
-
-</code></pre>
-<p>This will also install the package locally in your system.</p>
+<p>Open the terminal in your system and run:
+<div class="highlight"><pre><span></span><code>pip install git+https://github.com/sshah1502/irgsc@main
+</code></pre></div>
+This will also install the package locally in your system.</p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
@@ -135,6 +139,9 @@
 </div>
 <div aria-label="Versions" class="rst-versions" role="note">
 <span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a class="fa fa-github" href="https://github.com/sshah1502/irgsc/" style="color: #fcfcfc"> GitHub</a>
+</span>
 <span><a href="about.html" style="color: #fcfcfc">Next »</a></span>
 </span>
 </div>
@@ -144,6 +151,10 @@
 <script defer="" src="javascripts/mathjax.js"></script>
 <script defer="" src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js"></script>
+<script defer="" src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script defer="" src="search/main.js"></script>
 <script defer="">
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);
@@ -153,5 +164,5 @@
 </html>
 <!--
 MkDocs version : 1.4.2
-Build Date UTC : 2023-03-31 23:23:01.332963+00:00
+Build Date UTC : 2023-04-01 13:56:46.450279+00:00
 -->
