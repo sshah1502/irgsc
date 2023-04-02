@@ -99,3 +99,7 @@ Ascension and Declination of the source is obtained from the mean photometric in
 | yinfoflag | These flags indicate the details of the y filter stack photometry | float|
 | yinfoflag2 | These flags indicate the details of the y filter stack photometry | float|
 | yinfoflag3 | These flags indicate the details of the y filter stack photometry | float|
+
+## Application of irgsctool on fields
+The method developed for the generation of IRGSC has applied on twenty test fields across the sky. The generaed IRGSC is also valiated using the UKIDSS data available for those fields and the generated as well as validated catalog for these fields can be found in the 'generated_irgsc' directory.
+In addition to the twenty test fields, additional ten catalogs are provided for the PANSTARRS Medium Deep Survey (MDS) Fields [more information available here](https://arxiv.org/abs/1612.05560). Since the MDS data is not publically released by the PANSTARRS, the optical data to generate the IRGSC for these fields is been taken from the 3-pi PANSTARRS survey.
