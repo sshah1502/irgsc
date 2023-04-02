@@ -1,7 +1,7 @@
 site_name: irgsctool
 site_url: https://sshah1502.github.io/irgsc/
 repo_url: https://github.com/sshah1502/irgsc/
-edit_uri: tree/main/documentation/docs
+edit_uri: tree/main/documentation/
 site_author: Sarang Shah
 use_directory_urls: false
 markdown_extensions:

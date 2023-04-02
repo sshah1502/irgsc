@@ -137,6 +137,8 @@ class GetData():
                                 database='UKIDSSDR11PLUS', attributes = ['ra', 'dec', 'jPetroMag', 'jPetroMagErr', 'hPetroMag', 'hPetroMagErr', 'kPetroMag', 'kPetroMagErr'], verbose=True)
 
                 table.write(file_name, format = 'csv', overwrite=True)
+                if len(table)>8.0:
+                    break
             except Exception:
                 raise ValueError('No observations in'+' '+str(catalogs[i])+' ' + 'catalog of UKIDSS')
         return table
