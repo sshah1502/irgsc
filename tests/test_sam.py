@@ -16,8 +16,8 @@ def test_kurucz():
   k_m = k.read_sam_file()
   p_m = p.read_sam_file()
   
-  k_sm = k.select_sam(teff_range=[4000,10000], use_optimal_method=True)
-  p_sm = p.select_sam(teff_range=[2800,5000], logg_range=[3.0,5.5],
+  k_sm = k.select_sam_range(teff_range=[4000,10000], use_optimal_method=True)
+  p_sm = p.select_sam_range(teff_range=[2800,5000], logg_range=[3.0,5.5],
                                        feh_range=[-5.0,-1.5],
                                        use_optimal_method=True)
   
