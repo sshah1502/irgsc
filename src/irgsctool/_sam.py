@@ -17,7 +17,7 @@ class Models():
                 self.use_sam = use_sam
 
         
-        def read_sam_file(self, use_sam=None):
+        def read_sam_file(self):
                 """
                         `irgsctool.Models.read_sam_file(use_sam=None)`
                 
@@ -33,7 +33,7 @@ class Models():
                                 FileNotFoundError: if the model files are not found.
 
                 """
-                if use_sam == None:
+                if self.use_sam == None:
                         raise AttributeError('Input on which Stellar Atmospheric Model to be use not given')
                 elif use_sam == 'Kurucz':
                         print("")
@@ -44,7 +44,7 @@ class Models():
                                 p2 = np.genfromtxt(str(data_dir) +'/data/interpolated_kurucz.txt')
                         except:
                                 FileNotFoundError('interpolated_kurucz.txt file not found')
-                elif use_sam == 'Phoenix':
+                elif self.use_sam == 'Phoenix':
                         print("")
                         print('Reading Interpolated Phoenix SAMs')
                         print("")
@@ -98,7 +98,7 @@ class Models():
                 """
                 
                 teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k\
-                                        = self.read_sam_file(use_sam=self.use_sam)
+                                        = self.read_sam_file()
                 if use_optimal_method is not True:
                         if teff_range is not None and feh_range is None and logg_range is None:
                                 teff_lower_limit = teff_range[0]; teff_upper_limit = teff_range[-1]
