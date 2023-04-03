@@ -69,8 +69,7 @@ class Models():
                 self.sam_params = sam_params
                 return sam_params
 
-        def select_sam_range(self, teff_range=None, logg_range=None, feh_range=None, 
-                                use_optimal_method=False):
+        def select_sam_range(self, teff_range=None, logg_range=None, feh_range=None):
                 """
                         
                         `irgsctool.Models.select_sam_range(teff_range=None, logg_range=None,
@@ -99,55 +98,35 @@ class Models():
                 
                 teff, logg, feh, sam_g, sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k\
                                         = self.read_sam_file()
-                if use_optimal_method:
-                        if teff_range is None and logg_range is None and feh_range is None:
-                                raise  TypeError("Parameter range must be provided in order to use\
-                                         the optimal method")
-                        elif teff_range is not None and feh_range is not None and logg_range is not None:
-                                teff_lower_limit = teff_range[0]; teff_upper_limit = teff_range[-1];\
-                                logg_lower_limit = logg_range[0]; logg_upper_limit = logg_range[-1];\
-                                feh_lower_limit = feh_range[0]; feh_upper_limit = feh_range[-1]
-
-                                index_sam = np.where((teff>teff_lower_limit) & (teff<teff_upper_limit)\
-                                   & (feh>feh_lower_limit) & (feh<feh_upper_limit)\
-                                        & (logg>logg_lower_limit) & (logg<logg_upper_limit))[0]
-                
-                                sam_params =  teff[index_sam], logg[index_sam], feh[index_sam], sam_g[index_sam], sam_r[index_sam],\
-                                                sam_i[index_sam], sam_z[index_sam], sam_y[index_sam], sam_j[index_sam],\
-                                                        sam_h[index_sam], sam_k[index_sam]                                
-                        return sam_params
-                
+                if teff_range is None and logg_range is None and feh_range is None:
+                        raise  TypeError("At least one parameter range must be provided")
                 else:
-                        if teff_range is None and logg_range is None and feh_range is None:
-                                raise  TypeError("At least one parameter range must be provided")
-                                
+                        if teff_range is not None:
+                                teff_lower_limit = teff_range[0]
+                                teff_upper_limit = teff_range[-1]
+                                c1 = (teff>teff_lower_limit) & (teff<teff_upper_limit)
                         else:
-                                if teff_range is not None:
-                                        teff_lower_limit = teff_range[0]
-                                        teff_upper_limit = teff_range[-1]
-                                        c1 = (teff>teff_lower_limit) & (teff<teff_upper_limit)
-                                else:
-                                        c1 = 1
-                               
-                                if logg_range is not None:
-                                        logg_lower_limit = logg_range[0]
-                                        logg_upper_limit = logg_range[-1]
-                                        c2 = (logg>logg_lower_limit) & (logg<logg_upper_limit)
-                                else:
-                                        c2 = 1
-                                        
-                                if logg_range is not None:
-                                        feh_lower_limit = feh_range[0]
-                                        feh_upper_limit = feh_range[-1]
-                                        
-                                        c3 = (feh>feh_lower_limit) & (feh<feh_upper_limit)
-                                else:
-                                        c3 = 1
-                               
-                                index_sam = np.where(c1 & c2 & c3)[0]
-                
-                                sam_params =  teff[index_sam], logg[index_sam], feh[index_sam], sam_g[index_sam], sam_r[index_sam],\
-                                                sam_i[index_sam], sam_z[index_sam], sam_y[index_sam], sam_j[index_sam],\
-                                                        sam_h[index_sam], sam_k[index_sam]
+                                c1 = 1
+
+                        if logg_range is not None:
+                                logg_lower_limit = logg_range[0]
+                                logg_upper_limit = logg_range[-1]
+                                c2 = (logg>logg_lower_limit) & (logg<logg_upper_limit)
+                        else:
+                                c2 = 1
+
+                        if logg_range is not None:
+                                feh_lower_limit = feh_range[0]
+                                feh_upper_limit = feh_range[-1]
+
+                                c3 = (feh>feh_lower_limit) & (feh<feh_upper_limit)
+                        else:
+                                c3 = 1
+
+                        index_sam = np.where(c1 & c2 & c3)[0]
+
+                        sam_params =  teff[index_sam], logg[index_sam], feh[index_sam], sam_g[index_sam], sam_r[index_sam],\
+                                        sam_i[index_sam], sam_z[index_sam], sam_y[index_sam], sam_j[index_sam],\
+                                                sam_h[index_sam], sam_k[index_sam]
                                 
                         return sam_params
