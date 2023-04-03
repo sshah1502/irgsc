@@ -35,7 +35,7 @@ class Models():
                 """
                 if self.use_sam == None:
                         raise AttributeError('Input on which Stellar Atmospheric Model to be use not given')
-                elif use_sam == 'Kurucz':
+                elif self.use_sam == 'Kurucz':
                         print("")
                         print('Reading Interpolated Kurucz SAMs')
                         print("")
