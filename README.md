@@ -101,7 +101,7 @@ numpy,
 datetime,
 requests, and 
 pyvo.
-### Note: It is recommended to install the package in a fresh environment.
+### Note: It is recommended to install irgsctool in a fresh environment and requires a stable internet connection to fetch the data.
 
 
 # Installation
