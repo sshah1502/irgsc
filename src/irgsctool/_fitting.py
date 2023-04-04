@@ -95,9 +95,6 @@ class GenerateIRGSC():
          self.ra, self.dec = ra, dec
          self.rd = ReadData(ra,dec)
          self.ec = EC(ra, dec)
-         self.k0 = Models(use_sam='Kurucz')
-         self.c1 = Models(use_sam='Phoenix')
-         self.c2 = Models(use_sam='Phoenix')
 
     def generate_irgsc(self, use_optimal_method=True):
         """
@@ -142,14 +139,14 @@ class GenerateIRGSC():
             gaia_parallax_error, gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
             gaia_pm_dec_error, gaia_ruwe = gaia_data
             
-            k0 = self.k0#Models('Kurucz')
-            k0.read_sam_file(use_sam='Kurucz')
+            k0 = Models('Kurucz')
+            k0.read_sam_file()
             
-            c1 = self.c1#Models('Phoenix')
-            c1.read_sam_file(use_sam='Phoenix')
+            c1 = Models('Phoenix')
+            c1.read_sam_file()
             
-            c2 = self.c2#Models('Phoenix')
-            c2.read_sam_file(use_sam='Phoenix')
+            c2 = Models('Phoenix')
+            c2.read_sam_file()
 
             model_params_k0 = k0.select_sam_range(teff_range=[4000,10000],
                                                 logg_range=None, feh_range=None)
