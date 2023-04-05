@@ -6,6 +6,14 @@ from astroquery.gaia import Gaia
 from astropy.coordinates import SkyCoord
 import astropy.units as u
 
+header = ['objid, RAMean, RAMeanErr, DecMean, DecMeanErr, gPSFMag, \
+    gPSFMagErr, gKronMag, gKronMagErr, rPSFMag, rPSFMagErr, rKronMag, \
+        rKronMagErr, iPSFMag, iPSFMagErr, iKronMag, iKronMagErr, zPSFMag, \
+            zPSFMagErr, zKronMag, zKronMagErr, yPSFMag, yPSFMagErr, yKronMag, \
+                yKronMagErr, objInfoFlag, qualityFlag, nDetections, nStackDetections, \
+                    ginfoFlag, ginfoFlag2, ginfoFlag3, rinfoFlag, rinfoFlag2, rinfoFlag3, \
+                        iinfoFlag, iinfoFlag2, iinfoFlag3, zinfoFlag, zinfoFlag2,zinfoFlag3, \
+                            yinfoFlag, yinfoFlag2, yinfoFlag3']
 
 class GetData():
     """
@@ -47,25 +55,38 @@ class GetData():
         dec_name = str(self.dec).replace('.', '_')
         file_name = 'PS1'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)+'.csv'
         Tap_Service = vo.dal.TAPService("https://vao.stsci.edu/PS1DR2/tapservice.aspx")
-        #Tap_service.describe()
+        Tap_Service.describe()
         Tap_Tables = Tap_Service.tables
-        #for tablename in Tap_Tables.keys():
-            #if not "TAP_schema" in tablename:  
-                #Tap_Tables[tablename].describe()
-                #print("Columns={}".format(sorted([k.name for k in\
-                #                                  Tap_Tables[tablename].columns ])))
-                #print("----")
+        print('table keys=', Tap_Tables.keys())
+        for tablename in Tap_Tables.keys():
+            if not "TAP_schema" in tablename:  
+                Tap_Tables[tablename].describe()
+                print("Columns={}".format(sorted([k.name for k in\
+                                                  Tap_Tables[tablename].columns ])))
+                print("----")
         query = """
             SELECT objID, RAMean, RAMeanErr, DecMean, DecMeanErr, gPSFMag, gPSFMagErr, gKronMag, gKronMagErr, rPSFMag, rPSFMagErr, rKronMag, rKronMagErr, iPSFMag, iPSFMagErr, iKronMag, iKronMagErr, zPSFMag, zPSFMagErr, zKronMag, zKronMagErr, yPSFMag, yPSFMagErr, yKronMag, yKronMagErr, objInfoFlag, qualityFlag, nDetections, nStackDetections, ginfoFlag, ginfoFlag2, ginfoFlag3, rinfoFlag, rinfoFlag2, rinfoFlag3, iinfoFlag, iinfoFlag2, iinfoFlag3, zinfoFlag, zinfoFlag2, zinfoFlag3, yinfoFlag, yinfoFlag2, yinfoFlag3
             FROM dbo.StackObjectView
             WHERE 
             CONTAINS(POINT('ICRS', RAMean, DecMean),CIRCLE('ICRS',{},{},{}))=1
+            AND
+            primaryDetection>0
                 """.format(self.ra,self.dec,0.25)
+
         try:
-            job = Tap_Service.search(query)
-            Tap_Results = job.to_table()
+            #job = Tap_Service.search(query)
+            job = Tap_Service.submit_job(query)
+            job.run()
+            job_url = job.url
+            job = vo.dal.tap.AsyncTAPJob(job_url)
+            #Tap_Results = job.to_table()
+            Tap_Results = job.fetch_result()
+            table = Tap_Results.table
+            print(Tap_Results)
+            #with open("result.csv") as f:
+                #Tap_Results.to_table().write(output=f, header = 'objid, RAMean, RAMeanErr, DecMean, DecMeanErr, gPSFMag, gPSFMagErr, gKronMag, gKronMagErr, rPSFMag, rPSFMagErr, rKronMag, rKronMagErr, iPSFMag, iPSFMagErr, iKronMag, iKronMagErr, zPSFMag, zPSFMagErr, zKronMag, zKronMagErr, yPSFMag, yPSFMagErr, yKronMag, yKronMagErr, objInfoFlag, qualityFlag, nDetections, nStackDetections, ginfoFlag, ginfoFlag2, ginfoFlag3, rinfoFlag, rinfoFlag2, rinfoFlag3, iinfoFlag, iinfoFlag2, iinfoFlag3, zinfoFlag, zinfoFlag2,zinfoFlag3, yinfoFlag, yinfoFlag2, yinfoFlag3', format="csv")
             np.savetxt(str(file_name),\
-                Tap_Results, delimiter=',', header = 'objid, RAMean, RAMeanErr, DecMean, DecMeanErr, gPSFMag, gPSFMagErr, gKronMag, gKronMagErr, rPSFMag, rPSFMagErr, rKronMag, rKronMagErr, iPSFMag, iPSFMagErr, iKronMag, iKronMagErr, zPSFMag, zPSFMagErr, zKronMag, zKronMagErr, yPSFMag, yPSFMagErr, yKronMag, yKronMagErr, objInfoFlag, qualityFlag, nDetections, nStackDetections, ginfoFlag, ginfoFlag2, ginfoFlag3, rinfoFlag, rinfoFlag2, rinfoFlag3, iinfoFlag, iinfoFlag2, iinfoFlag3, zinfoFlag, zinfoFlag2,zinfoFlag3, yinfoFlag, yinfoFlag2, yinfoFlag3')
+                table, delimiter=',', header = 'objid, RAMean, RAMeanErr, DecMean, DecMeanErr, gPSFMag, gPSFMagErr, gKronMag, gKronMagErr, rPSFMag, rPSFMagErr, rKronMag, rKronMagErr, iPSFMag, iPSFMagErr, iKronMag, iKronMagErr, zPSFMag, zPSFMagErr, zKronMag, zKronMagErr, yPSFMag, yPSFMagErr, yKronMag, yKronMagErr, objInfoFlag, qualityFlag, nDetections, nStackDetections, ginfoFlag, ginfoFlag2, ginfoFlag3, rinfoFlag, rinfoFlag2, rinfoFlag3, iinfoFlag, iinfoFlag2, iinfoFlag3, zinfoFlag, zinfoFlag2,zinfoFlag3, yinfoFlag, yinfoFlag2, yinfoFlag3', fmt="%s")
         except Exception:
             raise ValueError('This field is outside the sky coverage of PANSTARRS')
         return Tap_Results
