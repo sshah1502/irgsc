@@ -101,6 +101,29 @@ Ascension and Declination of the source is obtained from the mean photometric in
 | yinfoflag3 | These flags indicate the details of the y filter stack photometry | float|
 
 ## Application of irgsctool on fields
-The method developed for the generation of IRGSC has applied on twenty test fields across the sky. The generaed IRGSC is also valiated using the UKIDSS data available for those fields and the generated as well as validated catalog for these fields can be found in the [generated_irgsc](https://github.com/sshah1502/irgsc/tree/main/generated_irgsc) directory.
+The method developed for the generation of IRGSC has applied on twenty test fields (shown in the following table) across the sky. The generaed IRGSC is also valiated using the UKIDSS data available for those fields and the generated as well as validated catalog for these fields can be found in the [generated_irgsc](https://github.com/sshah1502/irgsc/tree/main/generated_irgsc) directory.
 In addition to the twenty test fields, additional ten catalogs are provided for the PANSTARRS Medium Deep Survey (MDS) Fields [more information available here](https://arxiv.org/abs/1612.05560). Out of eleven MDS fields, one field coincides with M31. Hence it is skipped here since the MDS data is not publically released by the PANSTARRS, the optical data to generate the IRGSC for these fields is been taken from the 3-pi PANSTARRS survey.
 In case of validation using the UKIDSS observed NIR data, certain fields have observations in only one or two out of the J, H and K bands. This package takes care of these issues and validates the generated IRGSC using the available band data.
+
+| R.A. | Decl. | l | b| E(B-V) |
+| :----------- |:------------|:------|:------|:------|
+|227.26	    |0.0		|359.27	    |47.24		|0.04|
+|335.00		|-1.25		|61.96	    |-45.43		|0.07|
+|60.00		|1.25		|188.72	    |-36.53		|0.26|
+|30.00		|0.50		|156.53	    |-57.82		|0.02|
+|11.16	    |7.83		|120.00		|-55.00		|0.04|
+|225.53	    |2.19		|0.00		|50.00		|0.04|
+|269.93	    |-13.48	    |15.00		|5.00		|0.98|
+|334.80	    |50.96	    |100.00		|-5.00		|0.28|
+|324.09     |51.47	    |95.00		|-0.50		|2.48|
+|298.02	    |34.02		|70.00		|3.00		|1.01|
+|0.00   	|0.00		|96.33	    |-60.18		|0.02|
+|34.50		|-5.16		|169.97	    |-59.87		|0.01|
+|36.25		|-4.50		|171.65	    |-58.22		|0.02|
+|164.25		|57.66		|148.39	    |53.43		|0.04|
+|66.75		|15.86		|180.08	    |-22.32		|0.58|
+|82.25		|-2.60		|205.62	    |-19.48		|0.62|
+|189.83 	|0.00		|296.33	    |62.71		|0.01|
+|150.25		|10.00		|227.71		|46.40		|0.03|
+|15.0		|0.90		|127.47	    |-61.89		|0.02|
+|35.0		|-3.50		|168.62 	|-58.28     |0.01|
