@@ -156,13 +156,18 @@ class GenerateIRGSC():
             model_params_c2 = c2.select_sam_range(teff_range=[2800,4000],
                                                 logg_range=[0.0,3.0],
                                                 feh_range=[-0.5,1.5])
-
+            
+            
             teff_c1, logg_c1, feh_c1, sam_g_c1, sam_r_c1, sam_i_c1, sam_z_c1, sam_y_c1, sam_j_c1,\
             sam_h_c1, sam_k_c1 = model_params_c1
             teff_c2, logg_c2, feh_c2, sam_g_c2, sam_r_c2, sam_i_c2, sam_z_c2, sam_y_c2, sam_j_c2,\
             sam_h_c2, sam_k_c2 = model_params_c2
             teff_k0, logg_k0, feh_k0, sam_g_k0, sam_r_k0, sam_i_k0, sam_z_k0, sam_y_k0, sam_j_k0,\
             sam_h_k0, sam_k_k0 = model_params_k0
+            
+            len_c1 = len(teff_c1)
+            len_c2 = len(teff_c2)
+            len_k0 = len(teff_k0)
 
             teff = np.concatenate((teff_c1, teff_c2, teff_k0), axis=0)
             logg = np.concatenate((logg_c1, logg_c2, logg_k0), axis=0)
@@ -215,6 +220,13 @@ class GenerateIRGSC():
                         compute_dquad(j, oc = observed_colours, mc = model_colours)
                     min_dquad_element = find_nearest(dquad_arr,min_dquad)
                     index_best_fit_sam = np.where(min_dquad_element==(dquad_arr))[0]
+                    if index_best_fit_sam<=len_c1:
+                        sam_model = 'Phoenix C1'
+                    elif index_best_fit_sam>len_c1 and index_best_fit_sam <=len_c2:
+                        sam_model = 'Phoenix C2'
+                    elif index_best_fit_sam > len_c2:
+                        sam_model = 'Kurucz'
+                        
                     sf_avg,sigma_sf,computed_j,computed_j_error,computed_h,computed_h_error,\
                         computed_k, computed_k_error=calc_sf(j, observed_optical_magnitudes,\
                                                             e_observed_optical_magnitudes,\
@@ -252,7 +264,7 @@ class GenerateIRGSC():
                                 gaia_ruwe[index_min_ang_seperation][0], objinfoflag[j], qualityflag[j], ndetections[j],\
                                 nstackdetections[j], ginfoflag[j], ginfoflag2[j], ginfoflag3[j], rinfoflag[j], rinfoflag2[j],\
                                 rinfoflag3[j], iinfoflag[j], iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j],\
-                                zinfoflag3[j], yinfoflag[j], yinfoflag2[j], yinfoflag3[j]
+                                zinfoflag3[j], yinfoflag[j], yinfoflag2[j], yinfoflag3[j],sam_model
                             writer.writerow(irgsc_data)
                     elif len(index_min_ang_seperation) == 0.0:
                             irgsc_data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j],\
@@ -269,7 +281,7 @@ class GenerateIRGSC():
                                 qualityflag[j], ndetections[j], nstackdetections[j], ginfoflag[j], ginfoflag2[j],\
                                 ginfoflag3[j], rinfoflag[j], rinfoflag2[j], rinfoflag3[j], iinfoflag[j],\
                                 iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j], zinfoflag3[j],\
-                                yinfoflag[j], yinfoflag2[j], yinfoflag3[j]
+                                yinfoflag[j], yinfoflag2[j], yinfoflag3[j], sam_model
                             writer.writerow(irgsc_data)
                     elif len(index_min_ang_seperation) == 1.0:
                             irgsc_data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j],\
@@ -291,6 +303,6 @@ class GenerateIRGSC():
                                 objinfoflag[j], qualityflag[j], ndetections[j], nstackdetections[j], ginfoflag[j],\
                                 ginfoflag2[j], ginfoflag3[j], rinfoflag[j], rinfoflag2[j], rinfoflag3[j], iinfoflag[j],\
                                 iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j], zinfoflag3[j], yinfoflag[j],\
-                                iinfoflag2[j], yinfoflag3[j]
+                                iinfoflag2[j], yinfoflag3[j], sam_model
                             writer.writerow(irgsc_data)
         return irgsc_data
