@@ -221,11 +221,11 @@ class GenerateIRGSC():
                     min_dquad_element = find_nearest(dquad_arr,min_dquad)
                     index_best_fit_sam = np.where(min_dquad_element==(dquad_arr))[0]
                     if index_best_fit_sam<=len_c1:
-                        sam_model = 'Phoenix C1'
+                        sam_model = 'c1'
                     elif index_best_fit_sam>len_c1 and index_best_fit_sam <=len_c2:
-                        sam_model = 'Phoenix C2'
+                        sam_model = 'c2'
                     elif index_best_fit_sam > len_c2:
-                        sam_model = 'Kurucz'
+                        sam_model = 'K0'
                         
                     sf_avg,sigma_sf,computed_j,computed_j_error,computed_h,computed_h_error,\
                         computed_k, computed_k_error=calc_sf(j, observed_optical_magnitudes,\
