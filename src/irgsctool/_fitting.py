@@ -82,7 +82,6 @@ def compute_dquad(j, oc, mc):
         return dquad, np.min(dquad), dev_gr, dev_gi, dev_gz, dev_gy, dev_ri,\
             dev_rz, dev_ry, dev_iz, dev_iy, dev_zy
 
-
 class GenerateIRGSC():
     """
         <justify> The *** GenerateIRGSC class *** hosts method to generate a catalog of
@@ -229,31 +228,59 @@ class GenerateIRGSC():
                             min_gaia_ang_seperation = gaia_angular_seperation\
                                 [np.where(np.min(gaia_ang_seperation_selected)\
                                           == gaia_angular_seperation)[0]]
-
                             index_min_ang_seperation = np.where(min_gaia_ang_seperation \
                                                                 == gaia_angular_seperation)[0]
-
-                            irgsc_data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], \
-                                err_ps_dec[j], ec_gmag[j], e_ec_gmag[j], ec_rmag[j], \
-                                e_ec_rmag[j], ec_imag[j], e_ec_imag[j], ec_zmag[j], \
-                                e_ec_zmag[j], ec_ymag[j], e_ec_ymag[j], teff[index_best_fit_sam][0], \
-                                logg[index_best_fit_sam][0], feh[index_best_fit_sam][0], \
-                                sam_g[index_best_fit_sam][0], sam_r[index_best_fit_sam][0], sam_i[index_best_fit_sam][0], \
-                                sam_z[index_best_fit_sam][0], sam_y[index_best_fit_sam][0], sam_j[index_best_fit_sam][0],\
-                                sam_h[index_best_fit_sam][0], sam_k[index_best_fit_sam][0], sf_avg[0], sigma_sf,\
-                                min_dquad_element, computed_j[0], computed_j_error, computed_h[0],\
-                                computed_h_error, computed_k[0], computed_k_error,\
-                                gaia_source_id[index_min_ang_seperation][0], gaia_ra[index_min_ang_seperation][0],\
-                                gaia_ra_error[index_min_ang_seperation][0], gaia_dec[index_min_ang_seperation][0],\
-                                gaia_dec_error[index_min_ang_seperation][0], gaia_parallax[index_min_ang_seperation][0],\
-                                gaia_parallax_error[index_min_ang_seperation][0], gaia_pm[index_min_ang_seperation][0],\
-                                gaia_pm_ra[index_min_ang_seperation][0], gaia_pm_ra_error[index_min_ang_seperation][0],\
-                                gaia_pm_dec[index_min_ang_seperation][0], gaia_pm_dec_error[index_min_ang_seperation][0],\
-                                gaia_ruwe[index_min_ang_seperation][0], objinfoflag[j], qualityflag[j], ndetections[j],\
-                                nstackdetections[j], ginfoflag[j], ginfoflag2[j], ginfoflag3[j], rinfoflag[j], rinfoflag2[j],\
-                                rinfoflag3[j], iinfoflag[j], iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j],\
-                                zinfoflag3[j], yinfoflag[j], yinfoflag2[j], yinfoflag3[j]
-                            writer.writerow(irgsc_data)
+                            index_min_ang_seperation = np.int64(index_min_ang_seperation)
+                            if (gaia_parallax[index_min_ang_seperation]) == np.nan:
+                                    print('yes0')
+                                    gaia_parallax = -999
+                                    gaia_parallax_error	= -999
+                                    gaia_pm	= -999
+                                    gaia_pm_ra = -999
+                                    gaia_pm_ra_error = -999
+                                    gaia_pm_dec = -999
+                                    gaia_pm_dec_error = -999
+                                    gaia_ruwe = -999
+                                    irgsc_data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j],\
+                                        ec_gmag[j], e_ec_gmag[j], ec_rmag[j], e_ec_rmag[j], ec_imag[j],\
+                                        e_ec_imag[j], ec_zmag[j], e_ec_zmag[j], ec_ymag[j], e_ec_ymag[j],\
+                                        teff[index_best_fit_sam][0], logg[index_best_fit_sam][0], feh[index_best_fit_sam][0], \
+                                        sam_g[index_best_fit_sam][0], sam_r[index_best_fit_sam][0], sam_i[index_best_fit_sam][0], \
+                                        sam_z[index_best_fit_sam][0], sam_y[index_best_fit_sam][0], sam_j[index_best_fit_sam][0],\
+                                        sam_h[index_best_fit_sam][0], sam_k[index_best_fit_sam][0], sf_avg[0], sigma_sf,\
+                                        min_dquad_element, computed_j[0], computed_j_error, computed_h[0],\
+                                        computed_h_error, computed_k[0], computed_k_error, gaia_source_id[index_min_ang_seperation][0],\
+                                        gaia_ra[index_min_ang_seperation][0], gaia_ra_error[index_min_ang_seperation][0],\
+                                        gaia_dec[index_min_ang_seperation][0], gaia_dec_error[index_min_ang_seperation][0],\
+                                        gaia_parallax, gaia_parallax_error,\
+                                        gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
+                                        gaia_pm_dec_error, gaia_ruwe, objinfoflag[j], qualityflag[j], ndetections[j], nstackdetections[j], ginfoflag[j],\
+                                        ginfoflag2[j], ginfoflag3[j], rinfoflag[j], rinfoflag2[j], rinfoflag3[j], iinfoflag[j],\
+                                        iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j], zinfoflag3[j], yinfoflag[j],\
+                                        iinfoflag2[j], yinfoflag3[j]
+                                    writer.writerow(irgsc_data)
+                            else:
+                                irgsc_data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j],\
+                                    ec_gmag[j], e_ec_gmag[j], ec_rmag[j], e_ec_rmag[j], ec_imag[j],\
+                                    e_ec_imag[j], ec_zmag[j], e_ec_zmag[j], ec_ymag[j], e_ec_ymag[j],\
+                                    teff[index_best_fit_sam][0], \
+                                    logg[index_best_fit_sam][0], feh[index_best_fit_sam][0], \
+                                    sam_g[index_best_fit_sam][0], sam_r[index_best_fit_sam][0], sam_i[index_best_fit_sam][0], \
+                                    sam_z[index_best_fit_sam][0], sam_y[index_best_fit_sam][0], sam_j[index_best_fit_sam][0],\
+                                    sam_h[index_best_fit_sam][0], sam_k[index_best_fit_sam][0], sf_avg[0], sigma_sf,\
+                                    min_dquad_element, computed_j[0], computed_j_error, computed_h[0],\
+                                    computed_h_error, computed_k[0], computed_k_error, gaia_source_id[index_min_ang_seperation][0],\
+                                    gaia_ra[index_min_ang_seperation][0], gaia_ra_error[index_min_ang_seperation][0],\
+                                    gaia_dec[index_min_ang_seperation][0], gaia_dec_error[index_min_ang_seperation][0],\
+                                    gaia_parallax[index_min_ang_seperation][0], gaia_parallax_error[index_min_ang_seperation][0],\
+                                    gaia_pm[index_min_ang_seperation][0], gaia_pm_ra[index_min_ang_seperation][0],\
+                                    gaia_pm_ra_error[index_min_ang_seperation][0], gaia_pm_dec[index_min_ang_seperation][0],\
+                                    gaia_pm_dec_error[index_min_ang_seperation][0], gaia_ruwe[index_min_ang_seperation][0],\
+                                    objinfoflag[j], qualityflag[j], ndetections[j], nstackdetections[j], ginfoflag[j],\
+                                    ginfoflag2[j], ginfoflag3[j], rinfoflag[j], rinfoflag2[j], rinfoflag3[j], iinfoflag[j],\
+                                    iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j], zinfoflag3[j], yinfoflag[j],\
+                                    iinfoflag2[j], yinfoflag3[j]
+                                writer.writerow(irgsc_data)
                     elif len(index_min_ang_seperation) == 0.0:
                             irgsc_data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j],\
                                 ec_gmag[j], e_ec_gmag[j], ec_rmag[j], e_ec_rmag[j], ec_imag[j],\
@@ -272,25 +299,54 @@ class GenerateIRGSC():
                                 yinfoflag[j], yinfoflag2[j], yinfoflag3[j]
                             writer.writerow(irgsc_data)
                     elif len(index_min_ang_seperation) == 1.0:
-                            irgsc_data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j],\
-                                ec_gmag[j], e_ec_gmag[j], ec_rmag[j], e_ec_rmag[j], ec_imag[j],\
-                                e_ec_imag[j], ec_zmag[j], e_ec_zmag[j], ec_ymag[j], e_ec_ymag[j],\
-                                teff[index_best_fit_sam][0], \
-                                logg[index_best_fit_sam][0], feh[index_best_fit_sam][0], \
-                                sam_g[index_best_fit_sam][0], sam_r[index_best_fit_sam][0], sam_i[index_best_fit_sam][0], \
-                                sam_z[index_best_fit_sam][0], sam_y[index_best_fit_sam][0], sam_j[index_best_fit_sam][0],\
-                                sam_h[index_best_fit_sam][0], sam_k[index_best_fit_sam][0], sf_avg[0], sigma_sf,\
-                                min_dquad_element, computed_j[0], computed_j_error, computed_h[0],\
-                                computed_h_error, computed_k[0], computed_k_error, gaia_source_id[index_min_ang_seperation][0],\
-                                gaia_ra[index_min_ang_seperation][0], gaia_ra_error[index_min_ang_seperation][0],\
-                                gaia_dec[index_min_ang_seperation][0], gaia_dec_error[index_min_ang_seperation][0],\
-                                gaia_parallax[index_min_ang_seperation][0], gaia_parallax_error[index_min_ang_seperation][0],\
-                                gaia_pm[index_min_ang_seperation][0], gaia_pm_ra[index_min_ang_seperation][0],\
-                                gaia_pm_ra_error[index_min_ang_seperation][0], gaia_pm_dec[index_min_ang_seperation][0],\
-                                gaia_pm_dec_error[index_min_ang_seperation][0], gaia_ruwe[index_min_ang_seperation][0],\
-                                objinfoflag[j], qualityflag[j], ndetections[j], nstackdetections[j], ginfoflag[j],\
-                                ginfoflag2[j], ginfoflag3[j], rinfoflag[j], rinfoflag2[j], rinfoflag3[j], iinfoflag[j],\
-                                iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j], zinfoflag3[j], yinfoflag[j],\
-                                iinfoflag2[j], yinfoflag3[j]
-                            writer.writerow(irgsc_data)
-        return irgsc_data
+                            if (gaia_parallax[index_min_ang_seperation]) == np.nan:
+                                    print('yes1')
+                                    gaia_parallax = -999
+                                    gaia_parallax_error	= -999
+                                    gaia_pm	= -999
+                                    gaia_pm_ra = -999
+                                    gaia_pm_ra_error = -999
+                                    gaia_pm_dec = -999
+                                    gaia_pm_dec_error = -999
+                                    gaia_ruwe = -999
+                                    irgsc_data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j],\
+                                        ec_gmag[j], e_ec_gmag[j], ec_rmag[j], e_ec_rmag[j], ec_imag[j],\
+                                        e_ec_imag[j], ec_zmag[j], e_ec_zmag[j], ec_ymag[j], e_ec_ymag[j],\
+                                        teff[index_best_fit_sam][0], logg[index_best_fit_sam][0], feh[index_best_fit_sam][0], \
+                                        sam_g[index_best_fit_sam][0], sam_r[index_best_fit_sam][0], sam_i[index_best_fit_sam][0], \
+                                        sam_z[index_best_fit_sam][0], sam_y[index_best_fit_sam][0], sam_j[index_best_fit_sam][0],\
+                                        sam_h[index_best_fit_sam][0], sam_k[index_best_fit_sam][0], sf_avg[0], sigma_sf,\
+                                        min_dquad_element, computed_j[0], computed_j_error, computed_h[0],\
+                                        computed_h_error, computed_k[0], computed_k_error, gaia_source_id[index_min_ang_seperation][0],\
+                                        gaia_ra[index_min_ang_seperation][0], gaia_ra_error[index_min_ang_seperation][0],\
+                                        gaia_dec[index_min_ang_seperation][0], gaia_dec_error[index_min_ang_seperation][0],\
+                                        gaia_parallax, gaia_parallax_error,\
+                                        gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
+                                        gaia_pm_dec_error, gaia_ruwe, objinfoflag[j], qualityflag[j], ndetections[j], nstackdetections[j], ginfoflag[j],\
+                                        ginfoflag2[j], ginfoflag3[j], rinfoflag[j], rinfoflag2[j], rinfoflag3[j], iinfoflag[j],\
+                                        iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j], zinfoflag3[j], yinfoflag[j],\
+                                        iinfoflag2[j], yinfoflag3[j]
+                                    writer.writerow(irgsc_data)
+                            else:
+                                irgsc_data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], err_ps_dec[j],\
+                                    ec_gmag[j], e_ec_gmag[j], ec_rmag[j], e_ec_rmag[j], ec_imag[j],\
+                                    e_ec_imag[j], ec_zmag[j], e_ec_zmag[j], ec_ymag[j], e_ec_ymag[j],\
+                                    teff[index_best_fit_sam][0], \
+                                    logg[index_best_fit_sam][0], feh[index_best_fit_sam][0], \
+                                    sam_g[index_best_fit_sam][0], sam_r[index_best_fit_sam][0], sam_i[index_best_fit_sam][0], \
+                                    sam_z[index_best_fit_sam][0], sam_y[index_best_fit_sam][0], sam_j[index_best_fit_sam][0],\
+                                    sam_h[index_best_fit_sam][0], sam_k[index_best_fit_sam][0], sf_avg[0], sigma_sf,\
+                                    min_dquad_element, computed_j[0], computed_j_error, computed_h[0],\
+                                    computed_h_error, computed_k[0], computed_k_error, gaia_source_id[index_min_ang_seperation][0],\
+                                    gaia_ra[index_min_ang_seperation][0], gaia_ra_error[index_min_ang_seperation][0],\
+                                    gaia_dec[index_min_ang_seperation][0], gaia_dec_error[index_min_ang_seperation][0],\
+                                    gaia_parallax[index_min_ang_seperation][0], gaia_parallax_error[index_min_ang_seperation][0],\
+                                    gaia_pm[index_min_ang_seperation][0], gaia_pm_ra[index_min_ang_seperation][0],\
+                                    gaia_pm_ra_error[index_min_ang_seperation][0], gaia_pm_dec[index_min_ang_seperation][0],\
+                                    gaia_pm_dec_error[index_min_ang_seperation][0], gaia_ruwe[index_min_ang_seperation][0],\
+                                    objinfoflag[j], qualityflag[j], ndetections[j], nstackdetections[j], ginfoflag[j],\
+                                    ginfoflag2[j], ginfoflag3[j], rinfoflag[j], rinfoflag2[j], rinfoflag3[j], iinfoflag[j],\
+                                    iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j], zinfoflag3[j], yinfoflag[j],\
+                                    iinfoflag2[j], yinfoflag3[j]
+                                writer.writerow(irgsc_data)
+                return irgsc_data

@@ -52,6 +52,7 @@ plugins:
         - docs
   - glightbox
   - search
+  - with-pdf
 
 nav:
   - Home : index.md

@@ -4,6 +4,7 @@ import pyvo as vo
 from astroquery.ukidss import Ukidss
 from astroquery.gaia import Gaia
 from astropy.coordinates import SkyCoord
+from astropy.coordinates import ICRS
 import astropy.units as u
 
 header = ['objid, RAMean, RAMeanErr, DecMean, DecMeanErr, gPSFMag, \
@@ -106,6 +107,8 @@ class GetData():
         #for table in (tables):
             #print (table.get_qualified_name())
         coord = SkyCoord(ra=self.ra, dec=self.dec, unit=(u.degree, u.degree), frame='icrs')
+        sc = SkyCoord(ra=self.ra, dec=self.dec, unit=(u.degree, u.degree), frame='icrs', equinox='J2000.0')
+        coord.transform_to(sc)
         Gaia.MAIN_GAIA_TABLE = "gaiadr3.gaia_source"
         Gaia.ROW_LIMIT = -1
         try:
