@@ -232,7 +232,6 @@ class GenerateIRGSC():
                                                                 == gaia_angular_seperation)[0]
                             index_min_ang_seperation = np.int64(index_min_ang_seperation)
                             if (gaia_parallax[index_min_ang_seperation]) == np.nan:
-                                    print('yes0')
                                     gaia_parallax = -999
                                     gaia_parallax_error	= -999
                                     gaia_pm	= -999
@@ -300,7 +299,6 @@ class GenerateIRGSC():
                             writer.writerow(irgsc_data)
                     elif len(index_min_ang_seperation) == 1.0:
                             if (gaia_parallax[index_min_ang_seperation]) == np.nan:
-                                    print('yes1')
                                     gaia_parallax = -999
                                     gaia_parallax_error	= -999
                                     gaia_pm	= -999
