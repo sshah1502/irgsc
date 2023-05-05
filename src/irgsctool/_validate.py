@@ -188,7 +188,7 @@ class ValidateIRGSC():
                                 gaia_ruwe, objinfoflag, qualityflag, ndetections, nstackdetections,\
                                 ginfoflag, ginfoflag2, ginfoflag3, rinfoflag, rinfoflag2, rinfoflag3,\
                                     iinfoflag, iinfoflag2, iinfoflag3, zinfoflag, zinfoflag2,\
-                                    zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3 = irgsc_data
+                                    zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3, sam_flag = irgsc_data
         
         validate_params=[]; ob_j = []; e_ob_j = []; ob_h = []; e_ob_h = []; ob_k = []; e_ob_k = []
         diff_jf = []; diff_hf = []; diff_kf = []
