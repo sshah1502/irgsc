@@ -2,7 +2,7 @@
 """
 from irgsctool import ValidateIRGSC
 
-v = ValudateIRGSC(0.0,0.0)
+v = ValidateIRGSC(0.0,0.0)
 
 def test_read_irgsc():
   """
