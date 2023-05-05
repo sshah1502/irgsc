@@ -26,18 +26,19 @@ def find_nearest(array, value):
         idx = (np.abs(array - value)).argmin()
         return array[idx]
 
-header = ['ps1_objid', 'ps1_ra', 'ps1_ra_error', 'ps1_dec', 'ps1_dec_error', 'ps1_gpsf', 'ps1_gpsf_error', \
-'ps1_rpsf', 'ps1_rpsf_error', 'ps1_ipsf', 'ps1_ipsf_error', 'ps1_zpsf', 'ps1_zpsf_error', 'ps1_ypsf',\
-'ps1_ypsf_error', 'teff', 'logg', 'feh', 'sam_g','sam_r','sam_i','sam_z','sam_y','sam_j','sam_h',\
-'sam_k', 'scale_factor', 'scale_factor_error', 'chi2', 'computed_j', 'computed_j_error', 'computed_h',\
-'computed_h_error', 'computed_k', 'computed_k_error', 'gaia_source_id', 'gaia_ra', 'gaia_ra_error',\
-'gaia_dec', 'gaia_dec_error', 'gaia_parallax', 'gaia_parallax_error', 'gaia_pm', 'gaia_pm_ra',\
-'gaia_pm_ra_error', 'gaia_pm_dec', 'gaia_pm_dec_error', 'gaia_ruwe', 'objinfoflag',\
-'qualityflag', 'ndetections', 'nstackdetections', 'ginfoflag', 'ginfoflag2',\
-'ginfoflag3', 'rinfoflag', 'rinfoflag2', 'rinfoflag3','iinfoflag', 'iinfoflag2',\
-'iinfoflag3','zinfoflag', 'zinfoflag2', 'zinfoflag3', 'yinfoflag', 'yinfoflag2',\
-'yinfoflag3', 'diff_j', 'diff_h', 'diff_k', 'observed_j', 'obseved_j_error',\
-'observed_h', 'observed_h_error', 'observed_k', 'observed_k_error']
+header = ['ps1_objid','ps1_ra','ps1_ra_error','ps1_dec','ps1_dec_error',\
+'ps1_gpsf','ps1_gpsf_error','ps1_rpsf','ps1_rpsf_error','ps1_ipsf',\
+'ps1_ipsf_error','ps1_zpsf','ps1_zpsf_error','ps1_ypsf','ps1_ypsf_error',\
+'teff','logg','feh','sam_g','sam_r','sam_i','sam_z','sam_y','sam_j','sam_h',\
+'sam_k','scale_factor','scale_factor_error','chi2','computed_j',\
+'computed_j_error','computed_h','computed_h_error', 'computed_k',\
+'computed_k_error','gaia_source_id','gaia_ra','gaia_ra_error','gaia_dec',\
+'gaia_dec_error','gaia_parallax','gaia_parallax_error','gaia_pm','gaia_pm_ra',\
+'gaia_pm_ra_error','gaia_pm_dec','gaia_pm_dec_error','gaia_ruwe','objinfoflag',\
+'qualityflag','ndetections','nstackdetections','ginfoflag','ginfoflag2',\
+'ginfoflag3','rinfoflag','rinfoflag2','rinfoflag3','iinfoflag','iinfoflag2',\
+'iinfoflag3','zinfoflag','zinfoflag2','zinfoflag3','yinfoflag','yinfoflag2',\
+'yinfoflag3', 'SAM Flag']
 
 class ValidateIRGSC():
     """
@@ -139,6 +140,8 @@ class ValidateIRGSC():
         yinfoflag = irgsc_data[:,64]
         yinfoflag2 = irgsc_data[:,65]
         yinfoflag3 = irgsc_data[:,66]
+        sam_flag = irgsc_data[:,67]
+
 
         irgsc_data = ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, e_ec_gmag, ec_rmag, e_ec_rmag,\
             ec_imag, e_ec_imag, ec_zmag, e_ec_zmag, ec_ymag, e_ec_ymag, teff, logg, feh, sam_g,\
@@ -149,7 +152,7 @@ class ValidateIRGSC():
                         gaia_pm_dec_error, gaia_ruwe, objinfoflag, qualityflag, ndetections,\
                         nstackdetections, ginfoflag, ginfoflag2, ginfoflag3, rinfoflag, rinfoflag2,\
                             rinfoflag3, iinfoflag, iinfoflag2, iinfoflag3, zinfoflag, zinfoflag2,\
-                            zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3
+                            zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3, sam_flag
         return irgsc_data
 
     def validate(self, validate=None):
@@ -188,7 +191,7 @@ class ValidateIRGSC():
                                 gaia_ruwe, objinfoflag, qualityflag, ndetections, nstackdetections,\
                                 ginfoflag, ginfoflag2, ginfoflag3, rinfoflag, rinfoflag2, rinfoflag3,\
                                     iinfoflag, iinfoflag2, iinfoflag3, zinfoflag, zinfoflag2,\
-                                    zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3 = irgsc_data
+                                    zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3, sam_flag = irgsc_data
         
         validate_params=[]; ob_j = []; e_ob_j = []; ob_h = []; e_ob_h = []; ob_k = []; e_ob_k = []
         diff_jf = []; diff_hf = []; diff_kf = []
@@ -215,7 +218,7 @@ class ValidateIRGSC():
                     gaia_ra[i1], gaia_ra_error[i1], gaia_dec[i1], gaia_dec_error[i1], gaia_parallax[i1], gaia_parallax_error[i1], gaia_pm[i1], gaia_pm_ra[i1],\
                     gaia_pm_ra_error[i1], gaia_pm_dec[i1], gaia_pm_dec_error[i1], gaia_ruwe[i1], objinfoflag[i1], qualityflag[i1], ndetections[i1], nstackdetections[i1],\
                     ginfoflag[i1], ginfoflag2[i1], ginfoflag3[i1], rinfoflag[i1], rinfoflag2[i1], rinfoflag3[i1], iinfoflag[i1], iinfoflag2[i1], iinfoflag3[i1],\
-                    zinfoflag[i1], zinfoflag2[i1], zinfoflag3[i1], yinfoflag[i1], yinfoflag2[i1], yinfoflag3[i1], diff_j, diff_h, diff_k,\
+                    zinfoflag[i1], zinfoflag2[i1], zinfoflag3[i1], yinfoflag[i1], yinfoflag2[i1], yinfoflag3[i1], sam_flag[i1], diff_j, diff_h, diff_k,\
                     ukidss_j[index_minimum_seperation], e_ukidss_j[index_minimum_seperation], ukidss_h[index_minimum_seperation], e_ukidss_h[index_minimum_seperation],\
                     ukidss_k[index_minimum_seperation], e_ukidss_k[index_minimum_seperation]
                     writer.writerow(validate_params)
