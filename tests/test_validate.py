@@ -13,7 +13,8 @@ def test_read_irgsc():
   table is being read
   """
   
-  tab = v.read_irgsc()
+  irgsc_data = v.read_irgsc()
   
-  assert len(tab)>1
-  assert len(tab.keys())==68
+  assert len(irgsc_data)==68
+  assert len(irgsc_data[0])>1
+  
