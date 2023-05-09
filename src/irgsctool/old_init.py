@@ -72,3 +72,50 @@ class irgsc(GetData, ReadData, StarGalaxyClassification, ExtinctionCorrection, M
         if self.ra < 0.0 or self.dec<-30.0:
             raise ValueError('Please check the input coordinates')
             sys.exit(0)
+
+        ra_name = str(self.ra).replace('.','_')
+        dec_name = str(self.dec).replace('.', '_')
+
+
+        #Checking whether UKIDSS data is available for the given field.
+        ###If yes then obtaining it.
+
+        file_name = 'UKIDSS'+'_'+'ra'+str(ra_name)+'DEC'+str(dec_name)
+        try:
+            validating_data = np.genfromtxt(file_name+'.csv')
+        except FileNotFoundError:
+            gd.get_ukidss_data(self.ra, self.dec)
+            validating_data = rd.read_nir_data(self.ra, self.dec)
+            self.validate = True
+            if len(validating_data) == 0.0:
+                self.validate = False
+                raise ValueError('UKIDSS Observed NIR data not available.\
+                                 Validation of the generated IRGSC is not\
+                                 possible for this field!!!')
+            sys.exit(0)
+
+        ###Obtaining the PANSTARRS data for the given field.
+
+        file_name ='PS1'+'_'+'ra'+str(ra_name)+'DEC'+str(dec_name)
+        if file_name exists:
+            optical_data = np.genfromtxt(file_name + '.csv')
+        else:
+                gd.get_panstarrs_data(self.ra, self.dec)
+                optical_data = np.genfromtxt(file_name + '.csv')
+                if len(optical_data) == 0.0:
+                    raise ValueError('Optical data is outside the range of PANSTARRS 3-pi survey.\
+                                 Please check the input coordinates!!!')
+            sys.exit(0)
+
+        #Obtaining the GAIA data for the given field
+
+        file_name = 'GAIA' + '_' + 'ra'+str(ra_name) + 'DEC' + str(dec_name)
+        try:
+            gaia_data = np.genfromtxt(file_name + '.csv')
+        except FileNotFoundError:
+            gd.get_gaia_data(self.ra, self.dec)
+            gaia_data = np.genfromtxt(file_name + '.csv')
+            if len(gaia_data) == 0.0:
+                warnings.warn('GAIA data not available for this field!!!\
+                                The generated catalog will contain -999\
+                                    values for GAIA information.')

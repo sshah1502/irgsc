@@ -62,7 +62,7 @@ class ExtinctionCorrection():
                         aj = 0.709*snf_ebv
                         ah = 0.449*snf_ebv
                         ak = 0.302*snf_ebv
-                return snf_ebv, err_snf_ebv, aj, ah, ak
+                return snf_ebv, err_snf_ebv, aj,ah,ak
 
         def extinction_corrected_photometry(self):
                 """
@@ -83,6 +83,7 @@ class ExtinctionCorrection():
                 print("")
 
                 ebv, err_ebv,_,_,_ = self.get_reddening()
+                print('ebv=', ebv)
                 ps_phot = self.sgc.star_galaxy_classification()
                 print('')
                 print('Length of PS1 data before ec is:', len(ps_phot[0]))
@@ -100,9 +101,8 @@ class ExtinctionCorrection():
                 az = (ebv)*0.88*(1.499 - 0.0023*(gpsf - ipsf))
                 ay = (ebv)*0.88*(1.251 - 0.0027*(gpsf - ipsf))
 
-                e_gi = np.sqrt(e_gpsf**2 + e_ipsf**2)
-
                 #error in extinction
+                e_gi = np.sqrt(e_gpsf**2 + e_ipsf**2)
                 e_ag = ((err_ebv)*(3.613 - 0.0972*(gpsf - ipsf) + 0.02*(gpsf - ipsf)**2))+\
                         ((ebv)*((-0.0972*e_gi)+(0.02*(gpsf - ipsf)*e_gi)))
                 e_ar = (err_ebv)*(2.585 - 0.0315*(gpsf - ipsf)) + (ebv)*(-0.0315*e_gi)

@@ -44,16 +44,23 @@ class ReadData():
         """
         ra_name = str(self.ra).replace('.','_')
         dec_name = str(self.dec).replace('.', '_')
-        file_name = 'PS1' + '_' + 'RA'+str(ra_name) + 'DEC' + str(dec_name)
-        try:
-            ps1_data = np.genfromtxt(str(file_name) +'.csv',\
+        file_name = 'PS1' + '_' + 'RA'+str(ra_name) + 'DEC' + str(dec_name)+'.csv'
+
+        if os.path.exists(file_name) is True:
+            print('File exists:', file_name)
+            ps1_data = np.genfromtxt(str(file_name),\
                                      delimiter=',', skip_header=1)
  
-        except FileNotFoundError:
+        #except FileNotFoundError:
+        else:
+            print("")
+            print('File not present. So obtaining the data from PANSTARRS')
+            print("")
             self.gd.get_panstarrs_data()
-            ps1_data = np.genfromtxt(str(file_name) +'.csv',\
+            ps1_data = np.genfromtxt(str(file_name),\
                                      delimiter=',', skip_header=1)
         ps1_objid = ps1_data[:,0]
+        print('ps_oid=', len(ps1_objid))
         ps_ra = ps1_data[:,1]
         err_ps_ra = ps1_data[:,2]
         ps_dec = ps1_data[:,3]
@@ -107,10 +114,10 @@ class ReadData():
             zinfoflag, zinfoflag2, zinfoflag3, yinfoflag, yinfoflag2,\
             yinfoflag3
 
-        print('Number of rows in the PANSTARRS file:', len(ps1_objid))
-
+        print('Number of sources before duplicate filter is:', len(ps1_objid))
+        #removing duplicate entries if any
         oid1 = np.array([list(set(ps1_objid))])[0]
-        oid1 = [*set(ps1_objid)]
+        #oid1 = [*set(ps1_objid)]
         ptsf = []
         for i in range(len(oid1)):
             ptsi = np.where(oid1[i]==ps1_objid)[0]
@@ -120,6 +127,8 @@ class ReadData():
                 ptsf = np.int64(ptsf)
             else:
                  ptsf = np.append(ptsf, ptsi)
+        
+        print('Number of rows in the PANSTARRS file:', len(ps1_objid), len(ptsf))
 
         ps1_objid = ps1_objid[ptsf]
         ps_ra = ps_ra[ptsf]
@@ -195,9 +204,9 @@ class ReadData():
                                         (e_zmag != -999) & (e_ymag != -999) &\
                                         (gkron!= -999) & (ikron!= -999) &\
                                         (zkron != -999) & (ykron != -999) &\
-                                        (rkron != -999) & (e_gmag < 0.2) &\
-                                        (e_rmag < 0.2) & (e_imag < 0.2) &\
-                                        (e_zmag < 0.2) & (e_ymag < 0.2))[0]
+                                        (rkron != -999) & (e_gkron != -999) & \
+                                        (e_rkron != -999) & (e_ikron != -999) & \
+                                        (e_zkron != -999) & (e_ykron != -999))[0]
 
         print('Number of sources having detections in five optical bands=',\
               len(indices_all_filtered))
@@ -769,9 +778,9 @@ class ReadData():
             
             ra_name = str(self.ra).replace('.','_')
             dec_name = str(self.dec).replace('.', '_')    
-            file_name = 'GAIA'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)
-            try:
-                gaia_data = np.genfromtxt(str(file_name)+'.csv',delimiter=',',skip_header=1)
+            file_name = 'GAIA'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)+'.csv'
+            if os.path.exists(file_name) is True:
+                gaia_data = np.genfromtxt(str(file_name),delimiter=',',skip_header=1)
                 gaia_source_id = gaia_data[:,0]
                 gaia_ra = gaia_data[:,1]
                 gaia_ra_error = gaia_data[:,2]
@@ -789,9 +798,9 @@ class ReadData():
                     gaia_dec_error, gaia_parallax, gaia_parallax_error,\
                     gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
                     gaia_pm_dec_error, gaia_ruwe
-            except FileNotFoundError:
+            else:
                 self.gd.get_gaia_data()
-                gaia_data=np.genfromtxt(str(file_name)+'.csv',delimiter=',',\
+                gaia_data=np.genfromtxt(str(file_name),delimiter=',',\
                                         skip_header=1)
                 gaia_source_id = gaia_data[:,0]
                 gaia_ra = gaia_data[:,1]
