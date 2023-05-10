@@ -1,7 +1,7 @@
 """Test for checking SED fitting
 """
 from irgsctool import GenerateIRGSC
-from irgsctool._fitting import find_nearest, calc_sf, compute_dquad
+from irgsctool._fitting import find_nearest, calc_sf, compute_ddev
 from datetime import date
 import pandas as pd
 import os
