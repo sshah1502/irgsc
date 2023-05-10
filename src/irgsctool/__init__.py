@@ -1,4 +1,11 @@
+"""
+irgsc class checks whether IRGSC can be generated for the given set of coordinates
+"""
+#python.linting.pylintArgs: [ "--disable=missing-module-docstring", \
+# "--disable=missing-class-docstring", "--disable=missing-function-docstring"]
 #pylint: disable=wrong-import-position
+# pylint: disable=super-init-not-called
+
 import sys
 import os
 from datetime import date
@@ -25,7 +32,7 @@ __author__ = "Sarang Shah"
 __copyright__ = "Copyright 2023, TMT/DMS/IRGSC"
 __credits__ = ["Sarang Shah"]
 __license__ = "MIT"
-__version__ = "0.1.1"
+__version__ = "0.1"
 __maintainer__ = "Sarang Shah"
 __email__ = "sarang.itcc@iiap.res.in"
 __status__ = "Development"
@@ -35,27 +42,18 @@ class irgsc(GetData, ReadData, StarGalaxyClassification, ExtinctionCorrection, M
             GenerateIRGSC, ValidateIRGSC):
     """
     ------------------------------------------
-    Initialisation of child *** irgsc class ***. This class has several child classes.
+    Initialisation of *** irgsc class ***. This class is dependant on several other classes
+    like GetData, ReadData, StarGalaxyClassification, ExtinctionCorrection, Models, GenerateIRGSC,
+    ValidateIRGSC.
     """
-    print ('##########################################################################')
-    print("")
-    print('Initializing')
-    print("")
-    print ('##########################################################################')
-    print("")
-
     def __init__(self, ra, dec, validate=None):
         """
-        This method described using input  ra and dec.
-        It checks whther the data from PANSTARRS DR2, UKISS DR11 and
-        Gaia DR3 can be obtained.
+        This method describes using input ra and dec.
+        It checks whther the IRGSC can be generated for a given set of input coordinates.
         Raises:
             ValueError: if the data is not available in UKIDSS or
                         PANSTARRS 3-pi survey. The code will not\
                              proceed further.
-            Warning: if the data is not available in the Gaia DR3\
-                        survey. In the IRGSC, the Gaia values will\
-                            be replaces with -999.
 
         """
         print('')
@@ -72,3 +70,4 @@ class irgsc(GetData, ReadData, StarGalaxyClassification, ExtinctionCorrection, M
         if self.ra < 0.0 or self.dec<-30.0:
             raise ValueError('Please check the input coordinates')
             sys.exit(0)
+        

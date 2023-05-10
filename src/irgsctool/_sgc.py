@@ -1,8 +1,9 @@
 #pylint: disable=wrong-import-position
 #pylint: disable=import-error
+#pylint: disable=W0311, C0301, C0114, W0101, R0914, C0304, C0103, C0209
 import numpy as np
 from matplotlib import pyplot as plt
-import matplotlib.pylab as pylab
+from matplotlib import pylab
 from ._read_data import ReadData
 
 params = {'legend.fontsize': 'x-large',
@@ -51,7 +52,6 @@ class StarGalaxyClassification():
         print('Seperating Stars and Galaxies from the input optical PANSTARRS dataset')
         print("")
         print("#######################################################################")
-        
         ps_phot = self.rd.read_optical_data()
         print("")
         print('Using psf-kron criteria to seperate stars and galaxies')
@@ -115,7 +115,6 @@ class StarGalaxyClassification():
                                     iinfoflag[sgc_index], iinfoflag2[sgc_index], iinfoflag3[sgc_index],\
                                         zinfoflag[sgc_index], zinfoflag2[sgc_index], zinfoflag3[sgc_index],\
                                             yinfoflag[sgc_index], yinfoflag2[sgc_index], yinfoflag3[sgc_index]
-        
         print("#####################################################")
         print('Created an input optical catalogue of stellar sources')
         print("######################################################")
