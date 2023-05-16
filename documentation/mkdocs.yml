@@ -5,6 +5,7 @@ site_author: Sarang Shah
 use_directory_urls: false
 markdown_extensions:
     - pymdownx.snippets:
+
 theme: 
   name: readthedocs
   logo: img/TMTLOGO.PNG

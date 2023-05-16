@@ -1,10 +1,10 @@
-#pylint: disable=W0311, C0301, C0114, W0101, R0914, C0304, C0103, C0209
+import sys
 import numpy as np
 import pyvo as vo
 from astroquery.ukidss import Ukidss
 from astroquery.gaia import Gaia
 from astropy.coordinates import SkyCoord
-#from astropy.coordinates import ICRS
+from astropy.coordinates import ICRS
 import astropy.units as u
 
 header = ['objid, RAMean, RAMeanErr, DecMean, DecMeanErr, gPSFMag, \
@@ -55,15 +55,20 @@ class GetData():
         ra_name = str(self.ra).replace('.','_')
         dec_name = str(self.dec).replace('.', '_')
         file_name = 'PS1'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)+'.csv'
-        Tap_Service = vo.dal.TAPService("https://vao.stsci.edu/PS1DR2/tapservice.aspx")
-        Tap_Tables = Tap_Service.tables
-        for tablename in Tap_Tables.keys():
-            if not "TAP_schema" in tablename:
-                Tap_Tables[tablename].describe()
-                print("Columns={}".format(sorted([k.name for k in\
-                    Tap_Tables[tablename].columns ])))
-                print("----")
-        query = """
+        if file_name is True:
+            ps1_data = np.genfromtxt(str(file_name) +'.csv',\
+                                     delimiter=',', skip_header=1)
+            print('file present')
+        else:
+            Tap_Service = vo.dal.TAPService("https://vao.stsci.edu/PS1DR2/tapservice.aspx")
+            Tap_Tables = Tap_Service.tables
+            for tablename in Tap_Tables.keys():
+                if not "TAP_schema" in tablename:  
+                    Tap_Tables[tablename].describe()
+                    print("Columns={}".format(sorted([k.name for k in\
+                                                  Tap_Tables[tablename].columns ])))
+                    print("----")
+            query = """
                 SELECT objID, RAMean, RAMeanErr, DecMean, DecMeanErr, gPSFMag, gPSFMagErr, gKronMag, gKronMagErr, rPSFMag, rPSFMagErr, rKronMag, rKronMagErr, iPSFMag, iPSFMagErr, iKronMag, iKronMagErr, zPSFMag, zPSFMagErr, zKronMag, zKronMagErr, yPSFMag, yPSFMagErr, yKronMag, yKronMagErr, objInfoFlag, qualityFlag, nDetections, nStackDetections, ginfoFlag, ginfoFlag2, ginfoFlag3, rinfoFlag, rinfoFlag2, rinfoFlag3, iinfoFlag, iinfoFlag2, iinfoFlag3, zinfoFlag, zinfoFlag2, zinfoFlag3, yinfoFlag, yinfoFlag2, yinfoFlag3
                 FROM dbo.StackObjectView
                 WHERE 
@@ -71,17 +76,21 @@ class GetData():
                 AND
                 primaryDetection>0
                     """.format(self.ra,self.dec,0.25)
-        try:
-            job = Tap_Service.submit_job(query)
-            job.run()
-            job_url = job.url
-            job = vo.dal.tap.AsyncTAPJob(job_url)
-            Tap_Results = job.fetch_result()
-            table = Tap_Results.table
-            table.write(file_name, format="csv", overwrite = True)
+
+            try:
+ 
+                job = Tap_Service.submit_job(query)
+                job.run()
+                job_url = job.url
+                job = vo.dal.tap.AsyncTAPJob(job_url)
+  
+                Tap_Results = job.fetch_result()
+                table = Tap_Results.table
+                table.write(file_name, format="csv", overwrite = True)
+            
+            except Exception:
+                raise ValueError('This field is outside the sky coverage of PANSTARRS')
             return table
-        except ValueError:
-            print('This field is outside the sky coverage of PANSTARRS')
 
     def get_gaia_data(self):
         """
@@ -99,6 +108,9 @@ class GetData():
         dec_name = str(self.dec).replace('.', '_')
         file_name = 'GAIA' + '_' + 'RA'+str(ra_name)\
                     + 'DEC' + str(dec_name) + '.csv'
+        if file_name is True:
+            gaia_data = np.genfromtxt(str(file_name),\
+                        delimiter=',', skip_header=1)
         #tables = Gaia.load_tables(only_names=True)
         #for table in (tables):
             #print (table.get_qualified_name())
@@ -106,7 +118,7 @@ class GetData():
         sc = SkyCoord(ra=self.ra, dec=self.dec, unit=(u.degree, u.degree), frame='icrs', equinox='J2000.0')
         coord.transform_to(sc)
         Gaia.MAIN_GAIA_TABLE = "gaiadr3.gaia_source"
-        Gaia.ROW_LIMIT = -1 #selects all the rows in the query
+        Gaia.ROW_LIMIT = -1
         try:
             job=Gaia.cone_search(coordinate=coord, radius=u.Quantity(0.25, u.deg),\
                         table_name="gaiadr3.gaia_source",\
@@ -115,13 +127,13 @@ class GetData():
                                                         'dec_error', 'parallax', 'parallax_error',\
                                                         'pm', 'pmra', 'pmra_error', 'pmdec',\
                                                         'pmdec_error', 'ruwe'])
-            return job.get_results()
-        except ValueError:
-            print('No Gaia observations for this field')
+        except Exception:
+            raise ValueError('No Gaia observations for this field')
+        return job.get_results()
 
 
     def get_ukidss_data(self):
-        r"""
+        """
         `irgsctool.GetData.get_ukidss_data()`
 
         <justify> This function sends a query to obtain UKIDSS DR11
@@ -143,7 +155,7 @@ class GetData():
         file_name = 'UKIDSS' + '_' + 'RA'+str(ra_name)\
                     + 'DEC' + str(dec_name) + '.csv'
         Ukidss.filters = {'H': 4,'J': 3, 'K': 5}
-        for i in enumerate((catalogs)):
+        for i in range(len(catalogs)):
             print('')
             print('Name of the catalog:', str(catalogs[i]))
             try:
@@ -154,6 +166,7 @@ class GetData():
                 table.write(file_name, format = 'csv', overwrite=True)
                 if len(table)>8.0:
                     break
-            except ValueError:
-                print('No observations in'+' '+str(catalogs[i])+' ' + 'catalog of UKIDSS')
+            except Exception:
+                raise ValueError('No observations in'+' '+str(catalogs[i])+' ' + 'catalog of UKIDSS')
         return table
+

@@ -1,9 +1,10 @@
 #pylint: disable=wrong-import-position
 #pylint: disable=import-error
-#pylint: disable=W0311, C0301, C0114, W0101, R0914, C0304, C0103, C0209, C0116, W0612
 import os
+import sys
 from datetime import date
 import csv
+from matplotlib import pyplot as plt
 import numpy as np
 from ._sam import Models
 from ._extinction_correction import ExtinctionCorrection as EC
@@ -141,12 +142,16 @@ class GenerateIRGSC():
             gaia_source_id, gaia_ra, gaia_ra_error, gaia_dec, gaia_dec_error, gaia_parallax,\
             gaia_parallax_error, gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
             gaia_pm_dec_error, gaia_ruwe = gaia_data
+            
             k0 = Models('Kurucz')
             k0.read_sam_file()
+            
             c1 = Models('Phoenix')
             c1.read_sam_file()
+            
             c2 = Models('Phoenix')
             c2.read_sam_file()
+
             model_params_k0 = k0.select_sam_range(teff_range=[4000,11000],
                                                 logg_range=None, feh_range=None)
             model_params_c1 = c1.select_sam_range(teff_range=[2800,5000],
@@ -154,7 +159,7 @@ class GenerateIRGSC():
                                                 feh_range=[-6.0,-1.5])
             model_params_c2 = c2.select_sam_range(teff_range=[2800,4000],
                                                 logg_range=[-10.0,3.0],
-                                                feh_range=[-0.5,2.0])
+                                                feh_range=[-0.5,2.0])            
             teff_c1, logg_c1, feh_c1, sam_g_c1, sam_r_c1, sam_i_c1, sam_z_c1, sam_y_c1, sam_j_c1,\
             sam_h_c1, sam_k_c1 = model_params_c1
             teff_c2, logg_c2, feh_c2, sam_g_c2, sam_r_c2, sam_i_c2, sam_z_c2, sam_y_c2, sam_j_c2,\
@@ -175,6 +180,7 @@ class GenerateIRGSC():
             sam_j = np.concatenate((sam_j_c1, sam_j_c2, sam_j_k0), axis=0)
             sam_h = np.concatenate((sam_h_c1, sam_h_c2, sam_h_k0), axis=0)
             sam_k = np.concatenate((sam_k_c1, sam_k_c2, sam_k_k0), axis=0)
+
             sam_gr = sam_g - sam_r
             sam_ri = sam_r - sam_i
             sam_gi = sam_g - sam_i
@@ -185,12 +191,15 @@ class GenerateIRGSC():
             sam_iz = sam_i - sam_z
             sam_iy = sam_i - sam_y
             sam_zy = sam_z - sam_y
+
             observed_colours = (ec_gmag - ec_rmag), (ec_gmag - ec_imag),\
             (ec_gmag - ec_rmag), (ec_gmag - ec_ymag), (ec_rmag - ec_imag),\
             (ec_rmag - ec_ymag), (ec_rmag - ec_zmag), (ec_imag - ec_zmag),\
             (ec_imag - ec_ymag), (ec_zmag - ec_ymag)
+
             model_colours = sam_gr, sam_gi, sam_gz, sam_gy, sam_ri, sam_rz,\
             sam_ry, sam_iz, sam_iy, sam_zy
+
             observed_optical_magnitudes = ec_gmag, ec_rmag, ec_imag,\
                 ec_zmag, ec_ymag
             e_observed_optical_magnitudes = e_ec_gmag, e_ec_rmag,\
@@ -202,21 +211,23 @@ class GenerateIRGSC():
                     np.sqrt(e_ec_rmag**2 + e_ec_imag**2), np.sqrt(e_ec_rmag**2 + e_ec_zmag**2),\
                         np.sqrt(e_ec_rmag**2 + e_ec_ymag**2), np.sqrt(e_ec_imag**2 + e_ec_zmag**2),\
                             np.sqrt(e_ec_imag**2 + e_ec_ymag**2), np.sqrt(e_ec_zmag**2 + e_ec_ymag**2)
+
             data = []
-            ra_name=str(self.ra).replace('.','_')
-            dec_name=str(self.dec).replace('.', '_')
+            ra_name=str(self.ra).replace('.','_');dec_name=str(self.dec)\
+                .replace('.', '_')
             irgsc_file = 'IRGSC'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)+\
                     str(current_datetime)+'.csv'
             if os.path.exists(irgsc_file):
-                print('IRGSC already generated for the given coordinates')
+                print('IRGSC already generated for the given coordinates today')
             else:
                 with open(str(irgsc_file),'w',encoding='UTF8') as file1:
                     writer=csv.writer(file1)
                     writer.writerow(header)
-                    for j in enumerate((ec_gmag)):
+                    for j in range(len(ec_gmag)):
                         ddev_arr, min_ddev, _, _, _, _, _, _, _, _, _, _ = \
                             compute_ddev(j, oc = observed_colours, eoc = e_observed_colors, mc = model_colours)
                         min_ddev_element = find_nearest(ddev_arr,min_ddev)
+
                         index_best_fit_sam = np.where(min_ddev_element==(ddev_arr))[0]
                         if index_best_fit_sam<=len_c1:
                             sam_model = 'c1'
@@ -224,11 +235,14 @@ class GenerateIRGSC():
                             sam_model = 'c2'
                         elif index_best_fit_sam > len_c2:
                             sam_model = 'K0'
+                        
                         sf_avg,sigma_sf,computed_j,computed_j_error,computed_h,computed_h_error,\
                             computed_k, computed_k_error=calc_sf(j, observed_optical_magnitudes,\
                                                             e_observed_optical_magnitudes,\
                                                             sam_magnitudes, index_best_fit_sam,\
                                                             aj, ah, ak)
+                    
+                    
                         gaia_angular_seperation = 3600*np.sqrt(((ps_ra[j]
                                                             -gaia_ra)*np.cos(np.radians(ps_dec[j])))**2
                                                             +(ps_dec[j] - gaia_dec)**2)
@@ -238,8 +252,10 @@ class GenerateIRGSC():
                             min_gaia_ang_seperation = gaia_angular_seperation\
                                 [np.where(np.min(gaia_ang_seperation_selected)\
                                           == gaia_angular_seperation)[0]]
+
                             index_min_ang_seperation = np.where(min_gaia_ang_seperation \
                                                                 == gaia_angular_seperation)[0]
+
                             irgsc_data = ps1_objid[j], ps_ra[j], err_ps_ra[j], ps_dec[j], \
                                 err_ps_dec[j], ec_gmag[j], e_ec_gmag[j], ec_rmag[j], \
                                 e_ec_rmag[j], ec_imag[j], e_ec_imag[j], ec_zmag[j], \

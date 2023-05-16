@@ -1,6 +1,5 @@
 #pylint: disable=wrong-import-position
 #pylint: disable=import-error
-#pylint: disable= W0311, C0301, C0114, W0101, R0914, C0304, C0103, C0209
 import numpy as np
 from astropy.coordinates import SkyCoord
 from astropy import units as u
@@ -10,9 +9,9 @@ from ._sgc import StarGalaxyClassification as sgc
 
 class ExtinctionCorrection():
         """
-                *** ExtinctionCorrection class *** has two methods; one to obtain the reddening and 
-                NIR extinction coefficients, while the other to correct the PANSTARRS 
-                data for extinction in each optical filter.
+                        *** ExtinctionCorrection class *** has two methods; one to obtain the reddening and 
+                        NIR extinction coefficients, while the other to correct the PANSTARRS 
+                        data for extinction in each optical filter.
         """
         def __init__(self, ra, dec):
                 self.ra, self.dec = ra, dec

@@ -1,4 +1,3 @@
-#pylint: disable=W0311, C0301, C0114, W0101, R0914, C0304, C0103, C0209
 import os
 import sys
 from datetime import date
@@ -23,11 +22,11 @@ class ReadData():
     GAIA DR3 and UKIDSS DR11.
     """
     def __init__(self, ra, dec):
-        self.ra, self.dec = ra, dec
-        self.gd = GetData(ra,dec)
+         self.ra, self.dec = ra, dec
+         self.gd = GetData(ra,dec)
 
     def read_optical_data(self):
-        r"""
+        """
             `irgsctool.ReadData.read_optical_data()`
             ------------------------------------------
 
@@ -46,10 +45,13 @@ class ReadData():
         ra_name = str(self.ra).replace('.','_')
         dec_name = str(self.dec).replace('.', '_')
         file_name = 'PS1' + '_' + 'RA'+str(ra_name) + 'DEC' + str(dec_name)+'.csv'
+
         if os.path.exists(file_name) is True:
             print('File exists:', file_name)
             ps1_data = np.genfromtxt(str(file_name),\
                                      delimiter=',', skip_header=1)
+ 
+        #except FileNotFoundError:
         else:
             print("")
             print('File not present. So obtaining the data from PANSTARRS')
@@ -58,6 +60,7 @@ class ReadData():
             ps1_data = np.genfromtxt(str(file_name),\
                                      delimiter=',', skip_header=1)
         ps1_objid = ps1_data[:,0]
+        print('ps_oid=', len(ps1_objid))
         ps_ra = ps1_data[:,1]
         err_ps_ra = ps1_data[:,2]
         ps_dec = ps1_data[:,3]
@@ -101,6 +104,7 @@ class ReadData():
         yinfoflag = ps1_data[:,41]
         yinfoflag2 = ps1_data[:,42]
         yinfoflag3 = ps1_data[:,43]
+            
         ps1_data = ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, gmag,\
             e_gmag, gkron, e_gkron, rmag, e_rmag, rkron, e_rkron, imag,\
             e_imag, ikron, e_ikron, zmag, e_zmag, zkron, e_zkron, ymag,\
@@ -110,19 +114,22 @@ class ReadData():
             zinfoflag, zinfoflag2, zinfoflag3, yinfoflag, yinfoflag2,\
             yinfoflag3
 
+        print('Number of sources before duplicate filter is:', len(ps1_objid))
         #removing duplicate entries if any
         oid1 = np.array([list(set(ps1_objid))])[0]
         #oid1 = [*set(ps1_objid)]
         ptsf = []
-        for i in enumerate((oid1)):
+        for i in range(len(oid1)):
             ptsi = np.where(oid1[i]==ps1_objid)[0]
             if len(ptsi)>1.0:
                 ptsi = ptsi[0]
                 ptsf = np.append(ptsf, ptsi)
                 ptsf = np.int64(ptsf)
             else:
-                ptsf = np.append(ptsf, ptsi)
+                 ptsf = np.append(ptsf, ptsi)
+        
         print('Number of rows in the PANSTARRS file:', len(ps1_objid), len(ptsf))
+
         ps1_objid = ps1_objid[ptsf]
         ps_ra = ps_ra[ptsf]
         ps_dec = ps_dec[ptsf]
@@ -167,24 +174,25 @@ class ReadData():
         yinfoflag = yinfoflag[ptsf]
         yinfoflag2 = yinfoflag2[ptsf]
         yinfoflag3 = yinfoflag3[ptsf]
+        
         print("")
         print('Now filtering the optical data for nan values')
         print("")
         print('Number of sources in the PANSTARRS data:',\
               len(ps1_objid))
         print("")
+
         indices_only_ifilered = np.where(imag!= -999)[0]
         binwidth=0.5
         bins = np.arange(np.min(imag[indices_only_ifilered]),\
                          np.max(imag[indices_only_ifilered]) +\
                             binwidth, binwidth)
         plt.clf()
-        plt.figure(figsize = (10,10))
         plt.hist(imag[indices_only_ifilered], bins=bins,\
                  facecolor='white', edgecolor='red',\
                     linestyle='--', label='$i_{mag}$')
-        plt.xlabel('Only $i_{mag}$ observations', fontsize=18)
-        plt.legend(loc='best', fontsize=18)
+        plt.xlabel('Only $i_{mag}$ observations')
+        plt.legend(loc='best')
         plt.grid()
         plt.savefig('hist_only_imag_in_panstarrs_data.png')
         plt.clf()
@@ -203,7 +211,7 @@ class ReadData():
         print('Number of sources having detections in five optical bands=',\
               len(indices_all_filtered))
 
-        binwidth=0.2
+        binwidth=0.5
         bins_g = np.arange(np.min(gmag[indices_all_filtered]),\
                            np.max(gmag[indices_all_filtered]) +\
                             binwidth, binwidth)
@@ -219,8 +227,8 @@ class ReadData():
         bins_y = np.arange(np.min(ymag[indices_all_filtered]),\
                            np.max(ymag[indices_all_filtered]) +\
                             binwidth, binwidth)
+        
         plt.clf()
-        plt.figure(figsize=(10,10))
         plt.hist(gmag[indices_all_filtered], bins=bins_g,\
                  facecolor='white', edgecolor='red',\
                 linestyle='--', label='$g_{mag}$')
@@ -236,11 +244,12 @@ class ReadData():
         plt.hist(ymag[indices_all_filtered], bins=bins_y,\
                  facecolor='white', edgecolor='purple',\
                     linestyle='--', label='$y_{mag}$')
-        plt.xlabel('PANSTARRS psf magnitudes', fontsize=18)
-        plt.legend(loc='best', fontsize=18)
+        plt.xlabel('PANSTARRS observed data')
+        plt.legend(loc='best')
         plt.grid()
         plt.savefig('hist_panstarrs_data.png')
         plt.clf()
+
         filtered_optical_data = ps1_objid[indices_all_filtered],\
             ps_ra[indices_all_filtered], err_ps_ra[indices_all_filtered],\
             ps_dec[indices_all_filtered], err_ps_dec[indices_all_filtered],\
@@ -303,14 +312,11 @@ class ReadData():
                 if len(ukidss_data)<9.0:
                     raise ValueError('No observations in UKIDSS')
                     sys.exit(0)
-        petro_j = ukidss_data[:,2]
-        e_petro_j = ukidss_data[:,3]
-        petro_h = ukidss_data[:,4]
-        e_petro_h = ukidss_data[:,5]
-        petro_k = ukidss_data[:,6]
-        e_petro_k = ukidss_data[:,7]
-        ukidss_ra = ukidss_data[:,0]
-        ukidss_dec = ukidss_data[:,1]
+        petro_j = ukidss_data[:,2]; e_petro_j = ukidss_data[:,3]
+        petro_h = ukidss_data[:,4]; e_petro_h = ukidss_data[:,5]
+        petro_k = ukidss_data[:,6]; e_petro_k = ukidss_data[:,7]
+        ukidss_ra = ukidss_data[:,0]; ukidss_dec = ukidss_data[:,1]
+
         nir_filter_index = np.where((petro_j != -999999488) & (e_petro_j != -999999488) &\
             (petro_h != -999999488) & (e_petro_h != -999999488) &\
                 (petro_k != -999999488) & (e_petro_k != -999999488) &\
@@ -318,6 +324,7 @@ class ReadData():
         if len(nir_filter_index) == 0: #all data available but e_petroj,h,k is nan
             nir_filter_index = np.where((petro_j != -999999488)\
                 & (petro_k != -999999488) & (petro_h != -999999488))[0]
+            print('0', len(nir_filter_index))
             if len(nir_filter_index)>0.0:
                 filtered_petro_j = petro_j[nir_filter_index]
                 e_petro_h = e_petro_h[nir_filter_index]
@@ -332,26 +339,29 @@ class ReadData():
                 binsh = np.arange(np.min(filtered_petro_h), np.max(filtered_petro_h) + binwidth, binwidth)
                 binsk = np.arange(np.min(filtered_petro_k), np.max(filtered_petro_k) + binwidth, binwidth)
                 plt.clf()
-                plt.figure(figsize = (10,10))
                 plt.hist(filtered_petro_j, bins = binsj, facecolor='white', edgecolor = 'red',\
                     linestyle='--', label='Observed J')
                 plt.hist(filtered_petro_h, bins = binsh, facecolor='white', edgecolor = 'blue',\
                     linestyle='--', label='Observed H')
                 plt.hist(filtered_petro_k, bins = binsk, facecolor='white', edgecolor = 'green',\
                     linestyle='--', label='Observed K')
-                plt.xlabel('petro magnitudes', fontsize=18)
-                plt.ylabel('Bins', fontsize=18)
+                plt.xlabel('petro magnitudes')
+                plt.ylabel('Bins')
                 plt.grid()
-                plt.legend(loc='best', fontsize=18)
+                plt.legend(loc='best')
                 plt.savefig('hist_ukidss_nir.png')
                 plt.clf()
+                    
                 nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                     e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
+                print('read_nir_data 0=', nir_data)
                 return nir_data
+                    
             elif len(nir_filter_index) == 0: #only j and h band data available
                 nir_filter_index = np.where((petro_j != -999999488) &\
                     (petro_h != -999999488) & (e_petro_j < 0.2) & (e_petro_h < 0.2) &\
                         (e_petro_j != -999999488) & (e_petro_h != -999999488))[0]
+                print('1')
                 if len(nir_filter_index)>0.0:
                     filtered_petro_j = petro_j[nir_filter_index]
                     e_petro_h = 0.05*petro_h[nir_filter_index]
@@ -366,24 +376,27 @@ class ReadData():
                     binsh = np.arange(np.min(filtered_petro_h), np.max(filtered_petro_h) + binwidth, binwidth)
                     binsk = np.arange(np.min(filtered_petro_k), np.max(filtered_petro_k) + binwidth, binwidth)
                     plt.clf()
-                    plt.figure(figsize = (10,10))
                     plt.hist(filtered_petro_j, bins = binsj, facecolor='white', edgecolor = 'red',\
                         linestyle='--', label='Observed J')
                     plt.hist(filtered_petro_h, bins = binsh, facecolor='white', edgecolor = 'blue',\
                         linestyle='--', label='Observed H')
                     plt.hist(filtered_petro_k, bins = binsk, facecolor='white', edgecolor = 'green',\
                         linestyle='--', label='Observed K')
-                    plt.xlabel('petro magnitudes', fontsize=18)
-                    plt.ylabel('Bins', fontsize=18)
+                    plt.xlabel('petro magnitudes')
+                    plt.ylabel('Bins')
                     plt.grid()
-                    plt.legend(loc='best', fontsize=18)
+                    plt.legend(loc='best')
                     plt.savefig('hist_ukidss_nir.png')
                     plt.clf()
+                    
                     nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                         e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
+                    print('read_nir_data 1=', nir_data)
                     return nir_data
+                        
                 elif len(nir_filter_index) == 0: #only j and h data available but e_petroj,k is nan
                     nir_filter_index = np.where((petro_j != -999999488) & (petro_h != -999999488))[0]
+                    print('2')
                     if len(nir_filter_index)>0.0:
                         e_petro_j = e_petro_j[nir_filter_index]
                         e_petro_h = e_petro_h[nir_filter_index]
@@ -399,23 +412,25 @@ class ReadData():
                         binsh = np.arange(np.min(filtered_petro_h), np.max(filtered_petro_h)\
                             + binwidth, binwidth)
                         plt.clf()
-                        plt.figure(figsize = (10,10))
                         plt.hist(filtered_petro_j, bins = binsj, facecolor='white',\
                             edgecolor = 'red', linestyle='--', label='Observed J')
                         plt.hist(filtered_petro_h, bins = binsh, facecolor='white',\
                             edgecolor = 'blue', linestyle='--', label='Observed H')
-                        plt.xlabel('petro magnitudes', fontsize=18)
-                        plt.ylabel('Bins', fontsize=18)
+                        plt.xlabel('petro magnitudes')
+                        plt.ylabel('Bins')
                         plt.grid()
-                        plt.legend(loc='best', fontsize=18)
+                        plt.legend(loc='best')
                         plt.savefig('hist_ukidss_jh.png')
                         plt.clf()
                         nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                             e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
+                        print('read_nir_data 2=', nir_data)
                         return nir_data
+
                     elif len(nir_filter_index) == 0: #only j and k band data available
                         nir_filter_index = np.where((petro_j != -999999488) & (petro_k != -999999488) &\
                             (e_petro_j < 0.2) & (e_petro_k < 0.2) & (e_petro_j != -999999488) & (e_petro_k != -999999488))[0]
+                        print('3')
                         if len(nir_filter_index)>0.0:
                             e_petro_j = e_petro_j[nir_filter_index]
                             e_petro_h = e_petro_h[nir_filter_index]
@@ -431,22 +446,24 @@ class ReadData():
                             binsk = np.arange(np.min(filtered_petro_k), np.max(filtered_petro_k)\
                                 + binwidth, binwidth)
                             plt.clf()
-                            plt.figure(figsize = (10,10))
                             plt.hist(filtered_petro_j, bins = binsj, facecolor='white',\
                                 edgecolor = 'red', linestyle='--', label='Observed J')
                             plt.hist(filtered_petro_h, bins = binsk, facecolor='white',\
                                 edgecolor = 'blue', linestyle='--', label='Observed K')
-                            plt.xlabel('petro magnitudes', fontsize=18)
-                            plt.ylabel('Bins', fontsize=18)
+                            plt.xlabel('petro magnitudes')
+                            plt.ylabel('Bins')
                             plt.grid()
-                            plt.legend(loc='best', fontsize=18)
+                            plt.legend(loc='best')
                             plt.savefig('hist_ukidss_jh.png')
                             plt.clf()
                             nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                 e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
+                            print('read_nir_data 3=', nir_data)
                             return nir_data
+                        
                         elif len(nir_filter_index) == 0: #only j and k data available but e_petroj,k is nan
                             nir_filter_index = np.where((petro_j != -999999488) & (petro_k != -999999488))[0]
+                            print('4')
                             if len(nir_filter_index)>0.0:
                                 e_petro_j = 0.05*petro_j[nir_filter_index]
                                 e_petro_h = e_petro_h[nir_filter_index]
@@ -462,23 +479,25 @@ class ReadData():
                                 binsk = np.arange(np.min(filtered_petro_k), np.max(filtered_petro_k)\
                                     + binwidth, binwidth)
                                 plt.clf()
-                                plt.figure(figsize = (10,10))
                                 plt.hist(filtered_petro_j, bins = binsj, facecolor='white',\
                                     edgecolor = 'red', linestyle='--', label='Observed J')
                                 plt.hist(filtered_petro_k, bins = binsk, facecolor='white',\
                                     edgecolor = 'green', linestyle='--', label='Observed K')
-                                plt.xlabel('petro magnitudes', fontsize=18)
-                                plt.ylabel('Bins', fontsize=18)
+                                plt.xlabel('petro magnitudes')
+                                plt.ylabel('Bins')
                                 plt.grid()
-                                plt.legend(loc='best', fontsize=18)
+                                plt.legend(loc='best')
                                 plt.savefig('hist_ukidss_jk.png')
                                 plt.clf()
                                 nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                     e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
+                                print('read_nir_data 4=', nir_data)
                                 return nir_data
+
                             elif len(nir_filter_index) == 0: #only h and k band data available
                                 nir_filter_index = np.where((petro_h != -999999488) & (petro_k != -999999488) &\
                                     (e_petro_h < 0.2) & (e_petro_k < 0.2) & (e_petro_h != -999999488) & (e_petro_k != -999999488))[0]
+                                print('5')
                                 if len(nir_filter_index)>0.0:
                                     e_petro_j = e_petro_j[nir_filter_index]
                                     e_petro_h = e_petro_h[nir_filter_index]
@@ -494,22 +513,24 @@ class ReadData():
                                     binsk = np.arange(np.min(filtered_petro_k), np.max(filtered_petro_k)\
                                         + binwidth, binwidth)
                                     plt.clf()
-                                    plt.figure(figsize = (10,10))
                                     plt.hist(filtered_petro_h, bins = binsh, facecolor='white',\
                                         edgecolor = 'blue', linestyle='--', label='Observed H')
                                     plt.hist(filtered_petro_k, bins = binsk, facecolor='white',\
                                         edgecolor = 'green', linestyle='--', label='Observed K')
-                                    plt.xlabel('petro magnitudes', fontsize=18)
-                                    plt.ylabel('Bins', fontsize=18)
+                                    plt.xlabel('petro magnitudes')
+                                    plt.ylabel('Bins')
                                     plt.grid()
-                                    plt.legend(loc='best', fontsize=18)
+                                    plt.legend(loc='best')
                                     plt.savefig('hist_ukidss_hk.png')
                                     plt.clf()
                                     nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                         e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
+                                    print('read_nir_data 5=', nir_data)
                                     return nir_data
+                        
                                 elif len(nir_filter_index) == 0: #only h and k data available but e_petroh,k is nan
                                     nir_filter_index = np.where((petro_h != -999999488) & (petro_k != -999999488))[0]
+                                    print('6')
                                     if len(nir_filter_index)>0.0:
                                         e_petro_j = e_petro_j[nir_filter_index]
                                         e_petro_h = 0.05*petro_h[nir_filter_index]
@@ -525,23 +546,25 @@ class ReadData():
                                         binsk = np.arange(np.min(filtered_petro_k), np.max(filtered_petro_k)\
                                             + binwidth, binwidth)
                                         plt.clf()
-                                        plt.figure(figsize = (10,10))
                                         plt.hist(filtered_petro_h, bins = binsh, facecolor='white',\
                                             edgecolor = 'blue', linestyle='--', label='Observed H')
                                         plt.hist(filtered_petro_k, bins = binsk, facecolor='white',\
                                             edgecolor = 'green', linestyle='--', label='Observed K')
-                                        plt.xlabel('petro magnitudes', fontsize=18)
-                                        plt.ylabel('Bins', fontsize=18)
+                                        plt.xlabel('petro magnitudes')
+                                        plt.ylabel('Bins')
                                         plt.grid()
-                                        plt.legend(loc='best', fontsize=18)
+                                        plt.legend(loc='best')
                                         plt.savefig('hist_ukidss_hk.png')
                                         plt.clf()
                                         nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                             e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
+                                        print('read_nir_data 6 =', nir_data)
                                         return nir_data
+
                                     elif len(nir_filter_index) == 0: #only j band data available
                                         nir_filter_index = np.where((petro_j != -999999488) & (e_petro_j != -999999488) &\
                                             (e_petro_j < 0.2))[0]
+                                        print('7')
                                         if len(nir_filter_index)>0.0:
                                             e_petro_j = e_petro_j[nir_filter_index]
                                             e_petro_h = e_petro_h[nir_filter_index]
@@ -555,20 +578,23 @@ class ReadData():
                                             binsk = np.arange(np.min(filtered_petro_j), np.max(filtered_petro_j)\
                                                 + binwidth, binwidth)
                                             plt.clf()
-                                            plt.figure(figsize = (10,10))
                                             plt.hist(filtered_petro_j, bins = binsk, facecolor='white',\
                                                 edgecolor = 'green', linestyle='--', label='Observed J')
-                                            plt.xlabel('petro magnitudes', fontsize=18)
-                                            plt.ylabel('Bins', fontsize=18)
+                                            plt.xlabel('petro magnitudes')
+                                            plt.ylabel('Bins')
                                             plt.grid()
-                                            plt.legend(loc='best', fontsize=18)
+                                            plt.legend(loc='best')
                                             plt.savefig('hist_ukidss_j.png')
                                             plt.clf()
                                             nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                 e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
+                                            print('read_nir_data 7=', nir_data)
                                             return nir_data
+                      
                                         elif len(nir_filter_index) == 0: #only j band data available but e_petroj is nan
+
                                             nir_filter_index = np.where(petro_j != -999999488)[0]
+                                            print('8')
                                             if len(nir_filter_index)>0.0:
                                                 e_petro_j = 0.05*petro_j[nir_filter_index]
                                                 e_petro_h = e_petro_h[nir_filter_index]
@@ -582,21 +608,23 @@ class ReadData():
                                                 binsk = np.arange(np.min(filtered_petro_j), np.max(filtered_petro_j)\
                                                 + binwidth, binwidth)
                                                 plt.clf()
-                                                plt.figure(figsize = (10,10))
                                                 plt.hist(filtered_petro_j, bins = binsk, facecolor='white',\
                                                     edgecolor = 'green', linestyle='--', label='Observed J')
-                                                plt.xlabel('petro magnitudes', fontsize=18)
-                                                plt.ylabel('Bins', fontsize=18)
+                                                plt.xlabel('petro magnitudes')
+                                                plt.ylabel('Bins')
                                                 plt.grid()
-                                                plt.legend(loc='best', fontsize=18)
+                                                plt.legend(loc='best')
                                                 plt.savefig('hist_ukidss_j.png')
                                                 plt.clf()
                                                 nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                     e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
+                                                print('read_nir_data 8 =', nir_data)
                                                 return nir_data
+
                                             elif len(nir_filter_index) == 0: #only h band data available
                                                 nir_filter_index = np.where((petro_h != -999999488) & (e_petro_h != -999999488) &\
                                                     (e_petro_h < 0.2))[0]
+                                                print('9')
                                                 if len(nir_filter_index)>0.0:
                                                     e_petro_j = e_petro_j[nir_filter_index]
                                                     e_petro_h = petro_h[nir_filter_index]
@@ -610,20 +638,22 @@ class ReadData():
                                                     binsk = np.arange(np.min(filtered_petro_h), np.max(filtered_petro_h)\
                                                         + binwidth, binwidth)
                                                     plt.clf()
-                                                    plt.figure(figsize = (10,10))
                                                     plt.hist(filtered_petro_h, bins = binsk, facecolor='white',\
                                                         edgecolor = 'green', linestyle='--', label='Observed H')
-                                                    plt.xlabel('petro magnitudes', fontsize=18)
-                                                    plt.ylabel('Bins', fontsize=18)
+                                                    plt.xlabel('petro magnitudes')
+                                                    plt.ylabel('Bins')
                                                     plt.grid()
-                                                    plt.legend(loc='best', fontsize=18)
+                                                    plt.legend(loc='best')
                                                     plt.savefig('hist_ukidss_h.png')
                                                     plt.clf()
                                                     nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                         e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
+                                                    print('read_nir_data 9=', nir_data)
                                                     return nir_data
+                        
                                                 elif len(nir_filter_index) == 0: #only h band data available but e_petroh is nan
                                                     nir_filter_index = np.where(petro_h != -999999488)[0]
+                                                    print('10')
                                                     if len(nir_filter_index)>0.0:
                                                         e_petro_j = e_petro_j[nir_filter_index]
                                                         e_petro_h = 0.05*petro_h[nir_filter_index]
@@ -637,21 +667,23 @@ class ReadData():
                                                         binsk = np.arange(np.min(filtered_petro_h), np.max(filtered_petro_h)\
                                                             + binwidth, binwidth)
                                                         plt.clf()
-                                                        plt.figure(figsize = (10,10))
                                                         plt.hist(filtered_petro_h, bins = binsk, facecolor='white',\
                                                             edgecolor = 'green', linestyle='--', label='Observed H')
-                                                        plt.xlabel('petro magnitudes', fontsize=18)
-                                                        plt.ylabel('Bins', fontsize=18)
+                                                        plt.xlabel('petro magnitudes')
+                                                        plt.ylabel('Bins')
                                                         plt.grid()
-                                                        plt.legend(loc='best', fontsize=18)
+                                                        plt.legend(loc='best')
                                                         plt.savefig('hist_ukidss_h.png')
                                                         plt.clf()
                                                         nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                             e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
+                                                        print('read_nir_data 10=', nir_data)
                                                         return nir_data
+
                                                     elif len(nir_filter_index) == 0: #only k band data available
                                                         nir_filter_index = np.where((petro_k != -999999488) & (e_petro_k != -999999488) &\
                                                             (e_petro_k < 0.2))[0]
+                                                        print('11')
                                                         if len(nir_filter_index)>0.0:
                                                             e_petro_j = e_petro_j[nir_filter_index]
                                                             e_petro_h = e_petro_h[nir_filter_index]
@@ -665,20 +697,22 @@ class ReadData():
                                                             binsk = np.arange(np.min(filtered_petro_k), np.max(filtered_petro_k)\
                                                                 + binwidth, binwidth)
                                                             plt.clf()
-                                                            plt.figure(figsize = (10,10))
                                                             plt.hist(filtered_petro_k, bins = binsk, facecolor='white',\
                                                                 edgecolor = 'green', linestyle='--', label='Observed K')
-                                                            plt.xlabel('petro magnitudes', fontsize=18)
-                                                            plt.ylabel('Bins', fontsize=18)
+                                                            plt.xlabel('petro magnitudes')
+                                                            plt.ylabel('Bins')
                                                             plt.grid()
-                                                            plt.legend(loc='best', fontsize=18)
+                                                            plt.legend(loc='best')
                                                             plt.savefig('hist_ukidss_k.png')
                                                             plt.clf()
                                                             nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                                 e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
+                                                            print('read_nir_data 11=', nir_data)
                                                             return nir_data
+
                                                         elif len(nir_filter_index) == 0: #only k band data available but e_petro_k is nan
                                                             nir_filter_index = np.where(petro_k != -999999488)[0]
+                                                            print('12')
                                                             if len(nir_filter_index)>0.0:
                                                                 e_petro_j = e_petro_j[nir_filter_index]
                                                                 e_petro_h = e_petro_h[nir_filter_index]
@@ -692,17 +726,17 @@ class ReadData():
                                                                 binsk = np.arange(np.min(filtered_petro_k), np.max(filtered_petro_k)\
                                                                     + binwidth, binwidth)
                                                                 plt.clf()
-                                                                plt.figure(figsize=(10,10))
                                                                 plt.hist(filtered_petro_k, bins = binsk, facecolor='white',\
                                                                     edgecolor = 'green', linestyle='--', label='Observed K')
-                                                                plt.xlabel('petro magnitudes', fontsize=18)
-                                                                plt.ylabel('Bins', fontsize=18)
+                                                                plt.xlabel('petro magnitudes')
+                                                                plt.ylabel('Bins')
                                                                 plt.grid()
-                                                                plt.legend(loc='best', fontsize=18)
+                                                                plt.legend(loc='best')
                                                                 plt.savefig('hist_ukidss_k.png')
                                                                 plt.clf()
                                                                 nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                                     e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
+                                                                print('read_nir_data 12=', nir_data)
                                                                 return nir_data
         else:
             filtered_petro_j = petro_j[nir_filter_index]
@@ -718,17 +752,16 @@ class ReadData():
             binsh = np.arange(np.min(filtered_petro_h), np.max(filtered_petro_h) + binwidth, binwidth)
             binsk = np.arange(np.min(filtered_petro_k), np.max(filtered_petro_k) + binwidth, binwidth)
             plt.clf()
-            plt.figure(figsize = (10,10))
             plt.hist(filtered_petro_j, bins = binsj, facecolor='white', edgecolor = 'red',\
                 linestyle='--', label='Observed J')
             plt.hist(filtered_petro_h, bins = binsh, facecolor='white', edgecolor = 'blue',\
                 linestyle='--', label='Observed H')
             plt.hist(filtered_petro_k, bins = binsk, facecolor='white', edgecolor = 'green',\
                 linestyle='--', label='Observed K')
-            plt.xlabel('petro magnitudes', fontsize=18)
-            plt.ylabel('Bins', fontsize=18)
+            plt.xlabel('petro magnitudes')
+            plt.ylabel('Bins')
             plt.grid()
-            plt.legend(loc='best', fontsize=18)
+            plt.legend(loc='best')
             plt.savefig('hist_ukidss_nir.png')
             plt.clf()
             nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
@@ -740,8 +773,11 @@ class ReadData():
                 Reads the input GAIA DR3 data. The number of columns are 12.
 
             """
+            header = ['source_id','ra','ra_error,dec','dec_error','parallax','parallax_error',\
+                      'pm','pmra','pmra_error','pmdec','pmdec_error','ruwe']
+            
             ra_name = str(self.ra).replace('.','_')
-            dec_name = str(self.dec).replace('.', '_')
+            dec_name = str(self.dec).replace('.', '_')    
             file_name = 'GAIA'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)+'.csv'
             if os.path.exists(file_name) is True:
                 gaia_data = np.genfromtxt(str(file_name),delimiter=',',skip_header=1)

@@ -1,18 +1,15 @@
-#pylint: disable=wrong-import-position
-#pylint: disable=import-error
-#pylint: disable=W0311, C0301, C0114, W0101, R0914, C0304, C0103, C0209, C0116, W0612
 import os
 import sys
 import csv
 from datetime import date
-from matplotlib import pylab
-from matplotlib import pyplot as plt
-from matplotlib.gridspec import GridSpec
+import matplotlib.pylab as pylab
 import numpy as np
-from matplotlib.offsetbox import AnchoredText
 from ._fitting import GenerateIRGSC
 from ._read_data import ReadData
+from matplotlib import pyplot as plt
 from ._get_data import GetData
+from ._read_data import ReadData
+
 params = {'legend.fontsize': 'x-large',
           'figure.figsize': (10,10),
          'axes.labelsize': 'x-large',
@@ -20,6 +17,7 @@ params = {'legend.fontsize': 'x-large',
          'xtick.labelsize':'x-large',
          'ytick.labelsize':'x-large'}
 pylab.rcParams.update(params)
+from matplotlib.offsetbox import AnchoredText
 current_datetime = date.today()
 home_dir = os.getcwd()
 
@@ -69,12 +67,12 @@ class ValidateIRGSC():
         try:
             irgsc_data = np.genfromtxt('IRGSC' + '_' + 'RA' + str(ra_name) + 'DEC' + str(dec_name) +\
                       str(current_datetime) + '.csv', delimiter=',', skip_header=1)
+
         except FileNotFoundError:
-            print("")
-            print('IRGSC not generated for these coordinates. Now attempting to generate it!!!')
-            print("")
             gc = GenerateIRGSC(self.ra,self.dec)
-            irgsc_data = gc.generate_irgsc()
+            gc.generate_irgsc()
+        irgsc_data = np.genfromtxt('IRGSC' + '_' + 'RA' + str(ra_name) + 'DEC' + str(dec_name) +\
+                      str(current_datetime) + '.csv', delimiter=',', skip_header=1)
         ps1_objid = irgsc_data[:,0]
         ps_ra = irgsc_data[:,1]
         err_ps_ra = irgsc_data[:,2]
@@ -143,6 +141,8 @@ class ValidateIRGSC():
         yinfoflag2 = irgsc_data[:,65]
         yinfoflag3 = irgsc_data[:,66]
         sam_flag = irgsc_data[:,67]
+
+
         irgsc_data = ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, e_ec_gmag, ec_rmag, e_ec_rmag,\
             ec_imag, e_ec_imag, ec_zmag, e_ec_zmag, ec_ymag, e_ec_ymag, teff, logg, feh, sam_g,\
                 sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k, sf_avg, sigma_sf, min_dquad_element,\
@@ -174,7 +174,10 @@ class ValidateIRGSC():
         print('Now validating the generated IRGSC using the UKIDSS data file if it is present.')
         print("")
         print('###############################################################################')
-        if validate is True:
+
+        if validate is not True:
+            raise ValueError('Cannot proceed as validate=False')
+        elif validate is True:
             ukidss_data = self.rd.read_nir_data()
             irgsc_data = self.read_irgsc()
             ukidss_j, ukidss_h, ukidss_k, e_ukidss_j, e_ukidss_h, e_ukidss_k, ukidss_ra, ukidss_dec = ukidss_data
@@ -189,25 +192,14 @@ class ValidateIRGSC():
                                 ginfoflag, ginfoflag2, ginfoflag3, rinfoflag, rinfoflag2, rinfoflag3,\
                                     iinfoflag, iinfoflag2, iinfoflag3, zinfoflag, zinfoflag2,\
                                     zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3, sam_flag = irgsc_data
-        else:
-            raise ValueError('Cannot proceed as validate=False')
-            sys.exit(0)
-        validate_params=[]
-        ob_j = []
-        e_ob_j = []
-        ob_h = []
-        e_ob_h = []
-        ob_k = []
-        e_ob_k = []
-        diff_jf = []
-        diff_hf = []
-        diff_kf = []
-        ra_name = str(self.ra).replace('.','_')
-        dec_name = str(self.dec).replace('.', '_')
-        with open('validated_IRGSC' + '_' + 'RA' + str(ra_name) + '_' + 'DEC' + str(dec_name) + '_' + str(current_datetime) + '.csv', 'w', encoding="utf-8") as file2:
+        
+        validate_params=[]; ob_j = []; e_ob_j = []; ob_h = []; e_ob_h = []; ob_k = []; e_ob_k = []
+        diff_jf = []; diff_hf = []; diff_kf = []
+        ra_name = str(self.ra).replace('.','_'); dec_name = str(self.dec).replace('.', '_')
+        with open('validated_IRGSC' + '_' + 'RA' + str(ra_name) + '_' + 'DEC' + str(dec_name) + '_' + str(current_datetime) + '.csv', 'w') as file2:
             writer=csv.writer(file2)
             writer.writerow(header)
-            for i1 in enumerate((ps_ra)):
+            for i1 in range(len(ps_ra)):
                 #positionally matching the sources in the UKIDSS within 1" to the PS1 sources in the catalogue
                 gamma_ukidss = 3600*np.sqrt(((ps_ra[i1] - ukidss_ra)*np.cos(np.radians(ps_dec[i1])))**2\
                                       + (ps_dec[i1] - ukidss_dec)**2)
@@ -263,33 +255,40 @@ class ValidateIRGSC():
                     diff_jf = np.append(diff_jf, diff_j)
                     diff_hf = np.append(diff_hf, diff_h)
                     diff_kf = np.append(diff_kf, diff_k)
+        
         indjp = np.where(np.abs(diff_jf)<0.2)[0]
         indhp = np.where(np.abs(diff_hf)<0.2)[0]
         indkp = np.where(np.abs(diff_kf)<0.2)[0]
+
         plt.clf()
-        
         plt.scatter(ob_j, e_ob_j, s=5, alpha = 0.5)
         plt.grid()
-        plt.ylabel('Error in $J_{UKIDSS}$', fontsize=18)
-        plt.xlabel('$J_{UKIDSS}', fontsize=18)
+        plt.ylabel('Error in $J_{UKIDSS}$')
+        plt.xlabel('$J_{UKIDSS}')
         plt.savefig('obj_vs_err_obj.png')
+        plt.clf()
+
         plt.clf()
         plt.scatter(ob_h, e_ob_h, s=5, alpha = 0.5)
         plt.grid()
-        plt.ylabel('Error in $H_{UKIDSS}$', fontsize=18)
-        plt.xlabel('$H_{UKIDSS}', fontsize=18)
+        plt.ylabel('Error in $H_{UKIDSS}$')
+        plt.xlabel('$H_{UKIDSS}')
         plt.savefig('obh_vs_err_obh.png')
         plt.clf()
-        
+
+        plt.clf()
         plt.scatter(ob_k, e_ob_k, s=5, alpha = 0.5)
         plt.grid()
-        plt.ylabel('Error in $K_{UKIDSS}$', fontsize=18)
-        plt.xlabel('$K_{UKIDSS}', fontsize=18)
+        plt.ylabel('Error in $K_{UKIDSS}$')
+        plt.xlabel('$K_{UKIDSS}')
         plt.savefig('obk_vs_err_obk.png')
         plt.clf()
+
+
         bins2 = np.arange(np.min(diff_jf), np.max(diff_jf)+.1, 0.1)
         plt.clf()
-        fig = 
+        fig = plt.figure(figsize=(10,10))
+        from matplotlib.gridspec import GridSpec
         gs = GridSpec(4,4)
         ax_joint = fig.add_subplot(gs[1:4,0:3])
         ax_marg_x = fig.add_subplot(gs[0,0:3])
@@ -331,7 +330,8 @@ class ValidateIRGSC():
 
         bins2 = np.arange(diff_hf.min(), diff_hf.max()+.1, 0.1)
         plt.clf()
-        fig = 
+        fig = plt.figure(figsize=(10,10))
+        from matplotlib.gridspec import GridSpec
         gs = GridSpec(4,4)
         ax_joint = fig.add_subplot(gs[1:4,0:3])
         ax_marg_x = fig.add_subplot(gs[0,0:3])
@@ -372,7 +372,8 @@ class ValidateIRGSC():
 
         bins2 = np.arange(np.min(diff_jf), np.max(diff_jf)+.1, 0.1)
         plt.clf()
-        fig = 
+        fig = plt.figure(figsize=(10,10))
+        from matplotlib.gridspec import GridSpec
         gs = GridSpec(4,4)
         ax_joint = fig.add_subplot(gs[1:4,0:3])
         ax_marg_x = fig.add_subplot(gs[0,0:3])

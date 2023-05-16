@@ -153,7 +153,7 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="api-reference">API Reference</h1>
-<p>This page introduces to the classes and functions in the <strong><em>irgsctool</em></strong> package. The main class is the <strong><em>irgsc</em></strong> class which has several subclasses like <a href="/irgsc/apireference/#irgsctool._get_data.GetData">GetData</a>, <a href="/irgsc/apireference/#irgsctool._read_data.ReadData">ReadData</a>, <a href="/irgsc/apireference/#irgsctool._sgc.StarGalaxyClassification">StarGalaxyClassification</a>, <a href="/irgsc/apireference/#irgsctool._extinction_correction.ExtinctionCorrection">ExtinctionCorrection</a>, <a href="/irgsc/apireference/#irgsctool._fitting.GenerateIRGSC">GenerateIRGSC</a>, <a href="/irgsc/apireference/#irgsctool._validate.ValidateIRGSC">ValidateIRGSC</a>.</p>
+<p>This page introduces to the classes and functions in the <strong><em>irgsctool</em></strong> package. The main class is the <strong><em>irgsc</em></strong> class which has several subclasses like <a href="/irgsc/documentation/docs/apireference/#irgsctool._get_data.GetData">GetData</a>, <a href="/irgsc/documentation/docs/apireference/#irgsctool._read_data.ReadData">ReadData</a>, <a href="/irgsc/documentation/docs/apireference/#irgsctool._sgc.StarGalaxyClassification">StarGalaxyClassification</a>, <a href="/irgsc/documentation/docs/apireference/#irgsctool._extinction_correction.ExtinctionCorrection">ExtinctionCorrection</a>, <a href="/irgsc/documentation/docs/apireference/#irgsctool._fitting.GenerateIRGSC">GenerateIRGSC</a>, <a href="/irgsc/documentation/docs/apireference/#irgsctool._validate.ValidateIRGSC">ValidateIRGSC</a>.</p>
 <p>Figure (1) shows the UML diagram of the irgsctool package.</p>
 <p><center></center></p>
 <figure>
@@ -163,6 +163,7 @@
 <p></p>
 <div class="doc doc-object doc-module">
 <div class="doc doc-contents first">
+<p>irgsc class checks whether IRGSC can be generated for the given set of coordinates</p>
 <div class="doc doc-children">
 <div class="doc doc-object doc-class">
 <h2 class="doc doc-heading" id="irgsctool.irgsc">
@@ -170,10 +171,11 @@
 </h2>
 <div class="doc doc-contents">
 <hr/>
-<p>Initialisation of parent <strong><em> irgsc class </em></strong>. This class has several child classes.</p>
-<p>This method described using input  ra and dec.
-It checks whther the data from PANSTARRS DR2, UKISS DR11 and
-Gaia DR3 can be obtained.</p>
+<p>Initialisation of <strong><em> irgsc class </em></strong>. This class is dependant on several other classes
+like GetData, ReadData, StarGalaxyClassification, ExtinctionCorrection, Models, GenerateIRGSC,
+ValidateIRGSC.</p>
+<p>This method describes using input ra and dec.
+It checks whther the IRGSC can be generated for a given set of input coordinates.</p>
 <table>
 <thead>
 <tr>
@@ -191,16 +193,6 @@ Gaia DR3 can be obtained.</p>
 <td class="doc-raises-details">
 <p>if the data is not available in UKIDSS or
         PANSTARRS 3-pi survey. The code will not                             proceed further.</p>
-</td>
-</tr>
-<tr>
-<td>
-<span class="doc-raises-annotation">
-<code>Warning</code>
-</span>
-</td>
-<td class="doc-raises-details">
-<p>if the data is not available in the Gaia DR3                        survey. In the IRGSC, the Gaia values will                            be replaces with -999.</p>
 </td>
 </tr>
 </tbody>
@@ -559,7 +551,8 @@ This method reads the model parameters and results from the
 interpolated Kurucz or the Phoenix model files. use_sam is 
 bool and decides which model file to be read.
 To use the interpolated Kurucz models, set <strong><em>use_sam = Kurucz </em></strong>.
-Similarly, <strong><em> use_sam = Phoenix </em></strong> to use interpolated Phoenix models.</justify></p>
+Similarly, <strong><em> use_sam = Phoenix </em></strong> to use interpolated
+Phoenix models.</justify></p>
 <table>
 <thead>
 <tr>
@@ -626,9 +619,9 @@ range of model parameters is selected:</justify></p>
 <td align="left">-0.5 - 1.5</td>
 </tr>
 <tr>
-<td align="left">KuruczCastelli-Kurucz (K0)</td>
+<td align="left">Kurucz/Castelli-Kurucz (K0)</td>
 <td align="left">4000 - 10000</td>
-<td align="left">---</td>
+<td align="left">--</td>
 <td align="left">---</td>
 </tr>
 </tbody>
