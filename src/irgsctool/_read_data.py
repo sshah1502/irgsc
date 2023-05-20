@@ -302,14 +302,14 @@ class ReadData():
             print("")
             self.gd.get_ukidss_data()
             ukidss_data = np.genfromtxt(str(file_name), delimiter=',', skip_header=1)
-            if len(ukidss_data)<9.0:
+            if len(ukidss_data)<=8.0:
                     raise ValueError('No observations in UKIDSS')
         elif file_exists is True:
                 print("")
                 print('Reading the UKIDSS data file:'+ str(file_name))
                 print("")
                 ukidss_data = np.genfromtxt(str(file_name), delimiter=',', skip_header=1)
-                if len(ukidss_data)<9.0:
+                if len(ukidss_data)<=8.0:
                     raise ValueError('No observations in UKIDSS')
                     sys.exit(0)
         petro_j = ukidss_data[:,2]; e_petro_j = ukidss_data[:,3]
@@ -391,7 +391,6 @@ class ReadData():
                     
                     nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                         e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                    print('read_nir_data 1=', nir_data)
                     return nir_data
                         
                 elif len(nir_filter_index) == 0: #only j and h data available but e_petroj,k is nan
@@ -424,7 +423,6 @@ class ReadData():
                         plt.clf()
                         nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                             e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                        print('read_nir_data 2=', nir_data)
                         return nir_data
 
                     elif len(nir_filter_index) == 0: #only j and k band data available
@@ -458,7 +456,6 @@ class ReadData():
                             plt.clf()
                             nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                 e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                            print('read_nir_data 3=', nir_data)
                             return nir_data
                         
                         elif len(nir_filter_index) == 0: #only j and k data available but e_petroj,k is nan
@@ -491,7 +488,6 @@ class ReadData():
                                 plt.clf()
                                 nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                     e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                print('read_nir_data 4=', nir_data)
                                 return nir_data
 
                             elif len(nir_filter_index) == 0: #only h and k band data available
@@ -525,7 +521,6 @@ class ReadData():
                                     plt.clf()
                                     nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                         e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                    print('read_nir_data 5=', nir_data)
                                     return nir_data
                         
                                 elif len(nir_filter_index) == 0: #only h and k data available but e_petroh,k is nan
@@ -558,7 +553,6 @@ class ReadData():
                                         plt.clf()
                                         nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                             e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                        print('read_nir_data 6 =', nir_data)
                                         return nir_data
 
                                     elif len(nir_filter_index) == 0: #only j band data available
@@ -588,7 +582,6 @@ class ReadData():
                                             plt.clf()
                                             nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                 e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                            print('read_nir_data 7=', nir_data)
                                             return nir_data
                       
                                         elif len(nir_filter_index) == 0: #only j band data available but e_petroj is nan
@@ -618,7 +611,6 @@ class ReadData():
                                                 plt.clf()
                                                 nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                     e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                                print('read_nir_data 8 =', nir_data)
                                                 return nir_data
 
                                             elif len(nir_filter_index) == 0: #only h band data available
@@ -648,7 +640,6 @@ class ReadData():
                                                     plt.clf()
                                                     nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                         e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                                    print('read_nir_data 9=', nir_data)
                                                     return nir_data
                         
                                                 elif len(nir_filter_index) == 0: #only h band data available but e_petroh is nan
@@ -677,7 +668,6 @@ class ReadData():
                                                         plt.clf()
                                                         nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                             e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                                        print('read_nir_data 10=', nir_data)
                                                         return nir_data
 
                                                     elif len(nir_filter_index) == 0: #only k band data available
@@ -707,7 +697,6 @@ class ReadData():
                                                             plt.clf()
                                                             nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                                 e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                                            print('read_nir_data 11=', nir_data)
                                                             return nir_data
 
                                                         elif len(nir_filter_index) == 0: #only k band data available but e_petro_k is nan
@@ -736,7 +725,6 @@ class ReadData():
                                                                 plt.clf()
                                                                 nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                                     e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                                                print('read_nir_data 12=', nir_data)
                                                                 return nir_data
         else:
             filtered_petro_j = petro_j[nir_filter_index]
@@ -780,6 +768,7 @@ class ReadData():
             dec_name = str(self.dec).replace('.', '_')    
             file_name = 'GAIA'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)+'.csv'
             if os.path.exists(file_name) is True:
+                print('Gaia file exists')
                 gaia_data = np.genfromtxt(str(file_name),delimiter=',',skip_header=1)
                 gaia_source_id = gaia_data[:,0]
                 gaia_ra = gaia_data[:,1]
@@ -799,6 +788,8 @@ class ReadData():
                     gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
                     gaia_pm_dec_error, gaia_ruwe
             else:
+                print("")
+                print('Gaia file does not exist for this field. Obtaining the Gaia data')
                 self.gd.get_gaia_data()
                 gaia_data=np.genfromtxt(str(file_name),delimiter=',',\
                                         skip_header=1)

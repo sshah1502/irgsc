@@ -38,7 +38,8 @@ header = ['ps1_objid','ps1_ra','ps1_ra_error','ps1_dec','ps1_dec_error',\
 'qualityflag','ndetections','nstackdetections','ginfoflag','ginfoflag2',\
 'ginfoflag3','rinfoflag','rinfoflag2','rinfoflag3','iinfoflag','iinfoflag2',\
 'iinfoflag3','zinfoflag','zinfoflag2','zinfoflag3','yinfoflag','yinfoflag2',\
-'yinfoflag3', 'SAM Flag']
+'yinfoflag3', 'SAM Flag', 'diff_J', 'diff_H', 'diff_K', 'J_UKIDSS', 'err_J_UKIDSS', 'H_UKIDSS', 'err_H_UKIDSS',\
+'K_UKIDSS', 'err_K_UKIDSS']
 
 class ValidateIRGSC():
     """
@@ -67,11 +68,14 @@ class ValidateIRGSC():
         try:
             irgsc_data = np.genfromtxt('IRGSC' + '_' + 'RA' + str(ra_name) + 'DEC' + str(dec_name) +\
                       str(current_datetime) + '.csv', delimiter=',', skip_header=1)
+            print('IRGSC is present for this field')
 
         except FileNotFoundError:
+            print("")
+            print('IRGSC for this field is not presented. Now generating it.')
             gc = GenerateIRGSC(self.ra,self.dec)
             gc.generate_irgsc()
-        irgsc_data = np.genfromtxt('IRGSC' + '_' + 'RA' + str(ra_name) + 'DEC' + str(dec_name) +\
+            irgsc_data = np.genfromtxt('IRGSC' + '_' + 'RA' + str(ra_name) + 'DEC' + str(dec_name) +\
                       str(current_datetime) + '.csv', delimiter=',', skip_header=1)
         ps1_objid = irgsc_data[:,0]
         ps_ra = irgsc_data[:,1]
@@ -181,6 +185,7 @@ class ValidateIRGSC():
             ukidss_data = self.rd.read_nir_data()
             irgsc_data = self.read_irgsc()
             ukidss_j, ukidss_h, ukidss_k, e_ukidss_j, e_ukidss_h, e_ukidss_k, ukidss_ra, ukidss_dec = ukidss_data
+            print('len ukidss j=', len(ukidss_j))
             ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, e_ec_gmag, ec_rmag,\
                 e_ec_rmag, ec_imag, e_ec_imag, ec_zmag, e_ec_zmag, ec_ymag, e_ec_ymag, teff,\
                 logg, feh, sam_g,sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k, sf_avg, sigma_sf,\
@@ -212,16 +217,15 @@ class ValidateIRGSC():
                     diff_h = ukidss_h[index_minimum_seperation] - computed_h[i1]
                     diff_k = ukidss_k[index_minimum_seperation] - computed_k[i1]
                     validate_params = ps1_objid[i1], ps_ra[i1], err_ps_ra[i1], ps_dec[i1], err_ps_dec[i1], ec_gmag[i1], e_ec_gmag[i1], ec_rmag[i1],\
-                    e_ec_rmag[i1], ec_imag, e_ec_imag[i1], ec_zmag, e_ec_zmag[i1], ec_ymag, e_ec_ymag[i1], teff[i1], logg[i1], feh[i1], sam_g[i1],\
+                    e_ec_rmag[i1], ec_imag[i1], e_ec_imag[i1], ec_zmag[i1], e_ec_zmag[i1], ec_ymag[i1], e_ec_ymag[i1], teff[i1], logg[i1], feh[i1], sam_g[i1],\
                     sam_r[i1], sam_i[i1], sam_z[i1], sam_y[i1], sam_j[i1], sam_h[i1], sam_k[i1], sf_avg[i1], sigma_sf[i1], min_dquad_element[i1],\
                     computed_j[i1], computed_j_error[i1], computed_h[i1], computed_h_error[i1], computed_k[i1], computed_k_error[i1], gaia_source_id[i1],\
                     gaia_ra[i1], gaia_ra_error[i1], gaia_dec[i1], gaia_dec_error[i1], gaia_parallax[i1], gaia_parallax_error[i1], gaia_pm[i1], gaia_pm_ra[i1],\
                     gaia_pm_ra_error[i1], gaia_pm_dec[i1], gaia_pm_dec_error[i1], gaia_ruwe[i1], objinfoflag[i1], qualityflag[i1], ndetections[i1], nstackdetections[i1],\
                     ginfoflag[i1], ginfoflag2[i1], ginfoflag3[i1], rinfoflag[i1], rinfoflag2[i1], rinfoflag3[i1], iinfoflag[i1], iinfoflag2[i1], iinfoflag3[i1],\
-                    zinfoflag[i1], zinfoflag2[i1], zinfoflag3[i1], yinfoflag[i1], yinfoflag2[i1], yinfoflag3[i1], sam_flag[i1], diff_j, diff_h, diff_k,\
-                    ukidss_j[index_minimum_seperation], e_ukidss_j[index_minimum_seperation], ukidss_h[index_minimum_seperation], e_ukidss_h[index_minimum_seperation],\
-                    ukidss_k[index_minimum_seperation], e_ukidss_k[index_minimum_seperation]
-                    writer.writerow(validate_params)
+                    zinfoflag[i1], zinfoflag2[i1], zinfoflag3[i1], yinfoflag[i1], yinfoflag2[i1], yinfoflag3[i1], sam_flag[i1], diff_j[0], diff_h[0], diff_k[0],\
+                    ukidss_j[index_minimum_seperation][0], e_ukidss_j[index_minimum_seperation][0], ukidss_h[index_minimum_seperation][0], e_ukidss_h[index_minimum_seperation][0],\
+                    ukidss_k[index_minimum_seperation][0], e_ukidss_k[index_minimum_seperation][0]
                     ob_j = np.append(ob_j, ukidss_j[index_minimum_seperation])
                     e_ob_j = np.append(e_ob_j, e_ukidss_j[index_minimum_seperation])
                     ob_h = np.append(ob_h, ukidss_h[index_minimum_seperation])
@@ -231,21 +235,22 @@ class ValidateIRGSC():
                     diff_jf = np.append(diff_jf, diff_j)
                     diff_hf = np.append(diff_hf, diff_h)
                     diff_kf = np.append(diff_kf, diff_k)
+                    writer.writerow(validate_params)
                 elif len(index_ukidss_position) == 1:
                     diff_j = ukidss_j[index_ukidss_position] - computed_j[i1]
                     diff_h = ukidss_h[index_ukidss_position] - computed_h[i1]
                     diff_k = ukidss_k[index_ukidss_position] - computed_k[i1]
                     validate_params = ps1_objid[i1], ps_ra[i1], err_ps_ra[i1], ps_dec[i1], err_ps_dec[i1], ec_gmag[i1], e_ec_gmag[i1], ec_rmag[i1],\
-                    e_ec_rmag[i1], ec_imag, e_ec_imag[i1], ec_zmag, e_ec_zmag[i1], ec_ymag, e_ec_ymag[i1], teff[i1], logg[i1], feh[i1], sam_g[i1],\
+                    e_ec_rmag[i1], ec_imag[i1], e_ec_imag[i1], ec_zmag[i1], e_ec_zmag[i1], ec_ymag[i1], e_ec_ymag[i1], teff[i1], logg[i1], feh[i1], sam_g[i1],\
                     sam_r[i1], sam_i[i1], sam_z[i1], sam_y[i1], sam_j[i1], sam_h[i1], sam_k[i1], sf_avg[i1], sigma_sf[i1], min_dquad_element[i1],\
                     computed_j[i1], computed_j_error[i1], computed_h[i1], computed_h_error[i1], computed_k[i1], computed_k_error[i1], gaia_source_id[i1],\
                     gaia_ra[i1], gaia_ra_error[i1], gaia_dec[i1], gaia_dec_error[i1], gaia_parallax[i1], gaia_parallax_error[i1], gaia_pm[i1], gaia_pm_ra[i1],\
                     gaia_pm_ra_error[i1], gaia_pm_dec[i1], gaia_pm_dec_error[i1], gaia_ruwe[i1], objinfoflag[i1], qualityflag[i1], ndetections[i1], nstackdetections[i1],\
                     ginfoflag[i1], ginfoflag2[i1], ginfoflag3[i1], rinfoflag[i1], rinfoflag2[i1], rinfoflag3[i1], iinfoflag[i1], iinfoflag2[i1], iinfoflag3[i1],\
-                    zinfoflag[i1], zinfoflag2[i1], zinfoflag3[i1], yinfoflag[i1], yinfoflag2[i1], yinfoflag3[i1], diff_j, diff_h, diff_k,\
-                    ukidss_j[index_ukidss_position], e_ukidss_j[index_ukidss_position], ukidss_h[index_ukidss_position], e_ukidss_h[index_ukidss_position],\
-                    ukidss_k[index_ukidss_position], e_ukidss_k[index_ukidss_position]
-                    writer.writerow(validate_params)
+                    zinfoflag[i1], zinfoflag2[i1], zinfoflag3[i1], yinfoflag[i1], yinfoflag2[i1], yinfoflag3[i1], sam_flag[i1], diff_j[0], diff_h[0], diff_k[0],\
+                    ukidss_j[index_ukidss_position][0], e_ukidss_j[index_ukidss_position][0], ukidss_h[index_ukidss_position][0], e_ukidss_h[index_ukidss_position][0],\
+                    ukidss_k[index_ukidss_position][0], e_ukidss_k[index_ukidss_position][0]
+                    #writer.writerow(validate_params)
                     ob_j = np.append(ob_j, ukidss_j[index_ukidss_position])
                     e_ob_j = np.append(e_ob_j, e_ukidss_j[index_ukidss_position])
                     ob_h = np.append(ob_h, ukidss_h[index_ukidss_position])
@@ -255,6 +260,7 @@ class ValidateIRGSC():
                     diff_jf = np.append(diff_jf, diff_j)
                     diff_hf = np.append(diff_hf, diff_h)
                     diff_kf = np.append(diff_kf, diff_k)
+                    writer.writerow(validate_params)
         
         indjp = np.where(np.abs(diff_jf)<0.2)[0]
         indhp = np.where(np.abs(diff_hf)<0.2)[0]

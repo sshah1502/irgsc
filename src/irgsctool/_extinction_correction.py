@@ -38,6 +38,8 @@ class ExtinctionCorrection():
 
                 """
                 try:
+                        print("")
+                        print("obtaining reddening information for this field")
                         coords = SkyCoord((self.ra)*u.degree, (self.dec)\
                                           *u.degree, frame='icrs')
                         sfd = SFDQuery()
