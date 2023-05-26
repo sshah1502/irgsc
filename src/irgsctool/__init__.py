@@ -1,4 +1,7 @@
 #pylint: disable=wrong-import-position
+#pylint: disable=wrong-import-position
+#pylint: disable=import-error, C0103, R0914, W0311, C0114, C0301, R0903
+
 import sys
 import os
 from datetime import date
@@ -71,4 +74,4 @@ class irgsc(GetData, ReadData, StarGalaxyClassification, ExtinctionCorrection, M
         #rd = ReadData(self.ra, self.dec)
         if self.ra < 0.0 or self.dec<-30.0:
             raise ValueError('Please check the input coordinates')
-            sys.exit(0)
+        sys.exit(0)

@@ -1,14 +1,14 @@
+#pylint: disable=wrong-import-position
+#pylint: disable=import-error
+#pylint: disable=wrong-import-position
+#pylint: disable=import-error, C0103, R0914, W0311, C0114, C0301, R0903, C0304, C0200, R1705, R0911, R0912, R0915, R1702, R1710, W1401, C0209, C0116
 import os
-import sys
 import csv
 from datetime import date
-import matplotlib.pylab as pylab
-import numpy as np
-from ._fitting import GenerateIRGSC
-from ._read_data import ReadData
 from matplotlib import pyplot as plt
-from ._get_data import GetData
-from ._read_data import ReadData
+from matplotlib import pylab
+from matplotlib.gridspec import GridSpec
+import numpy as np
 
 params = {'legend.fontsize': 'x-large',
           'figure.figsize': (10,10),
@@ -17,7 +17,8 @@ params = {'legend.fontsize': 'x-large',
          'xtick.labelsize':'x-large',
          'ytick.labelsize':'x-large'}
 pylab.rcParams.update(params)
-from matplotlib.offsetbox import AnchoredText
+from ._fitting import GenerateIRGSC
+from ._read_data import ReadData
 current_datetime = date.today()
 home_dir = os.getcwd()
 
@@ -30,9 +31,9 @@ header = ['ps1_objid','ps1_ra','ps1_ra_error','ps1_dec','ps1_dec_error',\
 'ps1_gpsf','ps1_gpsf_error','ps1_rpsf','ps1_rpsf_error','ps1_ipsf',\
 'ps1_ipsf_error','ps1_zpsf','ps1_zpsf_error','ps1_ypsf','ps1_ypsf_error',\
 'teff','logg','feh','sam_g','sam_r','sam_i','sam_z','sam_y','sam_j','sam_h',\
-'sam_k','scale_factor','scale_factor_error','chi2','computed_j',\
-'computed_j_error','computed_h','computed_h_error', 'computed_k',\
-'computed_k_error','gaia_source_id','gaia_ra','gaia_ra_error','gaia_dec',\
+'sam_k','scale_factor','scale_factor_error','chi2','J',\
+'J_err','H','H_err', 'K',\
+'K_err','gaia_source_id','gaia_ra','gaia_ra_error','gaia_dec',\
 'gaia_dec_error','gaia_parallax','gaia_parallax_error','gaia_pm','gaia_pm_ra',\
 'gaia_pm_ra_error','gaia_pm_dec','gaia_pm_dec_error','gaia_ruwe','objinfoflag',\
 'qualityflag','ndetections','nstackdetections','ginfoflag','ginfoflag2',\
@@ -61,6 +62,8 @@ class ValidateIRGSC():
             Raises:
                 FileNotFoundError: This error arises if there is no generated IRGSC
                 available. However, this function then generates it.
+            Returns:
+                irgsc_data: A multi-dimensional array consisting of elements in IRGSC.
 
         """
         ra_name = str(self.ra).replace('.','_')
@@ -181,11 +184,10 @@ class ValidateIRGSC():
 
         if validate is not True:
             raise ValueError('Cannot proceed as validate=False')
-        elif validate is True:
+        if validate is True:
             ukidss_data = self.rd.read_nir_data()
             irgsc_data = self.read_irgsc()
             ukidss_j, ukidss_h, ukidss_k, e_ukidss_j, e_ukidss_h, e_ukidss_k, ukidss_ra, ukidss_dec = ukidss_data
-            print('len ukidss j=', len(ukidss_j))
             ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, e_ec_gmag, ec_rmag,\
                 e_ec_rmag, ec_imag, e_ec_imag, ec_zmag, e_ec_zmag, ec_ymag, e_ec_ymag, teff,\
                 logg, feh, sam_g,sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k, sf_avg, sigma_sf,\
@@ -197,10 +199,19 @@ class ValidateIRGSC():
                                 ginfoflag, ginfoflag2, ginfoflag3, rinfoflag, rinfoflag2, rinfoflag3,\
                                     iinfoflag, iinfoflag2, iinfoflag3, zinfoflag, zinfoflag2,\
                                     zinfoflag3, yinfoflag, yinfoflag2, yinfoflag3, sam_flag = irgsc_data
-        
-        validate_params=[]; ob_j = []; e_ob_j = []; ob_h = []; e_ob_h = []; ob_k = []; e_ob_k = []
-        diff_jf = []; diff_hf = []; diff_kf = []
-        ra_name = str(self.ra).replace('.','_'); dec_name = str(self.dec).replace('.', '_')
+
+        validate_params=[]
+        ob_j = []
+        e_ob_j = []
+        ob_h = []
+        e_ob_h = []
+        ob_k = []
+        e_ob_k = []
+        diff_jf = []
+        diff_hf = []
+        diff_kf = []
+        ra_name = str(self.ra).replace('.','_')
+        dec_name = str(self.dec).replace('.', '_')
         with open('validated_IRGSC' + '_' + 'RA' + str(ra_name) + '_' + 'DEC' + str(dec_name) + '_' + str(current_datetime) + '.csv', 'w') as file2:
             writer=csv.writer(file2)
             writer.writerow(header)
@@ -261,7 +272,7 @@ class ValidateIRGSC():
                     diff_hf = np.append(diff_hf, diff_h)
                     diff_kf = np.append(diff_kf, diff_k)
                     writer.writerow(validate_params)
-        
+
         indjp = np.where(np.abs(diff_jf)<0.2)[0]
         indhp = np.where(np.abs(diff_hf)<0.2)[0]
         indkp = np.where(np.abs(diff_kf)<0.2)[0]
@@ -294,7 +305,6 @@ class ValidateIRGSC():
         bins2 = np.arange(np.min(diff_jf), np.max(diff_jf)+.1, 0.1)
         plt.clf()
         fig = plt.figure(figsize=(10,10))
-        from matplotlib.gridspec import GridSpec
         gs = GridSpec(4,4)
         ax_joint = fig.add_subplot(gs[1:4,0:3])
         ax_marg_x = fig.add_subplot(gs[0,0:3])
@@ -304,9 +314,9 @@ class ValidateIRGSC():
         ax_joint.grid()
         ax_joint.set_ylim(-2,2)
         ax_joint.legend(loc = 'best')
-        nx, bx, px = ax_marg_x.hist(ob_j, color = 'm', edgecolor = 'g', density =True,\
+        ax_marg_x.hist(ob_j, color = 'm', edgecolor = 'g', density =True,\
                                     alpha = 0.5, label = 'Observed J')
-        ny, by, px = ax_marg_y.hist(diff_jf, bins = bins2, orientation="horizontal",\
+        ny, _,_ = ax_marg_y.hist(diff_jf, bins = bins2, orientation="horizontal",\
                                     edgecolor = 'g', density=True, alpha = 0.5,\
                                     facecolor = 'orange', label = 'Difference')
         biny_max = find_nearest(ny, np.median(ny))
@@ -337,7 +347,6 @@ class ValidateIRGSC():
         bins2 = np.arange(diff_hf.min(), diff_hf.max()+.1, 0.1)
         plt.clf()
         fig = plt.figure(figsize=(10,10))
-        from matplotlib.gridspec import GridSpec
         gs = GridSpec(4,4)
         ax_joint = fig.add_subplot(gs[1:4,0:3])
         ax_marg_x = fig.add_subplot(gs[0,0:3])
@@ -347,9 +356,9 @@ class ValidateIRGSC():
         ax_joint.grid()
         ax_joint.set_ylim(-2,2)
         ax_joint.legend(fontsize=18, loc = 'best')
-        nx, bx, px = ax_marg_x.hist(ob_h, color = 'm', edgecolor = 'g', alpha = 0.5,\
+        ax_marg_x.hist(ob_h, color = 'm', edgecolor = 'g', alpha = 0.5,\
                                 label = 'Observed J')
-        ny, by, px = ax_marg_y.hist(diff_hf, bins = bins2, orientation="horizontal",\
+        ny,_,_= ax_marg_y.hist(diff_hf, bins = bins2, orientation="horizontal",\
                                  edgecolor = 'g', alpha = 0.5, facecolor = 'orange', label = 'Difference')
         biny_max = find_nearest(ny, np.median(ny))
         print('binymax=', biny_max)
@@ -379,7 +388,6 @@ class ValidateIRGSC():
         bins2 = np.arange(np.min(diff_jf), np.max(diff_jf)+.1, 0.1)
         plt.clf()
         fig = plt.figure(figsize=(10,10))
-        from matplotlib.gridspec import GridSpec
         gs = GridSpec(4,4)
         ax_joint = fig.add_subplot(gs[1:4,0:3])
         ax_marg_x = fig.add_subplot(gs[0,0:3])
@@ -389,9 +397,9 @@ class ValidateIRGSC():
         ax_joint.grid()
         ax_joint.set_ylim(-2,2)
         ax_joint.legend(fontsize=18, loc = 'best')
-        nx, bx, px = ax_marg_x.hist(ob_k, color = 'm', edgecolor = 'g', alpha = 0.5,\
+        ax_marg_x.hist(ob_k, color = 'm', edgecolor = 'g', alpha = 0.5,\
                                         label = 'Observed J')
-        ny, by, px = ax_marg_y.hist(diff_kf, bins = bins2, orientation="horizontal",\
+        ny,_,_= ax_marg_y.hist(diff_kf, bins = bins2, orientation="horizontal",\
                                     edgecolor = 'g', alpha = 0.5, facecolor = 'orange', label =\
                                         'Difference')
         biny_max = find_nearest(ny, np.median(ny))

@@ -164,3 +164,10 @@ Create a custom layout.html Jinja2 template which overloads the fonts block (exa
   <link rel="stylesheet" href="{{ pathto('_static/vendor/lato_latin-ext/1.44.1/index.css', 1) }}">
 
 {% endblock %}
+
+body {
+    contain: strict;
+}
+.md-main__inner {
+    height: 0% !important;
+}

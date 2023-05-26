@@ -1,8 +1,9 @@
 #pylint: disable=wrong-import-position
-#pylint: disable=import-error
+#pylint: disable=import-error, C0103, R0914, W0311, C0114, C0301, R0903
+
 import numpy as np
 from matplotlib import pyplot as plt
-import matplotlib.pylab as pylab
+from matplotlib import pylab as pylab
 from ._read_data import ReadData
 
 params = {'legend.fontsize': 'x-large',
@@ -30,6 +31,7 @@ class StarGalaxyClassification():
         """
             `irgsctool.StarGalaxyClassification.star_galaxy_classification()`
 
+            <justify>
             This method is used to seperate stars and galaxies using
             the condition applied to all the five optical filters:
             
@@ -40,10 +42,13 @@ class StarGalaxyClassification():
             This relation filters the input optical data for only probable
             stellar sources. The (psf-kron) diagram showing stars
             and galaxies in the data as well as (g-r) vs (r-i)
-            CCD is also plotted by this method.
+            CCD is also plotted by this method.</justify>
 
             Returns:
-                    ndarray: PANSTARRS data containing most probable stellar sources
+                    A multi-dimensional array of the PANSTARRS optical data containing 
+                    most probable stellar sources after seperating the galaxies. Also plots
+                    the figures showing the comparison of $$i_{psf}$$ vs ($$i_{psf}$$ - $$i_{kron}$$),
+                    the color-color diagrams of the stars and galaxies.
         """
 
         print("")
@@ -51,7 +56,7 @@ class StarGalaxyClassification():
         print('Seperating Stars and Galaxies from the input optical PANSTARRS dataset')
         print("")
         print("#######################################################################")
-        
+
         ps_phot = self.rd.read_optical_data()
         print("")
         print('Using psf-kron criteria to seperate stars and galaxies')
@@ -65,10 +70,31 @@ class StarGalaxyClassification():
         print('Length of the PS1 data before SGC is:', len(ps1_objid))
         print('')
 
-        sgc_index = np.where((gpsf - gkron < 0.05) & (rpsf - rkron < 0.05) & (ipsf - ikron < 0.05) & \
-                         (zpsf - zkron < 0.05) & (ypsf - ykron < 0.05))[0]
-        galaxy_index = np.where((gpsf - gkron > 0.05) & (rpsf - rkron > 0.05) & (ipsf - ikron > 0.05) & \
-                            (zpsf - zkron > 0.05) & (ypsf - ykron > 0.05))[0]
+        sgc_index = np.where((gpsf!= -999) & (ipsf!= -999) & (rpsf != -999) & (zpsf != -999) &\
+                                        (ypsf != -999) & (e_gpsf != -999) &\
+                                        (e_rpsf != -999) & (e_ipsf != -999) &\
+                                        (e_zpsf != -999) & (e_ypsf != -999) &\
+                                        (gkron!= -999) & (ikron!= -999) &\
+                                        (zkron != -999) & (ykron != -999) &\
+                                        (rkron != -999) & (e_gkron != -999) & \
+                                        (e_rkron != -999) & (e_ikron != -999) & \
+                                        (e_zkron != -999) & (e_ykron != -999) &\
+                                        (e_rpsf<0.2) & (e_gpsf<0.2) & (e_ipsf<0.2) &\
+                                        (e_zpsf<0.2) & (e_ypsf<0.2) & (gpsf - gkron < 0.05) & \
+                                        (rpsf - rkron < 0.05) & (ipsf - ikron < 0.05) & \
+                                        (zpsf - zkron < 0.05) & (ypsf - ykron < 0.05))[0]
+        galaxy_index = np.where((gpsf!= -999) & (ipsf!= -999) & (rpsf != -999) & (zpsf != -999) &\
+                                        (ypsf != -999) & (e_gpsf != -999) &\
+                                        (e_rpsf != -999) & (e_ipsf != -999) &\
+                                        (e_zpsf != -999) & (e_ypsf != -999) &\
+                                        (gkron!= -999) & (ikron!= -999) &\
+                                        (zkron != -999) & (ykron != -999) &\
+                                        (rkron != -999) & (e_gkron != -999) & \
+                                        (e_rkron != -999) & (e_ikron != -999) & \
+                                        (e_zkron != -999) & (e_ykron != -999)\
+                                        & (gpsf - gkron > 0.05) & (rpsf - rkron > 0.05) & \
+                                        (ipsf - ikron > 0.05) & \
+                                        (zpsf - zkron > 0.05) & (ypsf - ykron > 0.05))[0]
 
         print('Number of probable stellar sources =' + ' ' + str(len(sgc_index)) + ' ' + 'and number of extended sources = ' + str(len(ipsf) - len(sgc_index)))
         print("")
@@ -115,7 +141,7 @@ class StarGalaxyClassification():
                                     iinfoflag[sgc_index], iinfoflag2[sgc_index], iinfoflag3[sgc_index],\
                                         zinfoflag[sgc_index], zinfoflag2[sgc_index], zinfoflag3[sgc_index],\
                                             yinfoflag[sgc_index], yinfoflag2[sgc_index], yinfoflag3[sgc_index]
-        
+
         print("#####################################################")
         print('Created an input optical catalogue of stellar sources')
         print("######################################################")
