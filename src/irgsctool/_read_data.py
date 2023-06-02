@@ -316,7 +316,7 @@ class ReadData():
             print("")
             self.gd.get_ukidss_data()
             ukidss_data = np.genfromtxt(str(file_name), delimiter=',', skip_header=1)
-            if len(ukidss_data)<=8.0:
+            if len(ukidss_data)<8.0:
                     raise ValueError('No observations in UKIDSS')
         elif file_exists is True:
                 print("")
