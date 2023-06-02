@@ -224,7 +224,7 @@ class GenerateIRGSC():
                     writer.writerow(header)
                     for j in range(len(ec_gmag)):
                         ddev_arr, min_ddev, _, _, _, _, _, _, _, _, _, _ = \
-                            compute_ddev(j, oc = observed_colours, eoc = e_observed_colors, mc = model_colours)
+                            compute_ddev(j, oc = observed_colours, mc = model_colours)
                         min_ddev_element = find_nearest(ddev_arr,min_ddev)
 
                         index_best_fit_sam = np.where(min_ddev_element==(ddev_arr))[0]
