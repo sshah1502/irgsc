@@ -5,9 +5,10 @@ site_author: Sarang Shah
 use_directory_urls: false
 markdown_extensions:
     - pymdownx.snippets:
+
 theme: 
-  name: readthedocs
-  logo: img/TMTLOGO.PNG
+  name: mkdocs
+  logo: img/TMTLOGO.PNG 
   nav_style: dark
   features:
     - content.action.edit
@@ -15,7 +16,6 @@ theme:
   icon:
     edit: material/pencil 
     view: material/eye
-
 markdown_extensions:
   - pymdownx.highlight:
       pygments_lang_class: true

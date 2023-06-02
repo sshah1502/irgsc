@@ -1,5 +1,5 @@
 #pylint: disable=wrong-import-position
-#pylint: disable=import-error
+#pylint: disable=import-error, C0103, R0914, W0311, C0114
 import numpy as np
 from astropy.coordinates import SkyCoord
 from astropy import units as u
@@ -21,10 +21,10 @@ class ExtinctionCorrection():
                 """
                         `irgsctool.ExtinctionCorrection.get_reddening()`
                 
-                        This method obtains the reddening value for a given set of 
+                        <justify> This method obtains the reddening value for a given set of 
                         input coordinates from Schelgel et.al. 1998 (sfd) reddening
                         map. irgsctool uses Schlafly & Finkbeiner 2011 (snf) reddening
-                        map which is snf = 0.86*sfd.
+                        map which is snf = 0.86*sfd.</justify>
 
                         Raises:
                                 FileNotFoundError: if the sfd files are not present.
@@ -38,6 +38,8 @@ class ExtinctionCorrection():
 
                 """
                 try:
+                        print("")
+                        print("obtaining reddening information for this field")
                         coords = SkyCoord((self.ra)*u.degree, (self.dec)\
                                           *u.degree, frame='icrs')
                         sfd = SFDQuery()
@@ -65,14 +67,20 @@ class ExtinctionCorrection():
                 return snf_ebv, err_snf_ebv, aj,ah,ak
 
         def extinction_corrected_photometry(self):
+
                 """
-                        `irgsctool.ExtinctionCorrection.extinction_correctdd_photometry()`
+                                `irgsctool.ExtinctionCorrection.extinction_corrected_photometry()`
+
+                       <justify>
 
                         This method corrects the input optical PANSTARRS data for reddening
-                        and extinction along the line of site.
+                        and extinction along the line of site. It uses the get_reddening()
+                        method.</justify>
 
                         Returns:
-                                ndarray: Extinction corrected PANSTARRS optical photometry.
+                                psf_phot: A multi-dimensional array consisting of extinction 
+                                corrected PANSTARRS optical photometry containing psf and kron 
+                                measurements.
 
                 """
                 print("########################################")
@@ -83,7 +91,6 @@ class ExtinctionCorrection():
                 print("")
 
                 ebv, err_ebv,_,_,_ = self.get_reddening()
-                print('ebv=', ebv)
                 ps_phot = self.sgc.star_galaxy_classification()
                 print('')
                 print('Length of PS1 data before ec is:', len(ps_phot[0]))

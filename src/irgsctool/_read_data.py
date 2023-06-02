@@ -1,3 +1,6 @@
+#pylint: disable=wrong-import-position
+#pylint: disable=import-error, C0103, R0914, W0311, C0114, C0301, R0903, C0304, C0200, R1705, R0911, R0912, R0915, R1702, R1710
+
 import os
 import sys
 from datetime import date
@@ -37,20 +40,24 @@ class ReadData():
             nan values (if present) and restricts the data to the sources having
             detection in all the five bands and that have SNR atleast 5.
             This data is then fed to the Star-Galaxy classification routine to
-            seperate stars and galaxies in the data. <\justify>
+            seperate stars and galaxies in the data. The format of the input file if the 
+            data is obtained externally is 'PS1' + '_' + 'RA'+str(ra) + 'DEC' + str(dec)+'.csv'</justify>
 
             Raises:
-                FileNotFoundError: if the optical input data file is not available.
+                FileNotFoundError:      if the optical input data file is not available.
+            Returns:
+                filtered_optical_data:      A multi-dimensional array consisting of optical panstarrs
+                                        stack photometry in five bands which is free from nan values and duplicate sources.
         """
         ra_name = str(self.ra).replace('.','_')
         dec_name = str(self.dec).replace('.', '_')
         file_name = 'PS1' + '_' + 'RA'+str(ra_name) + 'DEC' + str(dec_name)+'.csv'
 
         if os.path.exists(file_name) is True:
-            print('File exists:', file_name)
+            print('PANSTARRS file name:', file_name)
             ps1_data = np.genfromtxt(str(file_name),\
                                      delimiter=',', skip_header=1)
- 
+
         #except FileNotFoundError:
         else:
             print("")
@@ -60,7 +67,6 @@ class ReadData():
             ps1_data = np.genfromtxt(str(file_name),\
                                      delimiter=',', skip_header=1)
         ps1_objid = ps1_data[:,0]
-        print('ps_oid=', len(ps1_objid))
         ps_ra = ps1_data[:,1]
         err_ps_ra = ps1_data[:,2]
         ps_dec = ps1_data[:,3]
@@ -104,7 +110,7 @@ class ReadData():
         yinfoflag = ps1_data[:,41]
         yinfoflag2 = ps1_data[:,42]
         yinfoflag3 = ps1_data[:,43]
-            
+
         ps1_data = ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, gmag,\
             e_gmag, gkron, e_gkron, rmag, e_rmag, rkron, e_rkron, imag,\
             e_imag, ikron, e_ikron, zmag, e_zmag, zkron, e_zkron, ymag,\
@@ -127,8 +133,9 @@ class ReadData():
                 ptsf = np.int64(ptsf)
             else:
                  ptsf = np.append(ptsf, ptsi)
-        
-        print('Number of rows in the PANSTARRS file:', len(ps1_objid), len(ptsf))
+                 ptsf = np.int64(ptsf)
+
+        print('Number of rows in the PANSTARRS file:', len(ptsf))
 
         ps1_objid = ps1_objid[ptsf]
         ps_ra = ps_ra[ptsf]
@@ -174,7 +181,7 @@ class ReadData():
         yinfoflag = yinfoflag[ptsf]
         yinfoflag2 = yinfoflag2[ptsf]
         yinfoflag3 = yinfoflag3[ptsf]
-        
+
         print("")
         print('Now filtering the optical data for nan values')
         print("")
@@ -227,7 +234,7 @@ class ReadData():
         bins_y = np.arange(np.min(ymag[indices_all_filtered]),\
                            np.max(ymag[indices_all_filtered]) +\
                             binwidth, binwidth)
-        
+
         plt.clf()
         plt.hist(gmag[indices_all_filtered], bins=bins_g,\
                  facecolor='white', edgecolor='red',\
@@ -276,14 +283,21 @@ class ReadData():
         return filtered_optical_data
 
     def read_nir_data(self):
+
         """
+                    `irgsctool.ReadData.read_nir_data()`
+
         Reads the input UKIDSS NIR data. The number of columns are 8.
-
-        Returns the input optical data with nan values removed (if present)
-        and restricts the data to the sources having SNR >= 5.
-
         Some regions do not have J or H band data especially DXS or GCS
-        surveys. For these regions, only K band data is imported.
+        surveys. For these regions, only K band data is obtained. This method filters the data
+        for nan values and selects the sources that have SNR>5 and plots the histogram of the NIR magnitudes available.
+        The format of the input file if the 
+        data is obtained externally is 'UKIDSS'+'_'+'RA'+str(ra)+'DEC'+ str(dec)+'.csv'
+        Raises: 
+            ValueError: This error is raised when there are no observations available in UKIDSS database.
+        Returns:
+            nir_data: A multi-dimensional data of observed UKIDSS NIR sources
+                that have SNR>5. Also plots a histogram of UKIDSS data.
         """
 
         ra_name = str(self.ra).replace('.','_')
@@ -302,20 +316,24 @@ class ReadData():
             print("")
             self.gd.get_ukidss_data()
             ukidss_data = np.genfromtxt(str(file_name), delimiter=',', skip_header=1)
-            if len(ukidss_data)<9.0:
+            if len(ukidss_data)<=8.0:
                     raise ValueError('No observations in UKIDSS')
         elif file_exists is True:
                 print("")
                 print('Reading the UKIDSS data file:'+ str(file_name))
                 print("")
                 ukidss_data = np.genfromtxt(str(file_name), delimiter=',', skip_header=1)
-                if len(ukidss_data)<9.0:
+                if len(ukidss_data)<=8.0:
                     raise ValueError('No observations in UKIDSS')
-                    sys.exit(0)
-        petro_j = ukidss_data[:,2]; e_petro_j = ukidss_data[:,3]
-        petro_h = ukidss_data[:,4]; e_petro_h = ukidss_data[:,5]
-        petro_k = ukidss_data[:,6]; e_petro_k = ukidss_data[:,7]
-        ukidss_ra = ukidss_data[:,0]; ukidss_dec = ukidss_data[:,1]
+                sys.exit(0)
+        petro_j = ukidss_data[:,2]
+        e_petro_j = ukidss_data[:,3]
+        petro_h = ukidss_data[:,4]
+        e_petro_h = ukidss_data[:,5]
+        petro_k = ukidss_data[:,6]
+        e_petro_k = ukidss_data[:,7]
+        ukidss_ra = ukidss_data[:,0]
+        ukidss_dec = ukidss_data[:,1]
 
         nir_filter_index = np.where((petro_j != -999999488) & (e_petro_j != -999999488) &\
             (petro_h != -999999488) & (e_petro_h != -999999488) &\
@@ -324,7 +342,6 @@ class ReadData():
         if len(nir_filter_index) == 0: #all data available but e_petroj,h,k is nan
             nir_filter_index = np.where((petro_j != -999999488)\
                 & (petro_k != -999999488) & (petro_h != -999999488))[0]
-            print('0', len(nir_filter_index))
             if len(nir_filter_index)>0.0:
                 filtered_petro_j = petro_j[nir_filter_index]
                 e_petro_h = e_petro_h[nir_filter_index]
@@ -351,17 +368,14 @@ class ReadData():
                 plt.legend(loc='best')
                 plt.savefig('hist_ukidss_nir.png')
                 plt.clf()
-                    
                 nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                     e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                print('read_nir_data 0=', nir_data)
                 return nir_data
-                    
+
             elif len(nir_filter_index) == 0: #only j and h band data available
                 nir_filter_index = np.where((petro_j != -999999488) &\
                     (petro_h != -999999488) & (e_petro_j < 0.2) & (e_petro_h < 0.2) &\
                         (e_petro_j != -999999488) & (e_petro_h != -999999488))[0]
-                print('1')
                 if len(nir_filter_index)>0.0:
                     filtered_petro_j = petro_j[nir_filter_index]
                     e_petro_h = 0.05*petro_h[nir_filter_index]
@@ -388,15 +402,12 @@ class ReadData():
                     plt.legend(loc='best')
                     plt.savefig('hist_ukidss_nir.png')
                     plt.clf()
-                    
                     nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                         e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                    print('read_nir_data 1=', nir_data)
                     return nir_data
-                        
+
                 elif len(nir_filter_index) == 0: #only j and h data available but e_petroj,k is nan
                     nir_filter_index = np.where((petro_j != -999999488) & (petro_h != -999999488))[0]
-                    print('2')
                     if len(nir_filter_index)>0.0:
                         e_petro_j = e_petro_j[nir_filter_index]
                         e_petro_h = e_petro_h[nir_filter_index]
@@ -424,13 +435,11 @@ class ReadData():
                         plt.clf()
                         nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                             e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                        print('read_nir_data 2=', nir_data)
                         return nir_data
 
                     elif len(nir_filter_index) == 0: #only j and k band data available
                         nir_filter_index = np.where((petro_j != -999999488) & (petro_k != -999999488) &\
                             (e_petro_j < 0.2) & (e_petro_k < 0.2) & (e_petro_j != -999999488) & (e_petro_k != -999999488))[0]
-                        print('3')
                         if len(nir_filter_index)>0.0:
                             e_petro_j = e_petro_j[nir_filter_index]
                             e_petro_h = e_petro_h[nir_filter_index]
@@ -458,12 +467,10 @@ class ReadData():
                             plt.clf()
                             nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                 e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                            print('read_nir_data 3=', nir_data)
                             return nir_data
-                        
+
                         elif len(nir_filter_index) == 0: #only j and k data available but e_petroj,k is nan
                             nir_filter_index = np.where((petro_j != -999999488) & (petro_k != -999999488))[0]
-                            print('4')
                             if len(nir_filter_index)>0.0:
                                 e_petro_j = 0.05*petro_j[nir_filter_index]
                                 e_petro_h = e_petro_h[nir_filter_index]
@@ -491,13 +498,11 @@ class ReadData():
                                 plt.clf()
                                 nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                     e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                print('read_nir_data 4=', nir_data)
                                 return nir_data
 
                             elif len(nir_filter_index) == 0: #only h and k band data available
                                 nir_filter_index = np.where((petro_h != -999999488) & (petro_k != -999999488) &\
                                     (e_petro_h < 0.2) & (e_petro_k < 0.2) & (e_petro_h != -999999488) & (e_petro_k != -999999488))[0]
-                                print('5')
                                 if len(nir_filter_index)>0.0:
                                     e_petro_j = e_petro_j[nir_filter_index]
                                     e_petro_h = e_petro_h[nir_filter_index]
@@ -525,12 +530,10 @@ class ReadData():
                                     plt.clf()
                                     nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                         e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                    print('read_nir_data 5=', nir_data)
                                     return nir_data
-                        
+
                                 elif len(nir_filter_index) == 0: #only h and k data available but e_petroh,k is nan
                                     nir_filter_index = np.where((petro_h != -999999488) & (petro_k != -999999488))[0]
-                                    print('6')
                                     if len(nir_filter_index)>0.0:
                                         e_petro_j = e_petro_j[nir_filter_index]
                                         e_petro_h = 0.05*petro_h[nir_filter_index]
@@ -558,13 +561,11 @@ class ReadData():
                                         plt.clf()
                                         nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                             e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                        print('read_nir_data 6 =', nir_data)
                                         return nir_data
 
                                     elif len(nir_filter_index) == 0: #only j band data available
                                         nir_filter_index = np.where((petro_j != -999999488) & (e_petro_j != -999999488) &\
                                             (e_petro_j < 0.2))[0]
-                                        print('7')
                                         if len(nir_filter_index)>0.0:
                                             e_petro_j = e_petro_j[nir_filter_index]
                                             e_petro_h = e_petro_h[nir_filter_index]
@@ -588,13 +589,11 @@ class ReadData():
                                             plt.clf()
                                             nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                 e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                            print('read_nir_data 7=', nir_data)
                                             return nir_data
-                      
+
                                         elif len(nir_filter_index) == 0: #only j band data available but e_petroj is nan
 
                                             nir_filter_index = np.where(petro_j != -999999488)[0]
-                                            print('8')
                                             if len(nir_filter_index)>0.0:
                                                 e_petro_j = 0.05*petro_j[nir_filter_index]
                                                 e_petro_h = e_petro_h[nir_filter_index]
@@ -618,13 +617,11 @@ class ReadData():
                                                 plt.clf()
                                                 nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                     e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                                print('read_nir_data 8 =', nir_data)
                                                 return nir_data
 
                                             elif len(nir_filter_index) == 0: #only h band data available
                                                 nir_filter_index = np.where((petro_h != -999999488) & (e_petro_h != -999999488) &\
                                                     (e_petro_h < 0.2))[0]
-                                                print('9')
                                                 if len(nir_filter_index)>0.0:
                                                     e_petro_j = e_petro_j[nir_filter_index]
                                                     e_petro_h = petro_h[nir_filter_index]
@@ -648,12 +645,10 @@ class ReadData():
                                                     plt.clf()
                                                     nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                         e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                                    print('read_nir_data 9=', nir_data)
                                                     return nir_data
-                        
+
                                                 elif len(nir_filter_index) == 0: #only h band data available but e_petroh is nan
                                                     nir_filter_index = np.where(petro_h != -999999488)[0]
-                                                    print('10')
                                                     if len(nir_filter_index)>0.0:
                                                         e_petro_j = e_petro_j[nir_filter_index]
                                                         e_petro_h = 0.05*petro_h[nir_filter_index]
@@ -677,13 +672,11 @@ class ReadData():
                                                         plt.clf()
                                                         nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                             e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                                        print('read_nir_data 10=', nir_data)
                                                         return nir_data
 
                                                     elif len(nir_filter_index) == 0: #only k band data available
                                                         nir_filter_index = np.where((petro_k != -999999488) & (e_petro_k != -999999488) &\
                                                             (e_petro_k < 0.2))[0]
-                                                        print('11')
                                                         if len(nir_filter_index)>0.0:
                                                             e_petro_j = e_petro_j[nir_filter_index]
                                                             e_petro_h = e_petro_h[nir_filter_index]
@@ -707,12 +700,10 @@ class ReadData():
                                                             plt.clf()
                                                             nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                                 e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                                            print('read_nir_data 11=', nir_data)
                                                             return nir_data
 
                                                         elif len(nir_filter_index) == 0: #only k band data available but e_petro_k is nan
                                                             nir_filter_index = np.where(petro_k != -999999488)[0]
-                                                            print('12')
                                                             if len(nir_filter_index)>0.0:
                                                                 e_petro_j = e_petro_j[nir_filter_index]
                                                                 e_petro_h = e_petro_h[nir_filter_index]
@@ -736,7 +727,6 @@ class ReadData():
                                                                 plt.clf()
                                                                 nir_data =  filtered_petro_j, filtered_petro_h, filtered_petro_k,\
                                                                     e_petro_j, e_petro_h, e_petro_k, filtered_ukidss_ra, filtered_ukidss_dec
-                                                                print('read_nir_data 12=', nir_data)
                                                                 return nir_data
         else:
             filtered_petro_j = petro_j[nir_filter_index]
@@ -769,54 +759,52 @@ class ReadData():
             return nir_data
 
     def read_gaia_data(self):
-            """
-                Reads the input GAIA DR3 data. The number of columns are 12.
 
             """
-            header = ['source_id','ra','ra_error,dec','dec_error','parallax','parallax_error',\
-                      'pm','pmra','pmra_error','pmdec','pmdec_error','ruwe']
-            
+                        `irgsctool.ReadData.read_gaia_data()`
+
+                This method reads the input GAIA DR3 data. The number of columns are 12. The format of the input file if the 
+                data is obtained externally is 'GAIA' + '_' + 'RA'+str(ra) + 'DEC' + str(dec)+'.csv'
+                
+                Raises:
+                    ValueError: This error is raised when there are no observations in Gaia database.
+                
+                Returns:
+                    gaia_data: A multi-dimensional array of gaia sourced_id, astrometry,
+                        and ruwe.
+                        
+            """
             ra_name = str(self.ra).replace('.','_')
-            dec_name = str(self.dec).replace('.', '_')    
+            dec_name = str(self.dec).replace('.', '_')
             file_name = 'GAIA'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)+'.csv'
+            print('Gaia file name=', file_name)
             if os.path.exists(file_name) is True:
+                print('Gaia file exists')
                 gaia_data = np.genfromtxt(str(file_name),delimiter=',',skip_header=1)
-                gaia_source_id = gaia_data[:,0]
-                gaia_ra = gaia_data[:,1]
-                gaia_ra_error = gaia_data[:,2]
-                gaia_dec = gaia_data[:,3]
-                gaia_dec_error = gaia_data[:,4]
-                gaia_parallax = gaia_data[:,5]
-                gaia_parallax_error = gaia_data[:,6]
-                gaia_pm = gaia_data[:,7]
-                gaia_pm_ra = gaia_data[:,8]
-                gaia_pm_ra_error = gaia_data[:,9]
-                gaia_pm_dec = gaia_data[:,10]
-                gaia_pm_dec_error = gaia_data[:,11]
-                gaia_ruwe = gaia_data[:,12]
-                gaia_data = gaia_source_id, gaia_ra, gaia_ra_error, gaia_dec,\
-                    gaia_dec_error, gaia_parallax, gaia_parallax_error,\
-                    gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
-                    gaia_pm_dec_error, gaia_ruwe
             else:
-                self.gd.get_gaia_data()
-                gaia_data=np.genfromtxt(str(file_name),delimiter=',',\
+                try:
+                    print("")
+                    print('Gaia file does not exist for this field. Obtaining the Gaia data')
+                    self.gd.get_gaia_data()
+                    gaia_data=np.genfromtxt(str(file_name),delimiter=',',\
                                         skip_header=1)
-                gaia_source_id = gaia_data[:,0]
-                gaia_ra = gaia_data[:,1]
-                gaia_ra_error = gaia_data[:,2]
-                gaia_dec = gaia_data[:,3]
-                gaia_dec_error = gaia_data[:,4]
-                gaia_parallax = gaia_data[:,5]
-                gaia_parallax_error = gaia_data[:,6]
-                gaia_pm = gaia_data[:,7]
-                gaia_pm_ra = gaia_data[:,8]
-                gaia_pm_ra_error = gaia_data[:,9]
-                gaia_pm_dec = gaia_data[:,10]
-                gaia_pm_dec_error = gaia_data[:,11]
-                gaia_ruwe = gaia_data[:,12]
-                gaia_data = gaia_source_id,gaia_ra,gaia_ra_error,gaia_dec,\
-                    gaia_dec_error, gaia_parallax, gaia_parallax_error,\
-                    gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
-                    gaia_pm_dec_error, gaia_ruwe
+                except ValueError:
+                    print('No data available in Gaia DR3.')
+            gaia_source_id = gaia_data[:,0]
+            gaia_ra = gaia_data[:,1]
+            gaia_ra_error = gaia_data[:,2]
+            gaia_dec = gaia_data[:,3]
+            gaia_dec_error = gaia_data[:,4]
+            gaia_parallax = gaia_data[:,5]
+            gaia_parallax_error = gaia_data[:,6]
+            gaia_pm = gaia_data[:,7]
+            gaia_pm_ra = gaia_data[:,8]
+            gaia_pm_ra_error = gaia_data[:,9]
+            gaia_pm_dec = gaia_data[:,10]
+            gaia_pm_dec_error = gaia_data[:,11]
+            gaia_ruwe = gaia_data[:,12]
+            gaia_data = gaia_source_id,gaia_ra,gaia_ra_error,gaia_dec,\
+                        gaia_dec_error, gaia_parallax, gaia_parallax_error,\
+                        gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
+                        gaia_pm_dec_error, gaia_ruwe
             return gaia_data

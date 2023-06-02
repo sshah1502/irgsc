@@ -1,4 +1,5 @@
-import sys
+#pylint: disable=wrong-import-position
+#pylint: disable=import-error, C0103, R0914, W0311, C0114, C0301, R0903, C0304, C0200, R1705, R0911, R0912, R0915, R1702, R1710, W1401, C0209
 import numpy as np
 import pyvo as vo
 from astroquery.ukidss import Ukidss
@@ -51,19 +52,20 @@ class GetData():
         Raises:
                 ValueError if there is no observed PANSTARRS DR2 data for the
                             given set of input coordinates.
+        Returns:   VOTable containing PANSTARRS data.
         """
         ra_name = str(self.ra).replace('.','_')
         dec_name = str(self.dec).replace('.', '_')
         file_name = 'PS1'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)+'.csv'
         if file_name is True:
-            ps1_data = np.genfromtxt(str(file_name) +'.csv',\
+            table = np.genfromtxt(str(file_name) +'.csv',\
                                      delimiter=',', skip_header=1)
             print('file present')
         else:
             Tap_Service = vo.dal.TAPService("https://vao.stsci.edu/PS1DR2/tapservice.aspx")
             Tap_Tables = Tap_Service.tables
             for tablename in Tap_Tables.keys():
-                if not "TAP_schema" in tablename:  
+                if not "TAP_schema" in tablename:
                     Tap_Tables[tablename].describe()
                     print("Columns={}".format(sorted([k.name for k in\
                                                   Tap_Tables[tablename].columns ])))
@@ -78,16 +80,15 @@ class GetData():
                     """.format(self.ra,self.dec,0.25)
 
             try:
- 
                 job = Tap_Service.submit_job(query)
                 job.run()
                 job_url = job.url
                 job = vo.dal.tap.AsyncTAPJob(job_url)
-  
+
                 Tap_Results = job.fetch_result()
                 table = Tap_Results.table
                 table.write(file_name, format="csv", overwrite = True)
-            
+
             except Exception:
                 raise ValueError('This field is outside the sky coverage of PANSTARRS')
             return table
@@ -103,11 +104,15 @@ class GetData():
         Raises:
                 ValueError if there is no observed GAIA DR3 data for the
                             given set of input coordinates.
+        Returns:   VOTable containing Gaia data.
         """
         ra_name = str(self.ra).replace('.','_')
         dec_name = str(self.dec).replace('.', '_')
         file_name = 'GAIA' + '_' + 'RA'+str(ra_name)\
                     + 'DEC' + str(dec_name) + '.csv'
+        if file_name is True:
+            table = np.genfromtxt(str(file_name),\
+                        delimiter=',', skip_header=1)
         #tables = Gaia.load_tables(only_names=True)
         #for table in (tables):
             #print (table.get_qualified_name())
@@ -124,9 +129,10 @@ class GetData():
                                                         'dec_error', 'parallax', 'parallax_error',\
                                                         'pm', 'pmra', 'pmra_error', 'pmdec',\
                                                         'pmdec_error', 'ruwe'])
+            table = job.get_results()
         except Exception:
             raise ValueError('No Gaia observations for this field')
-        return job.get_results()
+        return table
 
 
     def get_ukidss_data(self):
@@ -143,7 +149,7 @@ class GetData():
         Raises:
                 ValueError if there is no observed UKIDSS data for the
                             given set of input coordinates.
-
+        Returns:   VOTable containing UKIDSS data.
 
         """
         catalogs = ['UDS', 'GCS', 'GPS', 'DXS', 'LAS']
@@ -166,4 +172,3 @@ class GetData():
             except Exception:
                 raise ValueError('No observations in'+' '+str(catalogs[i])+' ' + 'catalog of UKIDSS')
         return table
-

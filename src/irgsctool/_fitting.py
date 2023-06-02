@@ -1,10 +1,11 @@
 #pylint: disable=wrong-import-position
 #pylint: disable=import-error
+#pylint: disable=wrong-import-position
+#pylint: disable=import-error, C0103, R0914, W0311, C0114, C0301, R0903, C0304, C0200, R1705, R0911, R0912, R0915, R1702, R1710, W1401, C0209, C0116
+
 import os
-import sys
 from datetime import date
 import csv
-from matplotlib import pyplot as plt
 import numpy as np
 from ._sam import Models
 from ._extinction_correction import ExtinctionCorrection as EC
@@ -66,23 +67,22 @@ def calc_sf(j, om, e_om, sm, indexf, aj, ah, ak):
         return sf_mean, e_sf_mean, cj, e_cj, ch, e_ch, ck, e_ck
 
 
-def compute_ddev(j, oc, eoc, mc):
+def compute_ddev(j, oc, mc):
         j = np.int64(j)
         obs_gr, obs_gi, obs_gz, obs_gy, obs_ri, obs_ry, obs_rz, obs_iz, obs_iy, obs_zy = oc
-        e_obs_gr, e_obs_gi, e_obs_gz, e_obs_gy, e_obs_ri, e_obs_rz, e_obs_ry, e_obs_iz, e_obs_iy, e_obs_zy = eoc
         sam_gr, sam_gi, sam_gz, sam_gy, sam_ri, sam_rz, sam_ry, sam_iz, sam_iy, sam_zy = mc
-        dev_gr = (sam_gr - obs_gr[j])/e_obs_gr[j]
-        dev_gi = (sam_gi - obs_gi[j])/e_obs_gi[j]
-        dev_gz = (sam_gz - obs_gz[j])/e_obs_gz[j]
-        dev_gy = (sam_gy - obs_gy[j])/e_obs_gy[j]
-        dev_ri = (sam_ri - obs_ri[j])/e_obs_ri[j]
-        dev_rz = (sam_rz - obs_rz[j])/e_obs_rz[j]
-        dev_ry = (sam_ry - obs_ry[j])/e_obs_ry[j]
-        dev_iz = (sam_iz - obs_iz[j])/e_obs_iz[j]
-        dev_iy = (sam_iy - obs_iy[j])/e_obs_iy[j]
-        dev_zy = (sam_zy - obs_zy[j])/e_obs_zy[j]
-        ddev = (1/7)*(dev_gr**2 + dev_gi**2 + dev_gz**2 + dev_gy**2 + dev_ri**2\
-                 + dev_rz**2 + dev_ry**2 + dev_iz**2 + dev_iy**2 + dev_zy**2)
+        dev_gr = sam_gr - obs_gr[j]
+        dev_gi = sam_gi - obs_gi[j]
+        dev_gz = sam_gz - obs_gz[j]
+        dev_gy = sam_gy - obs_gy[j]
+        dev_ri = sam_ri - obs_ri[j]
+        dev_rz = sam_rz - obs_rz[j]
+        dev_ry = sam_ry - obs_ry[j]
+        dev_iz = sam_iz - obs_iz[j]
+        dev_iy = sam_iy - obs_iy[j]
+        dev_zy = sam_zy - obs_zy[j]
+        ddev = dev_gr**2 + dev_gi**2 + dev_gz**2 + dev_gy**2 + dev_ri**2\
+                 + dev_rz**2 + dev_ry**2 + dev_iz**2 + dev_iy**2 + dev_zy**2
         return ddev, np.min(ddev), dev_gr, dev_gi, dev_gz, dev_gy, dev_ri,\
             dev_rz, dev_ry, dev_iz, dev_iy, dev_zy
 
@@ -121,7 +121,7 @@ class GenerateIRGSC():
             ([More information here](https://pysynphot.readthedocs.io)).
 
             Returns:
-                    irgsc_data: The generated IRGSC.
+                    irgsc_data: A multi-dimensional array consisting of the generated IRGSC.
 
         """
         if use_optimal_method is True:
@@ -142,13 +142,13 @@ class GenerateIRGSC():
             gaia_source_id, gaia_ra, gaia_ra_error, gaia_dec, gaia_dec_error, gaia_parallax,\
             gaia_parallax_error, gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
             gaia_pm_dec_error, gaia_ruwe = gaia_data
-            
+
             k0 = Models('Kurucz')
             k0.read_sam_file()
-            
+
             c1 = Models('Phoenix')
             c1.read_sam_file()
-            
+
             c2 = Models('Phoenix')
             c2.read_sam_file()
 
@@ -159,7 +159,7 @@ class GenerateIRGSC():
                                                 feh_range=[-6.0,-1.5])
             model_params_c2 = c2.select_sam_range(teff_range=[2800,4000],
                                                 logg_range=[-10.0,3.0],
-                                                feh_range=[-0.5,2.0])            
+                                                feh_range=[-0.5,2.0])
             teff_c1, logg_c1, feh_c1, sam_g_c1, sam_r_c1, sam_i_c1, sam_z_c1, sam_y_c1, sam_j_c1,\
             sam_h_c1, sam_k_c1 = model_params_c1
             teff_c2, logg_c2, feh_c2, sam_g_c2, sam_r_c2, sam_i_c2, sam_z_c2, sam_y_c2, sam_j_c2,\
@@ -212,7 +212,6 @@ class GenerateIRGSC():
                         np.sqrt(e_ec_rmag**2 + e_ec_ymag**2), np.sqrt(e_ec_imag**2 + e_ec_zmag**2),\
                             np.sqrt(e_ec_imag**2 + e_ec_ymag**2), np.sqrt(e_ec_zmag**2 + e_ec_ymag**2)
 
-            data = []
             ra_name=str(self.ra).replace('.','_');dec_name=str(self.dec)\
                 .replace('.', '_')
             irgsc_file = 'IRGSC'+'_'+'RA'+str(ra_name)+'DEC'+str(dec_name)+\
@@ -235,14 +234,12 @@ class GenerateIRGSC():
                             sam_model = 'c2'
                         elif index_best_fit_sam > len_c2:
                             sam_model = 'K0'
-                        
+
                         sf_avg,sigma_sf,computed_j,computed_j_error,computed_h,computed_h_error,\
                             computed_k, computed_k_error=calc_sf(j, observed_optical_magnitudes,\
-                                                            e_observed_optical_magnitudes,\
                                                             sam_magnitudes, index_best_fit_sam,\
                                                             aj, ah, ak)
-                    
-                    
+
                         gaia_angular_seperation = 3600*np.sqrt(((ps_ra[j]
                                                             -gaia_ra)*np.cos(np.radians(ps_dec[j])))**2
                                                             +(ps_dec[j] - gaia_dec)**2)
