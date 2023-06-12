@@ -325,7 +325,7 @@ class ReadData():
                 ukidss_data = np.genfromtxt(str(file_name), delimiter=',', skip_header=1)
                 if len(ukidss_data)<=8.0:
                     raise ValueError('No observations in UKIDSS')
-                sys.exit(0)
+                #sys.exit(0)
         petro_j = ukidss_data[:,2]
         e_petro_j = ukidss_data[:,3]
         petro_h = ukidss_data[:,4]
