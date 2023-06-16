@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html class="writer-html5" lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="Sarang Shah" name="author"/>
-<link href="https://sshah1502.github.io/irgsc/apireference.html" rel="canonical"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="Sarang Shah" name="author"/><link href="https://tmtsoftware.github.io/dms-irgsc/apireference.html" rel="canonical"/>
 <link href="img/favicon.ico" rel="shortcut icon"/>
 <title>API - irgsctool</title>
-<link href="css/bootstrap.min.css" rel="stylesheet"/>
-<link href="css/font-awesome.min.css" rel="stylesheet"/>
-<link href="css/base.css" rel="stylesheet"/>
+<link href="css/theme.css" rel="stylesheet"/>
+<link href="css/theme_extra.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" rel="stylesheet"/>
 <link href="assets/_mkdocstrings.css" rel="stylesheet"/>
-<script defer="" src="js/jquery-1.10.2.min.js"></script>
-<script defer="" src="js/bootstrap.min.js"></script>
+<script>
+        // Current page data
+        var mkdocs_page_name = "API";
+        var mkdocs_page_input_path = "apireference.md";
+        var mkdocs_page_url = "/dms-irgsc/apireference.html";
+      </script>
+<script defer="" src="js/jquery-3.6.0.min.js"></script>
+<!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 <link href="assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
@@ -24,110 +29,129 @@
             .gslide-desc { color: #666; user-select: text; }
             .gslide-image img { background: white; }
             </style><script src="assets/javascripts/glightbox.min.js"></script><link href="pdf/document.pdf" rel="alternate" title="PDF" type="application/pdf"/></head>
-<body>
-<div class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-<div class="container">
-<a class="navbar-brand" href="index.html">irgsctool</a>
-<!-- Expander button -->
-<button class="navbar-toggler" data-target="#navbar-collapse" data-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-<!-- Expanded navigation -->
-<div class="navbar-collapse collapse" id="navbar-collapse">
-<!-- Main navigation -->
-<ul class="nav navbar-nav">
-<li class="navitem">
-<a class="nav-link" href="index.html">Home</a>
-</li>
-<li class="navitem">
-<a class="nav-link" href="about.html">About</a>
-</li>
-<li class="navitem active">
-<a class="nav-link" href="apireference.html">API</a>
-</li>
-<li class="navitem">
-<a class="nav-link" href="tutorials.html">Tutorials</a>
-</li>
-<li class="navitem">
-<a class="nav-link" href="acknowledgements.html">Acknowledgements</a>
-</li>
-<li class="navitem">
-<a class="nav-link" href="license.html">License</a>
+<body class="wy-body-for-nav" role="document">
+<div class="wy-grid-for-nav">
+<nav class="wy-nav-side stickynav" data-toggle="wy-nav-shift">
+<div class="wy-side-scroll">
+<div class="wy-side-nav-search">
+<a href="index.html">
+<img alt="Logo" class="logo" src="img/TMTLOGO.PNG"/>
+</a><div role="search">
+<form action="./search.html" class="wy-form" id="rtd-search-form" method="get">
+<input name="q" placeholder="Search docs" title="Type search term here" type="text"/>
+</form>
+</div>
+</div>
+<div aria-label="Navigation menu" class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a>
 </li>
 </ul>
-<ul class="nav navbar-nav ml-auto">
-<li class="nav-item">
-<a class="nav-link" data-target="#mkdocs_search_modal" data-toggle="modal" href="#">
-<i class="fa fa-search"></i> Search
-                            </a>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a>
 </li>
-<li class="nav-item">
-<a class="nav-link" href="about.html" rel="prev">
-<i class="fa fa-arrow-left"></i> Previous
-                                </a>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal current" href="apireference.html">API</a>
+<ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="#irgsctool.irgsc">irgsc</a>
 </li>
-<li class="nav-item">
-<a class="nav-link" href="tutorials.html" rel="next">
-                                    Next <i class="fa fa-arrow-right"></i>
-</a>
+<li class="toctree-l2"><a class="reference internal" href="#irgsctool._get_data.GetData">GetData</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._get_data.GetData.get_gaia_data">get_gaia_data()</a>
 </li>
-<li class="nav-item">
-<a class="nav-link" href="https://github.com/sshah1502/irgsc/edit/master/docs/apireference.md"><i class="fa fa-github"></i> Edit on GitHub</a>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._get_data.GetData.get_panstarrs_data">get_panstarrs_data()</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._get_data.GetData.get_ukidss_data">get_ukidss_data()</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#irgsctool._read_data.ReadData">ReadData</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._read_data.ReadData.read_gaia_data">read_gaia_data()</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._read_data.ReadData.read_nir_data">read_nir_data()</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._read_data.ReadData.read_optical_data">read_optical_data()</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#irgsctool._read_data.ReadData.read_optical_data--irgsctoolreaddataread_optical_data">irgsctool.ReadData.read_optical_data()</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#irgsctool._sgc.StarGalaxyClassification">StarGalaxyClassification</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._sgc.StarGalaxyClassification.star_galaxy_classification">star_galaxy_classification()</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#irgsctool._extinction_correction.ExtinctionCorrection">ExtinctionCorrection</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._extinction_correction.ExtinctionCorrection.extinction_corrected_photometry">extinction_corrected_photometry()</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._extinction_correction.ExtinctionCorrection.get_reddening">get_reddening()</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#irgsctool._sam.Models">Models</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._sam.Models.read_sam_file">read_sam_file()</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._sam.Models.select_sam_range">select_sam_range()</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#irgsctool._fitting.GenerateIRGSC">GenerateIRGSC</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._fitting.GenerateIRGSC.generate_irgsc">generate_irgsc()</a>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#irgsctool._validate.ValidateIRGSC">ValidateIRGSC</a>
+<ul>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._validate.ValidateIRGSC.read_irgsc">read_irgsc()</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#irgsctool._validate.ValidateIRGSC.validate">validate()</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="acknowledgements.html">Acknowledgements</a>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a>
 </li>
 </ul>
 </div>
 </div>
+</nav>
+<section class="wy-nav-content-wrap" data-toggle="wy-nav-shift">
+<nav aria-label="Mobile navigation menu" class="wy-nav-top" role="navigation">
+<i class="fa fa-bars" data-toggle="wy-nav-top"></i>
+<a href="index.html">irgsctool</a>
+</nav>
+<div class="wy-nav-content">
+<div class="rst-content"><div aria-label="breadcrumbs navigation" role="navigation">
+<ul class="wy-breadcrumbs">
+<li><a alt="Docs" class="icon icon-home" href="index.html"></a> »</li>
+<li>API</li>
+<li class="wy-breadcrumbs-aside">
+<a class="icon icon-github" href="https://github.com/tmtsoftware/dms-irgsc/edit/master/docs/apireference.md"> Edit on GitHub</a>
+</li>
+</ul>
+<hr/>
 </div>
-<div class="container">
-<div class="row">
-<div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
-<div class="navbar-header">
-<button class="navbar-toggler collapsed" data-target="#toc-collapse" data-toggle="collapse" title="Table of Contents" type="button">
-<span class="fa fa-angle-down"></span>
-</button>
-</div>
-<div class="navbar-collapse collapse card bg-secondary" id="toc-collapse">
-<ul class="nav flex-column">
-<li class="nav-item" data-level="1"><a class="nav-link" href="#api-reference">API Reference</a>
-<ul class="nav flex-column">
-<li class="nav-item" data-level="2"><a class="nav-link" href="#irgsctool.irgsc">irgsc</a>
-<ul class="nav flex-column">
-</ul>
-</li>
-<li class="nav-item" data-level="2"><a class="nav-link" href="#irgsctool._get_data.GetData">GetData</a>
-<ul class="nav flex-column">
-</ul>
-</li>
-<li class="nav-item" data-level="2"><a class="nav-link" href="#irgsctool._read_data.ReadData">ReadData</a>
-<ul class="nav flex-column">
-</ul>
-</li>
-<li class="nav-item" data-level="2"><a class="nav-link" href="#irgsctool._sgc.StarGalaxyClassification">StarGalaxyClassification</a>
-<ul class="nav flex-column">
-</ul>
-</li>
-<li class="nav-item" data-level="2"><a class="nav-link" href="#irgsctool._extinction_correction.ExtinctionCorrection">ExtinctionCorrection</a>
-<ul class="nav flex-column">
-</ul>
-</li>
-<li class="nav-item" data-level="2"><a class="nav-link" href="#irgsctool._sam.Models">Models</a>
-<ul class="nav flex-column">
-</ul>
-</li>
-<li class="nav-item" data-level="2"><a class="nav-link" href="#irgsctool._fitting.GenerateIRGSC">GenerateIRGSC</a>
-<ul class="nav flex-column">
-</ul>
-</li>
-<li class="nav-item" data-level="2"><a class="nav-link" href="#irgsctool._validate.ValidateIRGSC">ValidateIRGSC</a>
-<ul class="nav flex-column">
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div></div>
-<div class="col-md-9" role="main">
+<div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
+<div class="section" itemprop="articleBody">
 <h1 id="api-reference">API Reference</h1>
 <p>This page introduces to the classes and functions in the <strong><em>irgsctool</em></strong> package. The main class is the <strong><em>irgsc</em></strong> class which has several subclasses like <a href="/irgsc/apireference/#irgsctool._get_data.GetData">GetData</a>, <a href="/irgsc/apireference/#irgsctool._read_data.ReadData">ReadData</a>, <a href="/irgsc/apireference/#irgsctool._sgc.StarGalaxyClassification">StarGalaxyClassification</a>, <a href="/irgsc/apireference/#irgsctool._extinction_correction.ExtinctionCorrection">ExtinctionCorrection</a>, <a href="/irgsc/apireference/#irgsctool._fitting.GenerateIRGSC">GenerateIRGSC</a>, <a href="/irgsc/apireference/#irgsctool._validate.ValidateIRGSC">ValidateIRGSC</a>.</p>
 <p>Figure (1) shows the UML diagram of the irgsctool package.</p>
@@ -146,7 +170,7 @@
 </h2>
 <div class="doc doc-contents">
 <hr/>
-<p>Initialisation of child <strong><em> irgsc class </em></strong>. This class has several child classes.</p>
+<p>Initialisation of parent <strong><em> irgsc class </em></strong>. This class has several child classes.</p>
 <p>This method described using input  ra and dec.
 It checks whther the data from PANSTARRS DR2, UKISS DR11 and
 Gaia DR3 can be obtained.</p>
@@ -274,28 +298,7 @@ GAIA DR3 and UKIDSS DR11.</p>
 <code class="highlight language-python"><span class="n">read_gaia_data</span><span class="p">()</span></code>
 </h3>
 <div class="doc doc-contents">
-<pre><code>    `irgsctool.ReadData.read_gaia_data()`
-</code></pre>
 <p>Reads the input GAIA DR3 data. The number of columns are 12.</p>
-<table>
-<thead>
-<tr>
-<th><b>RETURNS</b></th>
-<th><b>DESCRIPTION</b></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>gaia_data</code>
-</td>
-<td class="doc-returns-details">
-<p>A multi-dimensional array of gaia sourced_id, astrometry,
-and ruwe.</p>
-</td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 <div class="doc doc-object doc-function">
@@ -303,30 +306,11 @@ and ruwe.</p>
 <code class="highlight language-python"><span class="n">read_nir_data</span><span class="p">()</span></code>
 </h3>
 <div class="doc doc-contents">
-<pre><code>        `irgsctool.ReadData.read_nir_data()`
-</code></pre>
-<p>Reads the input UKIDSS NIR data. The number of columns are 8.
-Some regions do not have J or H band data especially DXS or GCS
-surveys. For these regions, only K band data is obtained.</p>
-<table>
-<thead>
-<tr>
-<th><b>RETURNS</b></th>
-<th><b>DESCRIPTION</b></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>nir_data</code>
-</td>
-<td class="doc-returns-details">
-<p>A multi-dimensional data of observed UKIDSS NIR sources
-that have SNR&gt;5. Also plots a histogram of UKIDSS data.</p>
-</td>
-</tr>
-</tbody>
-</table>
+<p>Reads the input UKIDSS NIR data. The number of columns are 8.</p>
+<p>Returns the input optical data with nan values removed (if present)
+and restricts the data to the sources having SNR &gt;= 5.</p>
+<p>Some regions do not have J or H band data especially DXS or GCS
+surveys. For these regions, only K band data is imported.</p>
 </div>
 </div>
 <div class="doc doc-object doc-function">
@@ -342,7 +326,7 @@ After reading the input data, this function filters it for
 nan values (if present) and restricts the data to the sources having
 detection in all the five bands and that have SNR atleast 5.
 This data is then fed to the Star-Galaxy classification routine to
-seperate stars and galaxies in the data.</justify></p>
+seperate stars and galaxies in the data. &lt;\justify&gt;</justify></p>
 <table>
 <thead>
 <tr>
@@ -359,25 +343,6 @@ seperate stars and galaxies in the data.</justify></p>
 </td>
 <td class="doc-raises-details">
 <p>if the optical input data file is not available.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th><b>RETURNS</b></th>
-<th><b>DESCRIPTION</b></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>filtered_optical_data</code>
-</td>
-<td class="doc-returns-details">
-<p>A multi-dimensional array consisting of optical panstarrs
-                    stack photometry in five bands which is free from nan values and duplicate sources.</p>
 </td>
 </tr>
 </tbody>
@@ -408,9 +373,8 @@ optical data.</p>
 </h3>
 <div class="doc doc-contents">
 <p><code>irgsctool.StarGalaxyClassification.star_galaxy_classification()</code></p>
-<p><justify>
-This method is used to seperate stars and galaxies using
-the condition applied to all the five optical filters:</justify></p>
+<p>This method is used to seperate stars and galaxies using
+the condition applied to all the five optical filters:</p>
 <p>$$
 (psf-kron) &lt; 0.05
 $$</p>
@@ -428,30 +392,10 @@ CCD is also plotted by this method.</p>
 <tbody>
 <tr>
 <td>
+<code>ndarray</code>
 </td>
 <td class="doc-returns-details">
-<p>A multi-dimensional array of the PANSTARRS optical data containing </p>
-</td>
-</tr>
-<tr>
-<td>
-</td>
-<td class="doc-returns-details">
-<p>most probable stellar sources after seperating the galaxies. Also plots</p>
-</td>
-</tr>
-<tr>
-<td>
-</td>
-<td class="doc-returns-details">
-<p>the figures showing the comparison of $$i_{psf}$$ vs ($$i_{psf}$$ - $$i_{kron}$$),</p>
-</td>
-</tr>
-<tr>
-<td>
-</td>
-<td class="doc-returns-details">
-<p>the color-color diagrams of the stars and galaxies.</p>
+<p>PANSTARRS data containing most probable stellar sources</p>
 </td>
 </tr>
 </tbody>
@@ -481,16 +425,27 @@ data for extinction in each optical filter.</p>
 <code class="highlight language-python"><span class="n">extinction_corrected_photometry</span><span class="p">()</span></code>
 </h3>
 <div class="doc doc-contents">
-<pre><code>     `irgsctool.ExtinctionCorrection.extinction_corrected_photometry()`
-</code></pre>
-<p><justify></justify></p>
+<p><code>irgsctool.ExtinctionCorrection.extinction_correctdd_photometry()</code></p>
 <p>This method corrects the input optical PANSTARRS data for reddening
- and extinction along the line of site. It uses the get_reddening()
- method.</p>
-<p>Returns:
-         psf_phot: A multi-dimensional array consisting of extinction 
-         corrected PANSTARRS optical photometry containing psf and kron 
-         measurements.</p>
+and extinction along the line of site.</p>
+<table>
+<thead>
+<tr>
+<th><b>RETURNS</b></th>
+<th><b>DESCRIPTION</b></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>ndarray</code>
+</td>
+<td class="doc-returns-details">
+<p>Extinction corrected PANSTARRS optical photometry.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="doc doc-object doc-function">
@@ -499,10 +454,10 @@ data for extinction in each optical filter.</p>
 </h3>
 <div class="doc doc-contents">
 <p><code>irgsctool.ExtinctionCorrection.get_reddening()</code></p>
-<p><justify> This method obtains the reddening value for a given set of 
+<p>This method obtains the reddening value for a given set of 
 input coordinates from Schelgel et.al. 1998 (sfd) reddening
 map. irgsctool uses Schlafly &amp; Finkbeiner 2011 (snf) reddening
-map which is snf = 0.86*sfd.</justify></p>
+map which is snf = 0.86*sfd.</p>
 <table>
 <thead>
 <tr>
@@ -635,25 +590,6 @@ Similarly, <strong><em> use_sam = Phoenix </em></strong> to use interpolated Pho
 </tr>
 </tbody>
 </table>
-<table>
-<thead>
-<tr>
-<th><b>RETURNS</b></th>
-<th><b>DESCRIPTION</b></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>sam_params</code>
-</td>
-<td class="doc-returns-details">
-<p>A multi-dimwnsional array of the sam parameters
-depending upon the model selected.</p>
-</td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 <div class="doc doc-object doc-function">
@@ -700,6 +636,31 @@ range of model parameters is selected:</justify></p>
 <table>
 <thead>
 <tr>
+<th><b>RETURNS</b></th>
+<th><b>DESCRIPTION</b></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>sam_params</code>
+</td>
+<td class="doc-returns-details">
+<p>type: ndarray: Selected model parameters and model </p>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td class="doc-returns-details">
+<p>magnitudes to generate IRGSC</p>
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
 <th><b>RAISES</b></th>
 <th><b>DESCRIPTION</b></th>
 </tr>
@@ -713,31 +674,6 @@ range of model parameters is selected:</justify></p>
 </td>
 <td class="doc-raises-details">
 <p>if range of parameters is not given.</p>
-</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th><b>RETURNS</b></th>
-<th><b>DESCRIPTION</b></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>sam_params</code>
-</td>
-<td class="doc-returns-details">
-<p>A multi-dimwnsional array of the selected model parameters and model </p>
-</td>
-</tr>
-<tr>
-<td>
-</td>
-<td class="doc-returns-details">
-<p>magnitudes to generate IRGSC.</p>
 </td>
 </tr>
 </tbody>
@@ -794,7 +730,7 @@ $$</p>
 <code>irgsc_data</code>
 </td>
 <td class="doc-returns-details">
-<p>A multi-dimensional array consisting of the generated IRGSC.</p>
+<p>The generated IRGSC.</p>
 </td>
 </tr>
 </tbody>
@@ -846,24 +782,6 @@ observed and computed NIR magnitudes. </justify></p>
 </tr>
 </tbody>
 </table>
-<table>
-<thead>
-<tr>
-<th><b>RETURNS</b></th>
-<th><b>DESCRIPTION</b></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>irgsc_data</code>
-</td>
-<td class="doc-returns-details">
-<p>A multi-dimensional array consisting of elements in IRGSC.</p>
-</td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 <div class="doc doc-object doc-function">
@@ -903,18 +821,36 @@ computed NIR magnitudes with the observed ones.</p>
 </div>
 </div>
 </div>
-</div></div>
 </div>
 </div>
-<footer class="col-md-12">
+</div><footer>
+<div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
+<a class="btn btn-neutral float-left" href="about.html" title="About"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+<a class="btn btn-neutral float-right" href="tutorials.html" title="Tutorials">Next <span class="icon icon-circle-arrow-right"></span></a>
+</div>
 <hr/>
-<p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+<div role="contentinfo">
+<!-- Copyright etc -->
+</div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
 </footer>
-<script>
-            var base_url = ".",
-                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
-        </script>
-<script defer="" src="js/base.js"></script>
+</div>
+</div>
+</section>
+</div>
+<div aria-label="Versions" class="rst-versions" role="note">
+<span class="rst-current-version" data-toggle="rst-current-version">
+<span>
+<a class="fa fa-github" href="https://github.com/tmtsoftware/dms-irgsc/" style="color: #fcfcfc"> GitHub</a>
+</span>
+<span><a href="about.html" style="color: #fcfcfc">« Previous</a></span>
+<span><a href="tutorials.html" style="color: #fcfcfc">Next »</a></span>
+</span>
+</div>
+<script>var base_url = '.';</script>
+<script defer="" src="js/theme_extra.js"></script>
+<script defer="" src="js/theme.js"></script>
 <script defer="" src="javascripts/mathjax.js"></script>
 <script defer="" src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -922,65 +858,10 @@ computed NIR magnitudes with the observed ones.</p>
 <script defer="" src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script defer="" src="search/main.js"></script>
-<div aria-hidden="true" aria-labelledby="searchModalLabel" class="modal" id="mkdocs_search_modal" role="dialog" tabindex="-1">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<h4 class="modal-title" id="searchModalLabel">Search</h4>
-<button class="close" data-dismiss="modal" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-</div>
-<div class="modal-body">
-<p>From here you can search these documents. Enter your search terms below.</p>
-<form>
-<div class="form-group">
-<input class="form-control" id="mkdocs-search-query" placeholder="Search..." title="Type search term here" type="search"/>
-</div>
-</form>
-<div data-no-results-text="No results found" id="mkdocs-search-results"></div>
-</div>
-<div class="modal-footer">
-</div>
-</div>
-</div>
-</div><div aria-hidden="true" aria-labelledby="keyboardModalLabel" class="modal" id="mkdocs_keyboard_modal" role="dialog" tabindex="-1">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
-<button class="close" data-dismiss="modal" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-</div>
-<div class="modal-body">
-<table class="table">
-<thead>
-<tr>
-<th style="width: 20%;">Keys</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="help shortcut"><kbd>?</kbd></td>
-<td>Open this help</td>
-</tr>
-<tr>
-<td class="next shortcut"><kbd>n</kbd></td>
-<td>Next page</td>
-</tr>
-<tr>
-<td class="prev shortcut"><kbd>p</kbd></td>
-<td>Previous page</td>
-</tr>
-<tr>
-<td class="search shortcut"><kbd>s</kbd></td>
-<td>Search</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="modal-footer">
-</div>
-</div>
-</div>
-</div>
+<script defer="">
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
 <script>const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});</script></body>
 </html>

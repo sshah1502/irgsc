@@ -2,10 +2,10 @@
 
 ## Introduction
 This is a python repository dedicated to the development of the Near-Infrared Guide Star Catalog (IRGSC) for the Adaptive Optics (AO) observations of the Thirty Meter Telescope (TMT) project. This package generates the catalog by computing the NIR magnitudes of the optical stellar sources in the PANSTARSS DR2 data.
-
+The details of this work can be found in the __phase_III_report.pdf__ file.
 # Packages
 ## irgsctool:
-<p style="text-align: justify;">This is a python package aimed to compute the NIR magnitudes of the optical sources in the PANSTARRS stack-photometric data by modelling them with the Kurucz, Castelli-Kurucz and Phoenix stellar atmospheric models. This package also validates the computed NIR magnitudes with the observed NIR data from UKIDSS (if it is available). The methodology implemented in this python package is implemented on twenty test-fields across the TMT's observable sky and the generated as well as validated IRGSC is available on the GitHub homepage. Most of the sources have the computed NIR magnitudes similar to the observed. The generated catalog contains astrometric information from GAIA DR3 also. Read the section below to see the nature of IRGSC.
+<p style="text-align: justify;">This is a python package aimed to compute the NIR magnitudes of the optical sources in the PANSTARRS stack-photometric data by modelling them with the Kurucz, Castelli-Kurucz and Phoenix stellar atmospheric models. This package also validates the computed NIR magnitudes with the observed NIR data from UKIDSS (if it is available). The methodology implemented in this python package is implemented on twenty test-fields across the TMT's observable sky and the generated as well as validated IRGSC is available in the generated_irgsc directory (seec details below). Most of the sources have the computed NIR magnitudes similar to the observed. The generated catalog contains astrometric information from GAIA DR3 also. Read the section below to see the nature of IRGSC.
 
 ### Nature of the generated catalog
 The IRGSC generated has various information about the sources shown in the following Table. This table describes the columns in the IRGSC generated for a particular test field. The details of the flags, e.g., infoflags, filterflags, and qualityflags can be found [here](https://outerspace.stsci.edu/display/PANSTARRS/PS1+StackObjectView+table+fields). These flags indicate various values assigned to
@@ -86,13 +86,28 @@ Ascension and Declination of the source is obtained from the mean photometric in
 | yinfoflag3 | These flags indicate the details of the y filter stack photometry | float|
 | SAM | The name of the best-fitted Stellar Atmospheric Model (SAM) | string|
 
+# Nature of the validated catalog using the UKIDSS Data
+The computed NIR magnitudes of the sources in the IRGSC can also be validated using the readily available UKIDSS data (if any) for the given field. irgsctool first checks whether a validated IRGSC can be produced for a given field and alerts the user accordingly. The table below shows the additional columns in an validated IRGSC.
+| Column Name | Description | Data Type  |
+| :----------- |:------------|:------|
+| diff_J    	| Difference in the observed and computed J| float |
+| diff_H       | Difference in the observed and computed H| float|
+| diff_K 		| Difference in the observed and computed K| float|
+| J_UKIDSS      | Observed J| float|
+| err_J_UKIDSS| Uncertainty in observed J| float|
+| H_UKIDSS     | Observed H | float|
+| err_H_UKIDSS     | Uncertainty in observed H | float |
+| K_UKIDSS     | Observed K | float|
+| err_K_UKIDSS     | Uncertainty in observed K | float|
+
+
 # Application of irgsctool on fields
-The method developed for the generation of IRGSC has applied on twenty test fields across the sky. The generaed IRGSC is also valiated using the UKIDSS data available for those fields and the generated as well as validated catalog for these fields can be found in the 'generated_irgsc' directory.
-In addition to the twenty test fields, additional ten catalogs are provided for the PANSTARRS Medium Deep Survey (MDS) Fields [more information available here](https://arxiv.org/abs/1612.05560). Since the MDS data is not publically released by the PANSTARRS, the optical data to generate the IRGSC for these fields is been taken from the PANSTARRS $3\pi$ survey.
+The method developed for the generation of IRGSC has applied on twenty test fields (see the following table) across the sky. The generaed IRGSC is also valiated using the UKIDSS data available for those fields and the generated as well as validated catalog for these fields can be found in the 'generated_irgsc' directory.
+In addition to the twenty test fields, additional ten catalogs are provided for the PANSTARRS Medium Deep Survey (MDS) Fields ([more information available here](https://arxiv.org/abs/1612.05560)). Since the MDS data is not publically released by the PANSTARRS, the optical data to generate the IRGSC for these fields is been taken from the PANSTARRS $3\pi$-survey.
 | R.A. | Decl. | l | b| E(B-V) |
 | :----------- |:------------|:------|:------|:------|
 |227.26	    |0.0		|359.27	    |47.24		|0.04|
-|335.00		|-1.25		|61.96	    |-45.43		|0.07|
+|334.27		|0.38		|63.08	    |-43.84		|0.07|
 |60.00		|1.25		|188.72	    |-36.53		|0.26|
 |30.00		|0.50		|156.53	    |-57.82		|0.02|
 |11.16	    |7.83		|120.00		|-55.00		|0.04|
@@ -112,6 +127,19 @@ In addition to the twenty test fields, additional ten catalogs are provided for 
 |15.0		|0.90		|127.47	    |-61.89		|0.02|
 |35.0		|-3.50		|168.62 	|-58.28     |0.01|
 
+The generated_irgsc directory contains following sub-directories:
+### 1. irgsc_using_casjobs_30_arcmin_radius:
+This directory contains the generated and validated irgsc using the PANSTARRS data for 30 arcmin radius downloaded from MAST CasJobs.
+
+### 2. irgsc_using_casjobs_35_arcmin_radius:
+This directory contains the generated and validated irgsc using the PANSTARRS data for 35 arcmin radius (1.06 sq. deg.) fields as the requirement was for 35 arcmin size.
+
+### 3. irgsc_for_fields_close_to_galactic_plane:
+This directory contains generated and validated irgsc for the fields located close to the galactic plane fields. Due to high source density in these fields, we have downloaded the PANSTARRS data for 5 arcmin size radius.
+
+### 4. irgsc_using_pyvo_15_arcmin_radius:
+This directory contains generated and validated irgsc for the PANSTARRS Medium Deep Survey fields with the optical data obtained using pyvo. Due to limitations of pyvo, the data can only be obtained for 15 arcmin radius area of the field.
+
 # Requirements
 This package is developed for Python versions above 3.6. It uses various other packages like:
 astroquery,
@@ -128,17 +156,12 @@ pyvo.
 
 # Installation
 
-## 1. Using pip:
-```
-pip install irgsctool
-
-```
-## 2. Using .zip file from GitHub:
+## 1. Using .zip file from GitHub:
 Download the .zip file from [here](https://github.com/sshah1502/irgsc) and unzip it. Then open the directory in terminal and type:
 ```
 pip install .
 ```
-## 3 Using the Development version from GitHub:
+## 2. Using the Development version from GitHub:
 ```
 pip install git+https://github.com/sshah1502/irgsc@main
 ```
@@ -171,7 +194,7 @@ The module Validate(ra,dec) is the module that validates the computed NIR magnit
 
 Please add the following acknowledgment if you use our package in your work.
 
-"This work has made use of "tmt-irgsc" developed as part of the Thirty Meter Telescope (TMT) project."
+"This work has made use of "irgsctool" developed as part of the Thirty Meter Telescope (TMT) project."
 
 If you have any questions or suggestions for improvements to this repo,
-please contact the owners of the repository.
+please email: sarang.itcc@iiap.res.in

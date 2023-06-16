@@ -1,14 +1,15 @@
 site_name: irgsctool
-site_url: https://sshah1502.github.io/irgsc/
-repo_url: https://github.com/sshah1502/irgsc/
+site_url: https://tmtsoftware.github.io/dms-irgsc/
+repo_url: https://github.com/tmtsoftware/dms-irgsc/
+site_author: Sarang Shah
+use_directory_urls: false
 site_author: Sarang Shah
 use_directory_urls: false
 markdown_extensions:
     - pymdownx.snippets:
-
 theme: 
-  name: mkdocs
-  logo: img/TMTLOGO.PNG 
+  name: readthedocs
+  logo: img/TMTLOGO.PNG
   nav_style: dark
   features:
     - content.action.edit
@@ -16,6 +17,7 @@ theme:
   icon:
     edit: material/pencil 
     view: material/eye
+
 markdown_extensions:
   - pymdownx.highlight:
       pygments_lang_class: true
@@ -25,7 +27,7 @@ markdown_extensions:
 
 plugins:
   - git-committers:
-      repository: sshah1502/irgsc/
+      repository: tmtsoftware/dms-irgsc/
       branch: main
   - git-authors:
   - optimize
@@ -52,7 +54,11 @@ plugins:
         - docs
   - glightbox
   - search
-  - with-pdf
+  - with-pdf:
+        cover_title: irgsctool
+        cover_subtitle: Software documentation for irgsctool python package
+        author: Sarang Shah
+        copyright: 
 
 nav:
   - Home : index.md

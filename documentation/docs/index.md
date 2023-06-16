@@ -12,7 +12,7 @@ In a fresh environment, enter the following command
 pip install irgsctool
 ```
 
-### 2. Uing .zip file on GitHub [here](https://github.com/sshah1502/irgsc)  
+### 2. Uing .zip file on GitHub [here](https://github.com/tmtsoftware/dms-irgsc)  
 
 After downloading the .zip file, unzip it into a directory and type
 ```bash
@@ -23,7 +23,7 @@ This will install irgsctool locally in your system.
 ### 3. Using the Development version from GitHub:
 Open the terminal in your system and run:
 ```
-pip install git+https://github.com/sshah1502/irgsc@main
+pip install git+https://github.com/tmtsoftware/dms-irgsc@main
 
 ```
 This will also install the package locally in your system.

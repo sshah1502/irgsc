@@ -1,0 +1,26 @@
+site_name: irgsctool
+site_url: "https://sshah1502.github.io/irgsc/"
+use_directory_urls: false
+theme: 
+  name: readthedocs
+  logo: img/TMT_LOGO.PNG
+plugins:
+  - mkdocstrings
+  - glightbox
+nav:
+  - Home : index.md
+  - About : about.md
+  - UserGuide: userguide.md
+  - API: apireference.md
+  - License: license.md
+  - Tutorials: tutorials.md
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
