@@ -237,8 +237,8 @@ class GenerateIRGSC():
 
                         sf_avg,sigma_sf,computed_j,computed_j_error,computed_h,computed_h_error,\
                             computed_k, computed_k_error=calc_sf(j, observed_optical_magnitudes,\
-                                                            e_observed_optical_magnitudes, sam_magnitudes, index_best_fit_sam,\
-                                                            aj, ah, ak)
+                                                            e_observed_optical_magnitudes, sam_magnitudes,\
+                                                            index_best_fit_sam, aj, ah, ak)
 
                         gaia_angular_seperation = 3600*np.sqrt(((ps_ra[j]
                                                             -gaia_ra)*np.cos(np.radians(ps_dec[j])))**2
