@@ -154,10 +154,10 @@ class GenerateIRGSC():
 
             model_params_k0 = k0.select_sam_range(teff_range=[4000,11000],
                                                 logg_range=None, feh_range=None)
-            model_params_c1 = c1.select_sam_range(teff_range=[2800,5000],
+            model_params_c1 = c1.select_sam_range(teff_range=[2800,5001],
                                                 logg_range=[3.0,10.0],
                                                 feh_range=[-6.0,-1.5])
-            model_params_c2 = c2.select_sam_range(teff_range=[2800,4000],
+            model_params_c2 = c2.select_sam_range(teff_range=[2800,4001],
                                                 logg_range=[-10.0,3.0],
                                                 feh_range=[-0.5,2.0])
             teff_c1, logg_c1, feh_c1, sam_g_c1, sam_r_c1, sam_i_c1, sam_z_c1, sam_y_c1, sam_j_c1,\
@@ -237,8 +237,8 @@ class GenerateIRGSC():
 
                         sf_avg,sigma_sf,computed_j,computed_j_error,computed_h,computed_h_error,\
                             computed_k, computed_k_error=calc_sf(j, observed_optical_magnitudes,\
-                                                            e_observed_optical_magnitudes, sam_magnitudes,\
-                                                            index_best_fit_sam, aj, ah, ak)
+                                                            e_observed_optical_magnitudes, sam_magnitudes, index_best_fit_sam,\
+                                                            aj, ah, ak)
 
                         gaia_angular_seperation = 3600*np.sqrt(((ps_ra[j]
                                                             -gaia_ra)*np.cos(np.radians(ps_dec[j])))**2

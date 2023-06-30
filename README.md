@@ -5,9 +5,9 @@ This is a python repository dedicated to the development of the Near-Infrared Gu
 The details of this work can be found in the __phase_III_report.pdf__ file.
 # Packages
 ## irgsctool:
-<p style="text-align: justify;">This is a python package aimed to compute the NIR magnitudes of the optical sources in the PANSTARRS stack-photometric data by modelling them with the Kurucz, Castelli-Kurucz and Phoenix stellar atmospheric models. This package also validates the computed NIR magnitudes with the observed NIR data from UKIDSS (if it is available). The methodology implemented in this python package is implemented on twenty test-fields across the TMT's observable sky and the generated as well as validated IRGSC is available in the generated_irgsc directory (seec details below). Most of the sources have the computed NIR magnitudes similar to the observed. The generated catalog contains astrometric information from GAIA DR3 also. Read the section below to see the nature of IRGSC.
+<p style="text-align: justify;">This is a python package aimed to compute the NIR magnitudes of the optical sources in the PANSTARRS stack-photometric data by modelling them with the Kurucz, Castelli-Kurucz and Phoenix stellar atmospheric models. This package also validates the computed NIR magnitudes with the observed NIR data from UKIDSS (if it is available). The methodology implemented in this python package is implemented on twenty test-fields across the TMT's observable sky and the generated as well as validated IRGSC is available in the generated_irgsc directory (seec details below). Most of the sources have the computed NIR magnitudes similar to the observed. The generated catalog contains astrometric information from GAIA DR3 also. Read the section below to see the nature of generated and validated IRGSC.
 
-### Nature of the generated catalog
+### Nature of the generated IRGSC
 The IRGSC generated has various information about the sources shown in the following Table. This table describes the columns in the IRGSC generated for a particular test field. The details of the flags, e.g., infoflags, filterflags, and qualityflags can be found [here](https://outerspace.stsci.edu/display/PANSTARRS/PS1+StackObjectView+table+fields). These flags indicate various values assigned to
 the source by the PANSTARRS team, which gives further information about the nature of the source
 and the quality of its detection, which can help understand more about a particular object of interest.
@@ -86,7 +86,7 @@ Ascension and Declination of the source is obtained from the mean photometric in
 | yinfoflag3 | These flags indicate the details of the y filter stack photometry | float|
 | SAM | The name of the best-fitted Stellar Atmospheric Model (SAM) | string|
 
-# Nature of the validated catalog using the UKIDSS Data
+# Nature of the IRGSC validated using the UKIDSS Data
 The computed NIR magnitudes of the sources in the IRGSC can also be validated using the readily available UKIDSS data (if any) for the given field. irgsctool first checks whether a validated IRGSC can be produced for a given field and alerts the user accordingly. The table below shows the additional columns in an validated IRGSC.
 | Column Name | Description | Data Type  |
 | :----------- |:------------|:------|
@@ -128,17 +128,14 @@ In addition to the twenty test fields, additional ten catalogs are provided for 
 |35.0		|-3.50		|168.62 	|-58.28     |0.01|
 
 The generated_irgsc directory contains following sub-directories:
-### 1. irgsc_using_casjobs_30_arcmin_radius:
-This directory contains the generated and validated irgsc using the PANSTARRS data for 30 arcmin radius downloaded from MAST CasJobs.
+### 1. results_presented_in_the_report:
+This directory contains the generated and validated IRGSC for the 20 test fields using the PANSTARRS data for 30 arcmin radius downloaded from MAST CasJobs. There are several sub-directories and are named according to the name of the test fields eg. tf1, tf2, etc. Each sub-directory contains the results for that particular test field presented in the report. Due to overcrowding of sources in the fields close to the galactic plane fields, these fields have a radius size of 5 arcmin and the results for these fields can be found in __results_for_the_fields_close_to_the_galactic_plane__ sub-directory.
 
-### 2. irgsc_using_casjobs_35_arcmin_radius:
-This directory contains the generated and validated irgsc using the PANSTARRS data for 35 arcmin radius (1.06 sq. deg.) fields as the requirement was for 35 arcmin size.
+### 2. partial_irgsc_for_the_test_fields:
+This directory contains the generated and validated IRGSC for the 20 test fields using the PANSTARRS data for 35 arcmin radius (or 1.06 sq. deg.) fields as per the work-package requirement. The naming convention is similar to the former directory.
 
-### 3. irgsc_for_fields_close_to_galactic_plane:
-This directory contains generated and validated irgsc for the fields located close to the galactic plane fields. Due to high source density in these fields, we have downloaded the PANSTARRS data for 5 arcmin size radius.
-
-### 4. irgsc_using_pyvo_15_arcmin_radius:
-This directory contains generated and validated irgsc for the PANSTARRS Medium Deep Survey fields with the optical data obtained using pyvo. Due to limitations of pyvo, the data can only be obtained for 15 arcmin radius area of the field.
+### 3. partial_irgsc_for_the_mds_fields:
+This directory contains generated and validated IRGSC for the PANSTARRS Medium Deep Survey fields with the optical data obtained using pyvo. Due to limitations of pyvo, the data can only be obtained for 15 arcmin radius area of the field. The cordinates of these fields and naming is similar to the name given in the Table (7) of [Chambers et.al.](https://arxiv.org/abs/1612.05560).
 
 # Requirements
 This package is developed for Python versions above 3.6. It uses various other packages like:
