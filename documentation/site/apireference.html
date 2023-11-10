@@ -170,7 +170,7 @@
 </h2>
 <div class="doc doc-contents">
 <hr/>
-<p>Initialisation of parent <strong><em> irgsc class </em></strong>. This class has several child classes.</p>
+<p>Initialisation of child <strong><em> irgsc class </em></strong>. This class has several child classes.</p>
 <p>This method described using input  ra and dec.
 It checks whther the data from PANSTARRS DR2, UKISS DR11 and
 Gaia DR3 can be obtained.</p>
@@ -298,7 +298,49 @@ GAIA DR3 and UKIDSS DR11.</p>
 <code class="highlight language-python"><span class="n">read_gaia_data</span><span class="p">()</span></code>
 </h3>
 <div class="doc doc-contents">
-<p>Reads the input GAIA DR3 data. The number of columns are 12.</p>
+<pre><code>    `irgsctool.ReadData.read_gaia_data()`
+</code></pre>
+<p>This method reads the input GAIA DR3 data. The number of columns are 12. The format of the input file if the 
+data is obtained externally is 'GAIA' + '_' + 'RA'+str(ra) + 'DEC' + str(dec)+'.csv'</p>
+<table>
+<thead>
+<tr>
+<th><b>RAISES</b></th>
+<th><b>DESCRIPTION</b></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<span class="doc-raises-annotation">
+<code>ValueError</code>
+</span>
+</td>
+<td class="doc-raises-details">
+<p>This error is raised when there are no observations in Gaia database.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><b>RETURNS</b></th>
+<th><b>DESCRIPTION</b></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>gaia_data</code>
+</td>
+<td class="doc-returns-details">
+<p>A multi-dimensional array of gaia sourced_id, astrometry,
+and ruwe.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="doc doc-object doc-function">
@@ -306,11 +348,35 @@ GAIA DR3 and UKIDSS DR11.</p>
 <code class="highlight language-python"><span class="n">read_nir_data</span><span class="p">()</span></code>
 </h3>
 <div class="doc doc-contents">
-<p>Reads the input UKIDSS NIR data. The number of columns are 8.</p>
-<p>Returns the input optical data with nan values removed (if present)
-and restricts the data to the sources having SNR &gt;= 5.</p>
-<p>Some regions do not have J or H band data especially DXS or GCS
-surveys. For these regions, only K band data is imported.</p>
+<pre><code>        `irgsctool.ReadData.read_nir_data()`
+</code></pre>
+<p>Reads the input UKIDSS NIR data. The number of columns are 8.
+Some regions do not have J or H band data especially DXS or GCS
+surveys. For these regions, only K band data is obtained. This method filters the data
+for nan values and selects the sources that have SNR&gt;5 and plots the histogram of the NIR magnitudes available.
+The format of the input file if the 
+data is obtained externally is 'UKIDSS'+'_'+'RA'+str(ra)+'DEC'+ str(dec)+'.csv'
+Raises: 
+    ValueError: This error is raised when there are no observations available in UKIDSS database.</p>
+<table>
+<thead>
+<tr>
+<th><b>RETURNS</b></th>
+<th><b>DESCRIPTION</b></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>nir_data</code>
+</td>
+<td class="doc-returns-details">
+<p>A multi-dimensional data of observed UKIDSS NIR sources
+that have SNR&gt;5. Also plots a histogram of UKIDSS data.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="doc doc-object doc-function">
@@ -326,7 +392,8 @@ After reading the input data, this function filters it for
 nan values (if present) and restricts the data to the sources having
 detection in all the five bands and that have SNR atleast 5.
 This data is then fed to the Star-Galaxy classification routine to
-seperate stars and galaxies in the data. &lt;\justify&gt;</justify></p>
+seperate stars and galaxies in the data. The format of the input file if the 
+data is obtained externally is 'PS1' + '_' + 'RA'+str(ra) + 'DEC' + str(dec)+'.csv'</justify></p>
 <table>
 <thead>
 <tr>
@@ -343,6 +410,25 @@ seperate stars and galaxies in the data. &lt;\justify&gt;</justify></p>
 </td>
 <td class="doc-raises-details">
 <p>if the optical input data file is not available.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><b>RETURNS</b></th>
+<th><b>DESCRIPTION</b></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>filtered_optical_data</code>
+</td>
+<td class="doc-returns-details">
+<p>A multi-dimensional array consisting of optical panstarrs
+                    stack photometry in five bands which is free from nan values and duplicate sources.</p>
 </td>
 </tr>
 </tbody>
@@ -373,8 +459,9 @@ optical data.</p>
 </h3>
 <div class="doc doc-contents">
 <p><code>irgsctool.StarGalaxyClassification.star_galaxy_classification()</code></p>
-<p>This method is used to seperate stars and galaxies using
-the condition applied to all the five optical filters:</p>
+<p><justify>
+This method is used to seperate stars and galaxies using
+the condition applied to all the five optical filters:</justify></p>
 <p>$$
 (psf-kron) &lt; 0.05
 $$</p>
@@ -392,10 +479,30 @@ CCD is also plotted by this method.</p>
 <tbody>
 <tr>
 <td>
-<code>ndarray</code>
 </td>
 <td class="doc-returns-details">
-<p>PANSTARRS data containing most probable stellar sources</p>
+<p>A multi-dimensional array of the PANSTARRS optical data containing </p>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td class="doc-returns-details">
+<p>most probable stellar sources after seperating the galaxies. Also plots</p>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td class="doc-returns-details">
+<p>the figures showing the comparison of $$i_{psf}$$ vs ($$i_{psf}$$ - $$i_{kron}$$),</p>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td class="doc-returns-details">
+<p>the color-color diagrams of the stars and galaxies.</p>
 </td>
 </tr>
 </tbody>
@@ -425,27 +532,16 @@ data for extinction in each optical filter.</p>
 <code class="highlight language-python"><span class="n">extinction_corrected_photometry</span><span class="p">()</span></code>
 </h3>
 <div class="doc doc-contents">
-<p><code>irgsctool.ExtinctionCorrection.extinction_correctdd_photometry()</code></p>
+<pre><code>     `irgsctool.ExtinctionCorrection.extinction_corrected_photometry()`
+</code></pre>
+<p><justify></justify></p>
 <p>This method corrects the input optical PANSTARRS data for reddening
-and extinction along the line of site.</p>
-<table>
-<thead>
-<tr>
-<th><b>RETURNS</b></th>
-<th><b>DESCRIPTION</b></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>ndarray</code>
-</td>
-<td class="doc-returns-details">
-<p>Extinction corrected PANSTARRS optical photometry.</p>
-</td>
-</tr>
-</tbody>
-</table>
+ and extinction along the line of site. It uses the get_reddening()
+ method.</p>
+<p>Returns:
+         psf_phot: A multi-dimensional array consisting of extinction 
+         corrected PANSTARRS optical photometry containing psf and kron 
+         measurements.</p>
 </div>
 </div>
 <div class="doc doc-object doc-function">
@@ -454,10 +550,10 @@ and extinction along the line of site.</p>
 </h3>
 <div class="doc doc-contents">
 <p><code>irgsctool.ExtinctionCorrection.get_reddening()</code></p>
-<p>This method obtains the reddening value for a given set of 
+<p><justify> This method obtains the reddening value for a given set of 
 input coordinates from Schelgel et.al. 1998 (sfd) reddening
 map. irgsctool uses Schlafly &amp; Finkbeiner 2011 (snf) reddening
-map which is snf = 0.86*sfd.</p>
+map which is snf = 0.86*sfd.</justify></p>
 <table>
 <thead>
 <tr>
@@ -590,6 +686,25 @@ Similarly, <strong><em> use_sam = Phoenix </em></strong> to use interpolated Pho
 </tr>
 </tbody>
 </table>
+<table>
+<thead>
+<tr>
+<th><b>RETURNS</b></th>
+<th><b>DESCRIPTION</b></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>sam_params</code>
+</td>
+<td class="doc-returns-details">
+<p>A multi-dimwnsional array of the sam parameters
+depending upon the model selected.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="doc doc-object doc-function">
@@ -636,31 +751,6 @@ range of model parameters is selected:</justify></p>
 <table>
 <thead>
 <tr>
-<th><b>RETURNS</b></th>
-<th><b>DESCRIPTION</b></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<code>sam_params</code>
-</td>
-<td class="doc-returns-details">
-<p>type: ndarray: Selected model parameters and model </p>
-</td>
-</tr>
-<tr>
-<td>
-</td>
-<td class="doc-returns-details">
-<p>magnitudes to generate IRGSC</p>
-</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
 <th><b>RAISES</b></th>
 <th><b>DESCRIPTION</b></th>
 </tr>
@@ -674,6 +764,31 @@ range of model parameters is selected:</justify></p>
 </td>
 <td class="doc-raises-details">
 <p>if range of parameters is not given.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><b>RETURNS</b></th>
+<th><b>DESCRIPTION</b></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>sam_params</code>
+</td>
+<td class="doc-returns-details">
+<p>A multi-dimwnsional array of the selected model parameters and model </p>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td class="doc-returns-details">
+<p>magnitudes to generate IRGSC.</p>
 </td>
 </tr>
 </tbody>
@@ -730,7 +845,7 @@ $$</p>
 <code>irgsc_data</code>
 </td>
 <td class="doc-returns-details">
-<p>The generated IRGSC.</p>
+<p>A multi-dimensional array consisting of the generated IRGSC.</p>
 </td>
 </tr>
 </tbody>
@@ -778,6 +893,24 @@ observed and computed NIR magnitudes. </justify></p>
 </td>
 <td class="doc-raises-details">
 <p>This error arises if there is no generated IRGSC</p>
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><b>RETURNS</b></th>
+<th><b>DESCRIPTION</b></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>irgsc_data</code>
+</td>
+<td class="doc-returns-details">
+<p>A multi-dimensional array consisting of elements in IRGSC.</p>
 </td>
 </tr>
 </tbody>
