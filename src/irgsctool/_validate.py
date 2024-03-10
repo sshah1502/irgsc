@@ -116,45 +116,41 @@ class ValidateIRGSC():
         computed_k = irgsc_data[:,33]
         computed_k_error = irgsc_data[:,34]
         gaia_source_id = irgsc_data[:,35]
-        gaia_ra = irgsc_data[:,36]
-        gaia_ra_error = irgsc_data[:,37]
-        gaia_dec = irgsc_data[:,38]
-        gaia_dec_error = irgsc_data[:,39]
-        gaia_parallax = irgsc_data[:,40]
-        gaia_parallax_error = irgsc_data[:,41]
-        gaia_pm = irgsc_data[:,42]
-        gaia_pm_ra = irgsc_data[:,43]
-        gaia_pm_ra_error = irgsc_data[:,44]
-        gaia_pm_dec = irgsc_data[:,45]
-        gaia_pm_dec_error = irgsc_data[:,46]
-        gaia_ruwe = irgsc_data[:,47]
-        objinfoflag = irgsc_data[:,48]
-        qualityflag = irgsc_data[:,49]
-        ndetections = irgsc_data[:,50]
-        nstackdetections = irgsc_data[:,51]
-        ginfoflag = irgsc_data[:,52]
-        ginfoflag2 = irgsc_data[:,53]
-        ginfoflag3 = irgsc_data[:,54]
-        rinfoflag = irgsc_data[:,55]
-        rinfoflag2 = irgsc_data[:,56]
-        rinfoflag3 = irgsc_data[:,57]
-        iinfoflag = irgsc_data[:,58]
-        iinfoflag2 = irgsc_data[:,59]
-        iinfoflag3 = irgsc_data[:,60]
-        zinfoflag = irgsc_data[:,61]
-        zinfoflag2 = irgsc_data[:,62]
-        zinfoflag3 = irgsc_data[:,63]
-        yinfoflag = irgsc_data[:,64]
-        yinfoflag2 = irgsc_data[:,65]
-        yinfoflag3 = irgsc_data[:,66]
-        sam_flag = irgsc_data[:,67]
+        gaia_parallax = irgsc_data[:,36]
+        gaia_parallax_error = irgsc_data[:,37]
+        gaia_pm = irgsc_data[:,38]
+        gaia_pm_ra = irgsc_data[:,39]
+        gaia_pm_ra_error = irgsc_data[:,40]
+        gaia_pm_dec = irgsc_data[:,41]
+        gaia_pm_dec_error = irgsc_data[:,42]
+        gaia_ruwe = irgsc_data[:,43]
+        objinfoflag = irgsc_data[:,44]
+        qualityflag = irgsc_data[:,45]
+        ndetections = irgsc_data[:,46]
+        nstackdetections = irgsc_data[:,47]
+        ginfoflag = irgsc_data[:,48]
+        ginfoflag2 = irgsc_data[:,49]
+        ginfoflag3 = irgsc_data[:,50]
+        rinfoflag = irgsc_data[:,51]
+        rinfoflag2 = irgsc_data[:,52]
+        rinfoflag3 = irgsc_data[:,53]
+        iinfoflag = irgsc_data[:,54]
+        iinfoflag2 = irgsc_data[:,55]
+        iinfoflag3 = irgsc_data[:,56]
+        zinfoflag = irgsc_data[:,57]
+        zinfoflag2 = irgsc_data[:,58]
+        zinfoflag3 = irgsc_data[:,59]
+        yinfoflag = irgsc_data[:,60]
+        yinfoflag2 = irgsc_data[:,61]
+        yinfoflag3 = irgsc_data[:,62]
+        sam_flag = irgsc_data[:,63]
 
 
         irgsc_data = ps1_objid, ps_ra, err_ps_ra, ps_dec, err_ps_dec, ec_gmag, e_ec_gmag, ec_rmag, e_ec_rmag,\
             ec_imag, e_ec_imag, ec_zmag, e_ec_zmag, ec_ymag, e_ec_ymag, teff, logg, feh, sam_g,\
                 sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k, sf_avg, sigma_sf, min_dquad_element,\
                 computed_j, computed_j_error, computed_h, computed_h_error, computed_k, computed_k_error,\
-                    gaia_source_id, gaia_ra, gaia_ra_error, gaia_dec, gaia_dec_error, gaia_parallax,\
+                    gaia_source_id, gaia_parallax,\
                     gaia_parallax_error, gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec,\
                         gaia_pm_dec_error, gaia_ruwe, objinfoflag, qualityflag, ndetections,\
                         nstackdetections, ginfoflag, ginfoflag2, ginfoflag3, rinfoflag, rinfoflag2,\
@@ -192,8 +188,7 @@ class ValidateIRGSC():
                 e_ec_rmag, ec_imag, e_ec_imag, ec_zmag, e_ec_zmag, ec_ymag, e_ec_ymag, teff,\
                 logg, feh, sam_g,sam_r, sam_i, sam_z, sam_y, sam_j, sam_h, sam_k, sf_avg, sigma_sf,\
                     min_dquad_element, computed_j, computed_j_error, computed_h, computed_h_error,\
-                        computed_k, computed_k_error, gaia_source_id, gaia_ra, gaia_ra_error,\
-                            gaia_dec, gaia_dec_error, gaia_parallax, gaia_parallax_error,\
+                        computed_k, computed_k_error, gaia_source_id, gaia_parallax, gaia_parallax_error,\
                             gaia_pm, gaia_pm_ra, gaia_pm_ra_error, gaia_pm_dec, gaia_pm_dec_error,\
                                 gaia_ruwe, objinfoflag, qualityflag, ndetections, nstackdetections,\
                                 ginfoflag, ginfoflag2, ginfoflag3, rinfoflag, rinfoflag2, rinfoflag3,\
@@ -231,7 +226,7 @@ class ValidateIRGSC():
                     e_ec_rmag[i1], ec_imag[i1], e_ec_imag[i1], ec_zmag[i1], e_ec_zmag[i1], ec_ymag[i1], e_ec_ymag[i1], teff[i1], logg[i1], feh[i1], sam_g[i1],\
                     sam_r[i1], sam_i[i1], sam_z[i1], sam_y[i1], sam_j[i1], sam_h[i1], sam_k[i1], sf_avg[i1], sigma_sf[i1], min_dquad_element[i1],\
                     computed_j[i1], computed_j_error[i1], computed_h[i1], computed_h_error[i1], computed_k[i1], computed_k_error[i1], gaia_source_id[i1],\
-                    gaia_ra[i1], gaia_ra_error[i1], gaia_dec[i1], gaia_dec_error[i1], gaia_parallax[i1], gaia_parallax_error[i1], gaia_pm[i1], gaia_pm_ra[i1],\
+                    gaia_parallax[i1], gaia_parallax_error[i1], gaia_pm[i1], gaia_pm_ra[i1],\
                     gaia_pm_ra_error[i1], gaia_pm_dec[i1], gaia_pm_dec_error[i1], gaia_ruwe[i1], objinfoflag[i1], qualityflag[i1], ndetections[i1], nstackdetections[i1],\
                     ginfoflag[i1], ginfoflag2[i1], ginfoflag3[i1], rinfoflag[i1], rinfoflag2[i1], rinfoflag3[i1], iinfoflag[i1], iinfoflag2[i1], iinfoflag3[i1],\
                     zinfoflag[i1], zinfoflag2[i1], zinfoflag3[i1], yinfoflag[i1], yinfoflag2[i1], yinfoflag3[i1], sam_flag[i1], diff_j[0], diff_h[0], diff_k[0],\
@@ -255,7 +250,7 @@ class ValidateIRGSC():
                     e_ec_rmag[i1], ec_imag[i1], e_ec_imag[i1], ec_zmag[i1], e_ec_zmag[i1], ec_ymag[i1], e_ec_ymag[i1], teff[i1], logg[i1], feh[i1], sam_g[i1],\
                     sam_r[i1], sam_i[i1], sam_z[i1], sam_y[i1], sam_j[i1], sam_h[i1], sam_k[i1], sf_avg[i1], sigma_sf[i1], min_dquad_element[i1],\
                     computed_j[i1], computed_j_error[i1], computed_h[i1], computed_h_error[i1], computed_k[i1], computed_k_error[i1], gaia_source_id[i1],\
-                    gaia_ra[i1], gaia_ra_error[i1], gaia_dec[i1], gaia_dec_error[i1], gaia_parallax[i1], gaia_parallax_error[i1], gaia_pm[i1], gaia_pm_ra[i1],\
+                    gaia_parallax[i1], gaia_parallax_error[i1], gaia_pm[i1], gaia_pm_ra[i1],\
                     gaia_pm_ra_error[i1], gaia_pm_dec[i1], gaia_pm_dec_error[i1], gaia_ruwe[i1], objinfoflag[i1], qualityflag[i1], ndetections[i1], nstackdetections[i1],\
                     ginfoflag[i1], ginfoflag2[i1], ginfoflag3[i1], rinfoflag[i1], rinfoflag2[i1], rinfoflag3[i1], iinfoflag[i1], iinfoflag2[i1], iinfoflag3[i1],\
                     zinfoflag[i1], zinfoflag2[i1], zinfoflag3[i1], yinfoflag[i1], yinfoflag2[i1], yinfoflag3[i1], sam_flag[i1], diff_j[0], diff_h[0], diff_k[0],\

@@ -1,14 +1,29 @@
 site_name: irgsctool
-site_url: https://tmtsoftware.github.io/dms-irgsc/
-repo_url: https://github.com/tmtsoftware/dms-irgsc/
-site_author: Sarang Shah
-use_directory_urls: false
+site_url: https://irgsctool.github.io/dms-irgsc/
+repo_url: https://github.com/sshah1502/irgsc/
 site_author: Sarang Shah
 use_directory_urls: false
 markdown_extensions:
-    - pymdownx.snippets:
+  - pymdownx.snippets
+  - pymdownx.highlight:
+      pygments_lang_class: true
+  - pymdownx.arithmatex: # mathjax
+      generic: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
+  - codehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true 
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: link
+      toc_depth: 4
+
 theme: 
-  name: readthedocs
+  name: mkdocs
   logo: img/TMTLOGO.PNG
   nav_style: dark
   features:
@@ -18,23 +33,12 @@ theme:
     edit: material/pencil 
     view: material/eye
 
-markdown_extensions:
-  - pymdownx.highlight:
-      pygments_lang_class: true
-markdown_extensions:
-  - pymdownx.highlight:
-      auto_title: true
-
 plugins:
   - git-committers:
-      repository: tmtsoftware/dms-irgsc/
+      repository: sshah1502/irgsc/
       branch: main
-  - git-authors:
   - optimize
   - offline
-
-
-plugins:
   - mkdocstrings:
       default_handler: python
       handlers:
@@ -47,59 +51,23 @@ plugins:
             show_heading: false
             docstring_section_style: spacy
             show_bases: false
-            show_source: false
             merge_init_into_class: true
             fontcolor: black
-      watch:
-        - docs
   - glightbox
   - search
   - with-pdf:
-        cover_title: irgsctool
-        cover_subtitle: Software documentation for irgsctool python package
-        author: Sarang Shah
-        copyright: 
+      cover_title: irgsctool
+      cover_subtitle: Software documentation for irgsctool python package
+      author: Sarang Shah
+      copyright: 
 
 nav:
-  - Home : index.md
-  - About : about.md
-  - API: apireference.md
+  - Home: index.md
+  - About: about.md
+  #- API: apireference.md
   - Tutorials: tutorials.md
   - Acknowledgements: acknowledgements.md
   - License: license.md
-
-markdown_extensions:
-  - attr_list
-  - md_in_html
-  - pymdownx.arithmatex: # mathjax
-      generic: true
-  - pymdownx.tasklist:
-      custom_checkbox: true
-      clickable_checkbox: true
-  - codehilite
-  - pymdownx.highlight:
-      use_pygments: true
-  - toc:
-      toc_depth: 4
-
-markdown_extensions:
-  - pymdownx.highlight:
-      anchor_linenums: true
-
-
-markdown_extensions:
-  - attr_list
-  - md_in_html
-
-markdown_extensions:
-  - toc:
-        permalink: link
-  - pymdownx.arithmatex:
-      generic: true
-markdown_extensions:
-  - pymdownx.superfences
-  - pymdownx.tabbed:
-      alternate_style: true 
 
 extra_javascript:
   - javascripts/mathjax.js

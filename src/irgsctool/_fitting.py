@@ -19,8 +19,7 @@ header = ['ps1_objid','ps1_ra','ps1_ra_error','ps1_dec','ps1_dec_error',\
 'teff','logg','feh','sam_g','sam_r','sam_i','sam_z','sam_y','sam_j','sam_h',\
 'sam_k','scale_factor','scale_factor_error','chi2','computed_j',\
 'computed_j_error','computed_h','computed_h_error', 'computed_k',\
-'computed_k_error','gaia_source_id','gaia_ra','gaia_ra_error','gaia_dec',\
-'gaia_dec_error','gaia_parallax','gaia_parallax_error','gaia_pm','gaia_pm_ra',\
+'computed_k_error','gaia_source_id','gaia_parallax','gaia_parallax_error','gaia_pm','gaia_pm_ra',\
 'gaia_pm_ra_error','gaia_pm_dec','gaia_pm_dec_error','gaia_ruwe','objinfoflag',\
 'qualityflag','ndetections','nstackdetections','ginfoflag','ginfoflag2',\
 'ginfoflag3','rinfoflag','rinfoflag2','rinfoflag3','iinfoflag','iinfoflag2',\
@@ -263,9 +262,7 @@ class GenerateIRGSC():
                                 sam_h[index_best_fit_sam][0], sam_k[index_best_fit_sam][0], sf_avg[0], sigma_sf,\
                                 min_ddev_element, computed_j[0], computed_j_error, computed_h[0],\
                                 computed_h_error, computed_k[0], computed_k_error,\
-                                gaia_source_id[index_min_ang_seperation][0], gaia_ra[index_min_ang_seperation][0],\
-                                gaia_ra_error[index_min_ang_seperation][0], gaia_dec[index_min_ang_seperation][0],\
-                                gaia_dec_error[index_min_ang_seperation][0], gaia_parallax[index_min_ang_seperation][0],\
+                                gaia_source_id[index_min_ang_seperation][0], gaia_parallax[index_min_ang_seperation][0],\
                                 gaia_parallax_error[index_min_ang_seperation][0], gaia_pm[index_min_ang_seperation][0],\
                                 gaia_pm_ra[index_min_ang_seperation][0], gaia_pm_ra_error[index_min_ang_seperation][0],\
                                 gaia_pm_dec[index_min_ang_seperation][0], gaia_pm_dec_error[index_min_ang_seperation][0],\
@@ -285,7 +282,7 @@ class GenerateIRGSC():
                                 sam_h[index_best_fit_sam][0], sam_k[index_best_fit_sam][0], sf_avg[0], sigma_sf,\
                                 min_ddev_element, computed_j[0], computed_j_error, computed_h[0],\
                                 computed_h_error, computed_k[0], computed_k_error, -999, -999, -999,\
-                                -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, objinfoflag[j],\
+                                -999, -999, -999, -999, -999, -999, objinfoflag[j],\
                                 qualityflag[j], ndetections[j], nstackdetections[j], ginfoflag[j], ginfoflag2[j],\
                                 ginfoflag3[j], rinfoflag[j], rinfoflag2[j], rinfoflag3[j], iinfoflag[j],\
                                 iinfoflag2[j], iinfoflag3[j], zinfoflag[j], zinfoflag2[j], zinfoflag3[j],\
@@ -302,8 +299,6 @@ class GenerateIRGSC():
                                 sam_h[index_best_fit_sam][0], sam_k[index_best_fit_sam][0], sf_avg[0], sigma_sf,\
                                 min_ddev_element, computed_j[0], computed_j_error, computed_h[0],\
                                 computed_h_error, computed_k[0], computed_k_error, gaia_source_id[index_min_ang_seperation][0],\
-                                gaia_ra[index_min_ang_seperation][0], gaia_ra_error[index_min_ang_seperation][0],\
-                                gaia_dec[index_min_ang_seperation][0], gaia_dec_error[index_min_ang_seperation][0],\
                                 gaia_parallax[index_min_ang_seperation][0], gaia_parallax_error[index_min_ang_seperation][0],\
                                 gaia_pm[index_min_ang_seperation][0], gaia_pm_ra[index_min_ang_seperation][0],\
                                 gaia_pm_ra_error[index_min_ang_seperation][0], gaia_pm_dec[index_min_ang_seperation][0],\
